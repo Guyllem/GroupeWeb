@@ -1,0 +1,26 @@
+body{
+    background-color: azure;
+}
+
+.title{
+    color: orange;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-weight: bold;
+    text-align: center;
+    font-size:250%;
+}
+
+nav{
+    background-color: black;
+}
+
+nav ul{
+    font-style:none ;
+    display: flex;
+    list-style: none;
+    color: white;
+}
+
+nav ul li a {
+    color: white;
+    list}

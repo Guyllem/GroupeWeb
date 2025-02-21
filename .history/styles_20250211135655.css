@@ -1,0 +1,56 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #F8F8F8;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Arc-en-ciel */
+.rainbow {
+    position: absolute;
+    top: 20%;
+    right: -10%;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: conic-gradient(
+        red 0deg 40deg, 
+        orange 40deg 80deg, 
+        yellow 80deg 120deg, 
+        green 120deg 160deg, 
+        blue 160deg 200deg, 
+        indigo 200deg 240deg, 
+        violet 240deg 280deg, 
+        transparent 280deg 360deg
+    );
+    mask: radial-gradient(circle, transparent 50%, black 51%);
+}
+
+/* Style du titre */
+.titre {
+    font-size: 2.5em;
+    font-weight: bold;
+}
+
+/* Texte sous le titre */
+.txt {
+    font-size: 1.2em;
+    color: #777;
+}
+
+/* Bouton de connexion */
+.boite_connec {
+    margin: 20px auto;
+    padding: 10px 20px;
+    background-color: #6A5ACD;
+    color: white;
+    display: inline-block;
+    border-radius: 10px;
+}
+
+.boite_connec a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.2em;
+}

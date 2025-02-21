@@ -1,0 +1,112 @@
+/* Styles généraux */
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background: #f8f8f8;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Titre et slogan */
+.titre {
+    font-size: 2.5em;
+    margin-top: 10%;
+}
+
+.slogan {
+    color: gray;
+    font-size: 1.2em;
+    margin-bottom: 30px;
+}
+
+/* Bouton Se connecter */
+.btn-connexion {
+    display: inline-block;
+    padding: 15px 100px;
+    background-color: #dedeff;
+    color: black;
+    text-decoration: none;
+    border-radius: 12px;
+    border: 1px solid #000;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
+    font-size: 1em;
+}
+
+/* Footer */
+footer {
+    background-color: #3b3b98;
+    color: white;
+    font-size: 0.9em;
+    padding: 10px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+footer a {
+    color: white;
+    text-decoration: none;
+}
+
+/* Conteneur des formes décoratives */
+.decor-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* Cercles */
+.circle {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.7;
+}
+
+/* Grand cercle violet */
+.circle-1 {
+    width: 120px;
+    height: 120px;
+    background: #7678ed;
+    top: 10%;
+    left: 5%;
+}
+
+/* Petit cercle bleu */
+.circle-2 {
+    width: 80px;
+    height: 80px;
+    background: #a29bfe;
+    bottom: 15%;
+    right: 10%;
+}
+
+/* Arc-en-ciel */
+.rainbow {
+    position: absolute;
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    border: 14px solid transparent;
+}
+
+/* Premier arc-en-ciel en haut à droite */
+.rainbow-1 {
+    border-top-color: #ff7675;
+    border-left-color: #ff7675;
+    top: -10%;
+    right: -5%;
+}
+
+/* Deuxième arc-en-ciel en bas à gauche */
+.rainbow-2 {
+    border-top-color: #6c5ce7;
+    border-left-color: #6c5ce7;
+    bottom: -10%;
+    left: -5%;
+}
