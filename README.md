@@ -1,6 +1,0 @@
-# GroupeWeb
-POUET
-
-non
-
-TEUOP
