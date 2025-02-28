@@ -10,7 +10,7 @@ body {
 
 .titre {
     font-size: 2.5em;
-    margin-top: 13%;
+    margin-top: 5%;
     margin-bottom: 0;
 }
 
@@ -103,7 +103,7 @@ footer a {
     width: 10%;
     height: auto;
     left: 0;
-    top: 55%;
+    top: 50%;
 }
 
 .submit-btn{

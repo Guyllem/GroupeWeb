@@ -10,7 +10,7 @@ body {
 
 .titre {
     font-size: 2.5em;
-    margin-top: 13%;
+    margin-top: 5%;
     margin-bottom: 0;
 }
 
@@ -71,39 +71,37 @@ footer a {
     position:fixed;
     margin: 0;
     padding: 0;
-    width: 13%;
+    width: 11%;
     height: auto;
     top: 0%;
-    left: 20%;
+    left: 10%;
 }
 
 .bulle2{
-    position:fixed;
+    position:absolute;
     margin: 0;
     padding: 0;
     width: 8%;
-    right: 87%;
-    top: 22%;
+    right: 88%;
+    top: 40%;
 }
 
 .bulle3{
-    position:fixed;
+    position:absolute;
     margin: 0;
     padding: 0;
-    width: 10%;
-    height: auto;
+    width: 9%;
     right: 10%;
-    top: 60%;
+    top: 105%;
 }
 
 .arc-en-ciel2{
-    position:fixed;
+    position:absolute;
     margin: 0;
     padding: 0;
-    width: 10%;
-    height: auto;
+    width: 9%;
     left: 0;
-    top: 55%;
+    top: 95%;
 }
 
 .submit-btn{

@@ -10,7 +10,7 @@ body {
 
 .titre {
     font-size: 2.5em;
-    margin-top: 13%;
+    margin-top: 5%;
     margin-bottom: 0;
 }
 
@@ -90,20 +90,18 @@ footer a {
     position:fixed;
     margin: 0;
     padding: 0;
-    width: 10%;
-    height: auto;
+    width: 9%;
     right: 10%;
-    top: 60%;
+    top: 105%;
 }
 
 .arc-en-ciel2{
-    position:fixed;
+    position:absolute;
     margin: 0;
     padding: 0;
-    width: 10%;
-    height: auto;
+    width: 9%;
     left: 0;
-    top: 55%;
+    top: 95%;
 }
 
 .submit-btn{
