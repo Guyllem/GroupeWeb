@@ -22,6 +22,7 @@ body {
 }
 
 .btn-connexion {
+    margin-top: 5%;
     display: inline-block;
     padding: 0.75rem 10.63rem;
     background-color: #dedeff;
@@ -56,58 +57,9 @@ footer a {
     text-decoration: none;
 }
 
-.arc-en-ciel{
-    position: fixed;
-    right: -0.1%;
-    top: 0;
-    width: 18%; 
-    height: auto; 
-    margin: 0;
-    padding: 0;
-}
-
-
-.bulle1{
-    position:fixed;
-    margin: 0;
-    padding: 0;
-    width: 13%;
-    height: auto;
-    top: 0%;
-    left: 20%;
-}
-
-.bulle2{
-    position:fixed;
-    margin: 0;
-    padding: 0;
-    width: 8%;
-    right: 87%;
-    top: 22%;
-}
-
-.bulle3{
-    position:fixed;
-    margin: 0;
-    padding: 0;
-    width: 10%;
-    height: auto;
-    right: 10%;
-    top: 60%;
-}
-
-.arc-en-ciel2{
-    position:fixed;
-    margin: 0;
-    padding: 0;
-    width: 10%;
-    height: auto;
-    left: 0;
-    top: 55%;
-}
-
 .submit-btn{
     display: inline-block;
+    margin-top: 2%;
     padding: 0.40rem 9.63rem;
     background-color: #3F51B5;
     color: white;
@@ -125,48 +77,137 @@ footer a {
     box-shadow: 0.5rem 0.5rem 0.5rem rgba(0, 0, 0, 0.3);
 }
 
-.stay-connect{
-    color:#3F51B5;
+/* Images décoratives - visibles sur écran large */
+.arc-en-ciel {
+    position: fixed;
+    right: -0.1%;
+    top: 0;
+    width: 18%;
+    height: auto;
+    margin: 0;
+    padding: 0;
 }
 
-#better-connect{
-    accent-color: #3F51B5;
-    margin-top: 2%;
-    margin-bottom: 1%;
+.bulle1 {
+    position: fixed;
+    margin: 0;
+    padding: 0;
+    width: 13%;
+    height: auto;
+    top: 0%;
+    left: 20%;
 }
 
-.email-form input{
-    width: 30%; 
-    padding: 12px; 
-    border: 2px solid #3F51B5; 
-    border-radius: 8px; 
-    font-size: 1rem;
-    color: #2d3748; 
-    background-color: #ffffff; 
-    transition: all 0.2s ease; 
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.bulle2 {
+    position: fixed;
+    margin: 0;
+    padding: 0;
+    width: 8%;
+    right: 87%;
+    top: 22%;
 }
 
-.password-form input{
-    width: 30%; 
-    padding: 12px; 
+.bulle3 {
+    position: fixed;
+    margin: 0;
+    padding: 0;
+    width: 10%;
+    height: auto;
+    right: 10%;
+    top: 60%;
+}
+
+.arc-en-ciel2 {
+    position: fixed;
+    margin: 0;
+    padding: 0;
+    width: 10%;
+    height: auto;
+    left: 0;
+    top: 55%;
+}
+
+/* Formulaires */
+.email-form input,
+.password-form input {
+    margin-bottom: 1rem;
+    width: 30%;
+    padding: 12px;
     border: 2px solid #3F51B5;
-    border-radius: 8px; 
-    font-size: 1rem; 
-    color: #2d3748; 
-    background-color: #ffffff; 
-    transition: all 0.2s ease; 
+    border-radius: 8px;
+    font-size: 1rem;
+    color: #2d3748;
+    background-color: #ffffff;
+    transition: all 0.2s ease;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.email-form input:focus{
-    border-color: #667eea; 
+.email-form input:focus,
+.password-form input:focus {
+    border-color: #667eea;
     outline: none;
     box-shadow: 0 0 0 1px #3F51B5;
 }
 
-.password-form input:focus{
-    border-color: #667eea; 
-    outline: none; 
-    box-shadow: 0 0 0 1px #3F51B5;
+/* Mobile : cacher les images décoratives */
+@media (max-width: 768px) {
+    .arc-en-ciel,
+    .arc-en-ciel2,
+    .bulle1,
+    .bulle2,
+    .bulle3 {
+        display: none;
+    }
+
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh; /* Assure que le body prend toute la hauteur de l’écran */
+        box-sizing: border-box; /* Pour éviter des surprises avec padding/margin */
+    }
+
+    main {
+        flex: 1;
+    }
+
+    footer {
+        position: relative;
+        margin-top: auto;
+        padding: 0.5rem;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .titre {
+        font-size: 2em;
+        margin-top: 20%;
+    }
+
+    .slogan {
+        font-size: 1.5em;
+        margin-bottom: 5%;
+    }
+
+    .submit-btn {
+        width: 80%;
+        padding: 0.75rem;
+        font-size: 1rem;
+    }
+
+    .btn-connexion {
+        padding: 0.75rem 4rem;
+        font-size: 1em;
+    }
+
+    .email-form input,
+    .password-form input {
+        width: 80%;
+    }
+
 }
