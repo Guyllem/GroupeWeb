@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stage Connect</title>
+  <link rel="stylesheet" href="styles_page_etudiant.css">
+  <script src="footer-script.js"></script>
+</head>
+<body>
+<main>
+<div class="container">
+  <nav class = "navbar">
+    <div class="nav-left">
+      <a href="#" class="nav-item">WishList</a>
+      <a href="#" class="nav-item">Mes Offres</a>
+    </div>
+    <div class="logo">Stage Connect</div>
+    <div class="nav-right">
+      <a href="#" class="nav-item">Mon Profil</a>
+      <a href="#" class="nav-item">Se déconnecter</a>
+    </div>
+  </nav>
+
+  <div class="main-content">
+    <div class="filters">
+      <h3>Filtres</h3>
+      <div class="filter-section">
+        <h4>Paramètres de tri:</h4>
+        <div class="radio-group">
+          <label><input type="radio" name="sort"> Offres récentes</label>
+          <label><input type="radio" name="sort"> Offres anciennes</label>
+          <label><input type="radio" name="sort"> Plus populaire</label>
+        </div>
+      </div>
+
+      <div class="filter-section">
+        <h4>Rémunération (mensuel):</h4>
+        <input type="text" placeholder="Min: 600 €" class="input-min">
+      </div>
+
+      <div class="filter-section">
+        <h4>Durée du stage:</h4>
+        <div class="duration-inputs">
+          <input type="text" placeholder="Min: 1 semaines" class="input-min">
+          <input type="text" placeholder="Max: 12 semaines" class="input-max">
+        </div>
+      </div>
+
+      <div class="filter-section">
+        <h4>Niveau d'études:</h4>
+        <div class="checkbox-group">
+          <label><input type="checkbox"> Bac +1</label>
+          <label><input type="checkbox"> Bac +2</label>
+          <label><input type="checkbox"> Bac +3</label>
+          <label><input type="checkbox"> Bac +4</label>
+          <label><input type="checkbox"> Bac +5</label>
+        </div>
+      </div>
+
+      <div class="filter-section">
+        <h4>Localisation:</h4>
+        <input type="text" placeholder="Ville, Code Postal, Département, Région" class="input-location">
+      </div>
+
+      <div class="filter-section">
+        <h4>Compétences:</h4>
+        <input type="text" placeholder="Informatique, BTP, Industrie" class="input-skills">
+      </div>
+
+      <button class="apply-btn">Appliquer</button>
+    </div>
+    <div class="main-section">
+      <div class="search-bar">
+        <div class="tabs">
+          <button >Entreprises</button>
+          <button class="active">Offres</button>
+        </div>
+        <div class="search-container">
+          <input
+                  placeholder="Search..."
+                  class="search-input"
+                  name="search"
+                  type="search"
+          />
+          <svg
+                  class="search-icon"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+                    d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+                    stroke-linejoin="round"
+                    stroke-linecap="round"
+            ></path>
+          </svg>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</main>
+<footer>
+  <p id="footer-text">
+    © 2025 - Web4all - Tous droits réservés. |
+    <a href="../pages/mentions_legales.html">Mentions légales</a> |
+    <a href="../pages/politiques_de_confidentialité.html"
+    >Politique de confidentialité</a
+    >
+    |
+    <a href="../pages/condition_d'utilisation.html"
+    >Conditions d'utilisation</a
+    >
+  </p>
+</footer>
+</body>
+</html>
