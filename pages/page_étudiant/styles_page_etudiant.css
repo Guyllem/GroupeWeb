@@ -1,0 +1,350 @@
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+main{
+    min-height: 80vh;
+}
+
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+.container {
+
+    margin: 0 auto;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+
+.nav-left .nav-item:first-child:hover{
+    transform: scale(1.05);
+    transition: all 0.3s ease;
+}
+
+.nav-left .nav-item:last-child:hover{
+    transform: scale(1.05);
+    transition: all 0.3s ease;
+}
+
+.nav-right .nav-item:first-child:hover{
+    transform: scale(1.05);
+    transition: all 0.3s ease;
+}
+
+/* Navigation */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background-color: #3F51B5;
+    color: white;
+    width: 100%;
+}
+
+.nav-left, .nav-right {
+    display: flex;
+    align-items: center;
+    flex: 1;
+}
+
+.nav-left {
+    justify-content: flex-start;
+    gap: 20px;
+}
+
+.nav-right {
+    justify-content: flex-end;
+    gap: 20px;
+}
+
+.logo {
+    font-weight: bold;
+    font-size: 2rem;
+    text-align: center;
+    flex: 1;
+}
+
+.nav-item {
+    color: white;
+    text-decoration: none;
+    padding: 5px 10px;
+    transition: opacity 0.3s;
+    white-space: nowrap; /* Empêche le texte de se couper sur plusieurs lignes */
+}
+
+.nav-item:last-child {
+    font-size: 1rem; /* Réduit la taille du texte pour "Se déconnecter" */
+    padding: 1px 1px; /* Réduit légèrement le padding pour le rendre plus petit */
+}
+
+.nav-item:hover {
+    opacity: 0.8;
+}
+
+/* Main Content Layout */
+.main-content {
+    display: flex;
+}
+
+.main-content {
+    border-radius: 5px;
+    border-color: #3F51B5;
+}
+
+.filters {
+    width: 20%;
+    padding: 20px;
+    background-color: #DEDEFF;
+    border-color: #3F51B5;
+    shadow: 0.2rem 0.2rem 0.2rem rgba(0, 0, 0, 0.3);
+    border-right: 2px solid #3F51B5;
+}
+
+.main-section {
+    flex-grow: 1;
+    padding: 20px;
+}
+
+/* Filter Sections */
+.filter-section {
+    margin-bottom: 20px;
+}
+
+.filter-section h4 {
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.radio-group, .checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.input-min, .input-max, .input-location, .input-skills {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.apply-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #ff6b6b;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.filters h3{
+    text-align: center;
+    color: #3F51B5;
+    margin-bottom: 15px;
+}
+
+.filter-section .checkbox {
+    display: flex;
+}
+
+.filter-section h4 {
+    color: #3F51B5;
+}
+
+.filter {
+    shadow: 0.2rem 0.2rem 0.2rem rgba(0, 0, 0, 0.3);
+}
+
+
+/* Search Bar */
+.search-bar {
+    display: flex;
+    margin-bottom: 20px;
+    gap: 10px;
+    text-align: right;
+}
+
+
+.search-bar .search-btn {
+    cursor: pointer;
+
+}
+
+.search-container {
+    position: relative;
+    display: flex;
+}
+
+.search-input {
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid #d1d5db; /* border-gray-300 */
+    padding: 12px 20px;
+    border-radius: 12px;
+    width: 220px;
+    transition: all 0.3s ease-in-out;
+    outline: none;
+    justify-content: flex-end;
+}
+
+.search-input:focus {
+    border-width: 2px;
+    width: 250px;
+}
+
+.search-icon {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 24px;
+    height: 24px;
+    color: #6b7280; /* text-gray-500 */
+}
+
+.apply-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0.5rem 0.5rem 0.5rem rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.nav-right .nav-item:last-child{
+    background-color: #757DE8;
+    width: 50%;
+    padding: 10px;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.nav-right .nav-item:last-child:hover{
+    transform: scale(1.05);
+    box-shadow: 0.5rem 0.5rem 0.5rem rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+
+/* footer */
+
+footer {
+    background-color: #3F51B5;
+    color: white;
+    font-size: 0.9em;
+    padding: 0.625rem;
+    position: static;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+
+
+}
+
+footer a {
+    color: white;
+    text-decoration: none;
+    text-align : center;
+    position:relative;
+}
+
+footer a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 0;
+    height: 1px;
+    background-color: white;
+    transition: width 0.3s ease-out;
+}
+
+footer a:hover::after {
+    width: 100%;
+}
+
+
+
+
+
+/* Ajout d'une bordure noire fine aux boutons Entreprises et Offres */
+.tabs .active {
+    border: 0.5px solid black;
+}
+
+/* Alignement de la search bar à droite */
+.search-container {
+ margin-left: auto;
+}
+
+.logo{
+    text-align: center;
+}
+
+
+.tabs {
+    position: relative;
+    display: flex;
+    gap: 10px;
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    color: #3F51B5;
+    border: 1px solid black;
+    box-shadow: 0.2rem 0.2rem 0.2rem rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+}
+
+/* Animation du background glissant */
+.tabs::before {
+    content: "";
+    position: absolute;
+    width: 50%; /* Couvre un bouton */
+    height: 100%;
+    background-color: #DEDEFF;
+    border-radius: 10px;
+    left: 50%; /* Commence sur "Offres" */
+    transition: left 0.3s ease-in-out;
+    z-index: 0;
+}
+
+/* Styles des boutons */
+.tabs button {
+    flex: 1;
+    padding: 8px 15px;
+    background-color: transparent;
+    border: none;
+    border-radius: 10px;
+    color: #3F51B5;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+    transition: color 0.3s ease-in-out;
+}
+
+/* Lorsque hover sur Entreprises, le background glisse */
+.tabs:hover::before {
+    left: 0%;
+}
+
+/* Styles du bouton actif */
+.tabs button.active {
+    color: #3F51B5;
+    padding-left: 20px;
+    padding-right: 20px;
+    z-index: 1;
+    border: none;
+}
+
+/* Changement de couleur du texte selon l'arrière-plan */
+.tabs button:first-child:hover {
+    color: #3F51B5;
+}
