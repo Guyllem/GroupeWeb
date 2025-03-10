@@ -112,6 +112,7 @@ nav {
 
 .main-section {
     flex-grow: 1;
+
     padding: 20px;
 }
 
@@ -358,7 +359,8 @@ footer a:hover::after {
 }
 
 .back-button {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
+    margin-left: 20px;
 }
 
 .back-button a {
@@ -488,6 +490,64 @@ footer a:hover::after {
     background-color: #ccc;
 }
 
+.main-title {
+    margin-top: 40px;
+    color: #3b5cbc;
+    /* Center the text */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+}
+
+.sub-title {
+    margin-top: 28px;
+    font-size: 28px;
+    color: rgba(59, 92, 188, 0.7);
+    /* Center the text */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.bulle2-1{
+    position:fixed;
+    width: 4%;
+    top: 15%;
+    right: 20%;
+}
+
+.bulle2-2{
+    position:fixed;
+    width: 10%;
+    top: 55%;
+    left: 8%;
+}
+
+
+.bulle3-1{
+    position:fixed;
+    width: 8%;
+    right: 6%;
+    top: 75%;
+}
+
+.bulle3-2{
+    position:fixed;
+    width: 4%;
+    left: 18%;
+    top: 68%;
+}
+
+.bulle3-3{
+    position:fixed;
+    width: 8%;
+    right: 12%;
+    top: 15%;
+}
+
+
 @media (max-width: 768px) {
 
     .profile-container{
@@ -539,5 +599,19 @@ footer a:hover::after {
     .tabs button {
         flex: 1; /* Make buttons take equal space */
         text-align: center; /* Center align text */
+    }
+
+    .back-design{
+        display: none;
+    }
+
+    .main-title {
+        margin-top: 100px;
+        font-size: 20px;
+        display: flex;
+    }
+
+    .sub-title {
+        font-size: 18px;
     }
 }
