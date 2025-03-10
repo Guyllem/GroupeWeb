@@ -1,4 +1,5 @@
-/* Reset and base styles */
+
+/* Global Styles */
 * {
     margin: 0;
     padding: 0;
@@ -17,6 +18,7 @@ body {
     color: #333;
 }
 
+/* Main container styles */
 .container {
     min-height: 96vh;
     margin: 0 auto;
@@ -24,23 +26,22 @@ body {
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
-
-.nav-left .nav-item:first-child:hover{
-    transform: scale(1.05);
-    transition: all 0.3s ease;
+/* Main Content Layout */
+.main-content {
+    display: flex;
+    border-radius: 5px;
+    border-color: #3F51B5;
 }
 
-.nav-left .nav-item:last-child:hover{
-    transform: scale(1.05);
-    transition: all 0.3s ease;
+
+/* Navbar design */
+.logo {
+    font-weight: bold;
+    font-size: 2rem;
+    text-align: center;
+    flex: 1;
 }
 
-.nav-right .nav-item:first-child:hover{
-    transform: scale(1.05);
-    transition: all 0.3s ease;
-}
-
-/* Navigation */
 nav {
     display: flex;
     justify-content: space-between;
@@ -67,11 +68,36 @@ nav {
     gap: 20px;
 }
 
-.logo {
-    font-weight: bold;
-    font-size: 2rem;
+.nav-left .nav-item:first-child:hover{
+    transform: scale(1.05);
+    transition: all 0.3s ease;
+}
+
+.nav-left .nav-item:last-child:hover{
+    transform: scale(1.05);
+    transition: all 0.3s ease;
+}
+
+.nav-right .nav-item:first-child:hover{
+    transform: scale(1.05);
+    transition: all 0.3s ease;
+}
+
+.nav-right .nav-item:last-child{
+    background-color: #757DE8;
+    width: 50%;
+    padding: 10px;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
     text-align: center;
-    flex: 1;
+}
+
+.nav-right .nav-item:last-child:hover{
+    transform: scale(1.05);
+    box-shadow: 0.5rem 0.5rem 0.5rem rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
 }
 
 .nav-item {
@@ -91,16 +117,8 @@ nav {
     opacity: 0.8;
 }
 
-/* Main Content Layout */
-.main-content {
-    display: flex;
-}
 
-.main-content {
-    border-radius: 5px;
-    border-color: #3F51B5;
-}
-
+/* Filter section styles */
 .filters {
     width: 20%;
     padding: 20px;
@@ -110,20 +128,20 @@ nav {
     border-right: 2px solid #3F51B5;
 }
 
-.main-section {
-    flex-grow: 1;
-
-    padding: 20px;
+.filters h3{
+    text-align: center;
+    color: #3F51B5;
+    margin-bottom: 20px;
+    font-size: 30px;
 }
 
-/* Filter Sections */
 .filter-section {
     margin-bottom: 20px;
 }
 
 .filter-section h4 {
     margin-bottom: 10px;
-    color: #555;
+    color: #3F51B5;
 }
 
 .radio-group, .checkbox-group {
@@ -150,37 +168,89 @@ nav {
     cursor: pointer;
 }
 
-.filters h3{
-    text-align: center;
-    color: #3F51B5;
-    margin-bottom: 15px;
+.apply-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0.5rem 0.5rem 0.5rem rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
 }
 
-.filter-section .checkbox {
+
+/* Main section with cards styles */
+.main-section {
+    flex-grow: 1;
+    padding: 20px;
+}
+
+/* Tabs bar styles */
+.tabs {
+    position: relative;
     display: flex;
+    gap: 10px;
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    color: #3F51B5;
+    border: 1px solid black;
+    box-shadow: 0.2rem 0.2rem 0.2rem rgba(0, 0, 0, 0.3);
+    overflow: hidden;
 }
 
-.filter-section h4 {
+.tabs .active {
+    border: 0.5px solid black;
+}
+
+.tabs::before {
+    content: "";
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    background-color: #DEDEFF;
+    border-radius: 10px;
+    left: 50%;
+    transition: left 0.3s ease-in-out;
+    z-index: 0;
+}
+
+.tabs button {
+    flex: 1;
+    padding: 8px 15px;
+    background-color: transparent;
+    border: none;
+    border-radius: 10px;
+    color: #3F51B5;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+    transition: color 0.3s ease-in-out;
+}
+
+.tabs:hover::before {
+    left: 0%;
+}
+
+.tabs button.active {
+    color: #3F51B5;
+    padding-left: 20px;
+    padding-right: 20px;
+    z-index: 1;
+    border: none;
+}
+
+.tabs button:first-child:hover {
     color: #3F51B5;
 }
 
-.filter {
-    shadow: 0.2rem 0.2rem 0.2rem rgba(0, 0, 0, 0.3);
-}
 
-
-/* Search Bar */
+/* Search bar styles */
 .search-bar {
     display: flex;
     margin-bottom: 20px;
     gap: 10px;
     text-align: right;
+    cursor: pointer;
 }
 
-
-.search-bar .search-btn {
+.search-btn {
     cursor: pointer;
-
 }
 
 .search-container {
@@ -191,7 +261,7 @@ nav {
 
 .search-input {
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    border: 1px solid #d1d5db; /* border-gray-300 */
+    border: 1px solid #d1d5db;
     padding: 12px 20px;
     border-radius: 12px;
     width: 220px;
@@ -205,41 +275,8 @@ nav {
     width: 250px;
 }
 
-.search-icon {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    width: 24px;
-    height: 24px;
-    color: #6b7280; /* text-gray-500 */
-}
 
-.apply-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0.5rem 0.5rem 0.5rem rgba(0, 0, 0, 0.3);
-    transition: all 0.3s ease;
-}
-
-.nav-right .nav-item:last-child{
-    background-color: #757DE8;
-    width: 50%;
-    padding: 10px;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    text-align: center;
-}
-
-.nav-right .nav-item:last-child:hover{
-    transform: scale(1.05);
-    box-shadow: 0.5rem 0.5rem 0.5rem rgba(0, 0, 0, 0.3);
-    transition: all 0.3s ease;
-}
-
-
-/* footer */
-
+/* Footer styles */
 footer {
     background-color: #3F51B5;
     color: white;
@@ -274,74 +311,8 @@ footer a:hover::after {
 }
 
 
-/* Ajout d'une bordure noire fine aux boutons Entreprises et Offres */
-.tabs .active {
-    border: 0.5px solid black;
-}
 
-
-
-
-
-.tabs {
-    position: relative;
-    display: flex;
-    gap: 10px;
-    background-color: #f0f0f0;
-    border-radius: 10px;
-    color: #3F51B5;
-    border: 1px solid black;
-    box-shadow: 0.2rem 0.2rem 0.2rem rgba(0, 0, 0, 0.3);
-    overflow: hidden;
-}
-
-/* Animation du background glissant */
-.tabs::before {
-    content: "";
-    position: absolute;
-    width: 50%; /* Couvre un bouton */
-    height: 100%;
-    background-color: #DEDEFF;
-    border-radius: 10px;
-    left: 50%; /* Commence sur "Offres" */
-    transition: left 0.3s ease-in-out;
-    z-index: 0;
-}
-
-/* Styles des boutons */
-.tabs button {
-    flex: 1;
-    padding: 8px 15px;
-    background-color: transparent;
-    border: none;
-    border-radius: 10px;
-    color: #3F51B5;
-    cursor: pointer;
-    position: relative;
-    z-index: 1;
-    transition: color 0.3s ease-in-out;
-}
-
-/* Lorsque hover sur Entreprises, le background glisse */
-.tabs:hover::before {
-    left: 0%;
-}
-
-/* Styles du bouton actif */
-.tabs button.active {
-    color: #3F51B5;
-    padding-left: 20px;
-    padding-right: 20px;
-    z-index: 1;
-    border: none;
-}
-
-/* Changement de couleur du texte selon l'arrière-plan */
-.tabs button:first-child:hover {
-    color: #3F51B5;
-}
-
-
+/* Profile page styles */
 .profile-container {
     max-width: 65%;
     margin: 2% auto;
@@ -352,6 +323,8 @@ footer a:hover::after {
     box-shadow: 0 0px 30px rgba(0, 0, 0, 0.1);
 }
 
+
+/* Profile header styles */
 .profile-header {
     display: flex;
     flex-direction: column;
@@ -383,6 +356,8 @@ footer a:hover::after {
     margin-bottom: 30px;
 }
 
+
+/* In card styles */
 .profile-content {
     display: flex;
     flex-direction: row;
@@ -395,7 +370,6 @@ footer a:hover::after {
     align-items: center;
     text-align: center;
 }
-
 
 .user-card {
     background-color: #4056b4;
@@ -461,36 +435,10 @@ footer a:hover::after {
     transition: all 0.3s ease-in-out;
 }
 
-.skill-input-container {
-    position: relative;
-    margin-top: 10px;
-}
 
-.skill-input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-    text-align: center;
-}
 
-.skill-input::placeholder {
-    color: #aaa;
-}
-
-/* Underline style for the input */
-.skill-input-container::after {
-    content: '';
-    position: absolute;
-    bottom: -5px;
-    left: 0;
-    width: 100%;
-    height: 1px;
-    background-color: #ccc;
-}
-
-.main-title {
+/* WishList page styles */
+.main-title-wishlist {
     margin-top: 40px;
     color: #3b5cbc;
     /* Center the text */
@@ -500,7 +448,7 @@ footer a:hover::after {
     font-size: 40px;
 }
 
-.sub-title {
+.sub-title-wishlist {
     margin-top: 28px;
     font-size: 28px;
     color: rgba(59, 92, 188, 0.7);
@@ -511,6 +459,7 @@ footer a:hover::after {
 }
 
 
+/* Styles for images in background */
 .bulle2-1{
     position:fixed;
     width: 4%;
@@ -547,7 +496,7 @@ footer a:hover::after {
     top: 15%;
 }
 
-
+/* Responsive design -> Media Queries */
 @media (max-width: 768px) {
 
     .profile-container{
@@ -581,37 +530,37 @@ footer a:hover::after {
     }
 
     .search-bar {
-        width: 100%; /* Make the search bar take full width */
-        flex-direction: column; /* Stack elements vertically */
-        align-items: center; /* Center align items */
+        width: 100%;
+        flex-direction: column;
+        align-items: center;
     }
 
     .search-container {
-        width: 100%; /* Make the search container take full width */
-        margin: 10px 0; /* Add some margin for spacing */
+        width: 100%;
+        margin: 10px 0;
     }
 
     .tabs {
-        width: 100%; /* Make the tabs take full width */
-        justify-content: space-around; /* Distribute space evenly */
+        width: 100%;
+        justify-content: space-around;
     }
 
     .tabs button {
-        flex: 1; /* Make buttons take equal space */
-        text-align: center; /* Center align text */
+        flex: 1;
+        text-align: center;
     }
 
     .back-design{
         display: none;
     }
 
-    .main-title {
+    .main-title-wishlist {
         margin-top: 100px;
         font-size: 20px;
         display: flex;
     }
 
-    .sub-title {
+    .sub-title-wishlist {
         font-size: 18px;
     }
 }
