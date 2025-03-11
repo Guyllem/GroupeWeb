@@ -520,7 +520,7 @@ footer a:hover::after {
     background: white;
     border-radius: 0px 20px 20px 0px;
     color: white;
-    display: flex;
+    display: none;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
@@ -641,5 +641,9 @@ footer a:hover::after {
 
     .burger-menu {
         display: block;
+    }
+
+    .slide-menu{
+        display: flex;
     }
 }
