@@ -1,28 +1,42 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const footer = document.getElementById('bottom-text');
+document.addEventListener("DOMContentLoaded", function () {
+    console.log("Script chargé et DOM prêt !");
+    // Gestion du footer
+    const footer = document.getElementById("bottom-text");
 
-    // Function to check if user is at absolute bottom of the page
     const checkScrollPosition = () => {
-        // Total height of the document
         const totalHeight = document.documentElement.scrollHeight;
-
-        // Current scroll position
         const currentScroll = window.innerHeight + window.scrollY;
 
-        // Viewport height
-        const viewportHeight = window.innerHeight;
-
-        // Check if scrolled to within 10 pixels of the bottom
         if (currentScroll >= totalHeight - 10) {
-            footer.classList.add('visible');
+            footer.classList.add("visible");
         } else {
-            footer.classList.remove('visible');
+            footer.classList.remove("visible");
         }
     };
 
-    // Add scroll event listener
-    window.addEventListener('scroll', checkScrollPosition);
+    window.addEventListener("scroll", checkScrollPosition);
+    window.addEventListener("resize", checkScrollPosition);
 
-    // Check on window resize
-    window.addEventListener('resize', checkScrollPosition);
+    // Gestion du menu burger
+    const burgerMenu = document.getElementById("burger-menu");
+    const slideMenu = document.getElementById("slide-menu");
+    const closeMenu = document.getElementById("close-menu");
+
+    if (burgerMenu && slideMenu && closeMenu) {
+        burgerMenu.addEventListener("click", function () {
+            slideMenu.classList.add("open");
+        });
+
+        closeMenu.addEventListener("click", function () {
+            slideMenu.classList.remove("open");
+        });
+
+        document.addEventListener("click", function (event) {
+            if (!slideMenu.contains(event.target) && event.target !== burgerMenu) {
+                slideMenu.classList.remove("open");
+            }
+        });
+    } else {
+        console.error("Un des éléments du menu burger est introuvable !");
+    }
 });
