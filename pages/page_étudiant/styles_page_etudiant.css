@@ -515,7 +515,7 @@ footer a:hover::after {
     top: 0;
     left: -200%;
     width: 75%;
-    box-shadow: 20em 0 20em rgba(21, 21, 21, 0.71);
+    box-shadow: 10em 0 10em rgba(21, 21, 21, 0.50);
     height: 100vh;
     background: white;
     border-radius: 0px 20px 20px 0px;
@@ -524,7 +524,7 @@ footer a:hover::after {
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    padding-top: 150px;
+    padding-top: 50%;
     transition: left 0.3s ease-in-out;
     z-index: 1000;
 }
@@ -551,7 +551,6 @@ footer a:hover::after {
     bottom: 25px;
     left: 50%;
     transform: translateX(-50%);
-    margin-top: 0;
 }
 
 .close-menu {
