@@ -10,9 +10,6 @@ document.addEventListener("DOMContentLoaded", function () {
         // Current scroll position
         const currentScroll = window.innerHeight + window.scrollY;
 
-        // Viewport height
-        const viewportHeight = window.innerHeight;
-
         // Check if scrolled to within 10 pixels of the bottom
         if (currentScroll >= totalHeight - 10) {
             footer.classList.add('visible');

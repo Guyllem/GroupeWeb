@@ -629,6 +629,8 @@ footer a:hover::after {
     text-align: center;
     color: #3F51B5;
     font-size: 30px;
+    margin-bottom: 50px;
+
 }
 
 .slide-filter h4 {
