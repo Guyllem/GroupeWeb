@@ -1,21 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-    console.log("Script chargé et DOM prêt !");
-    // Gestion du footer
-    const footer = document.getElementById("bottom-text");
-
-    const checkScrollPosition = () => {
-        const totalHeight = document.documentElement.scrollHeight;
-        const currentScroll = window.innerHeight + window.scrollY;
-
-        if (currentScroll >= totalHeight - 10) {
-            footer.classList.add("visible");
-        } else {
-            footer.classList.remove("visible");
-        }
-    };
-
-    window.addEventListener("scroll", checkScrollPosition);
-    window.addEventListener("resize", checkScrollPosition);
 
     // Gestion du menu burger
     const burgerMenu = document.getElementById("burger-menu");
