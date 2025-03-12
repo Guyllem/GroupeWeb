@@ -19,8 +19,63 @@
       <a href="mon_profil.html" class="nav-item">Mon Profil</a>
       <a href="#" class="nav-item">Se déconnecter</a>
     </div>
+    <button class="filter-menu" id="filter-menu">
+      <img src="../../assets/icons/entonnoir.png" alt="Filter Icon">
+    </button>
     <button class="burger-menu" id="burger-menu">☰</button>
   </nav>
+
+
+  <div class="slide-filter" id="slide-filter">
+    <div class="slide-filter-content">
+      <h3>Filtres</h3>
+      <div class="slide-filter-section">
+        <h4>Paramètres de tri :</h4>
+        <div class="slide-radio-group">
+          <label><input type="radio" name="sort"> Offres récentes</label>
+          <label><input type="radio" name="sort"> Offres anciennes</label>
+          <label><input type="radio" name="sort"> Plus populaire</label>
+        </div>
+      </div>
+
+      <div class="slide-filter-section">
+        <h4>Rémunération (mensuel) :</h4>
+        <input type="text" placeholder="Min: 600 €" class="input-min">
+      </div>
+
+      <div class="slide-filter-section">
+        <h4>Durée du stage :</h4>
+        <div class="duration-inputs">
+          <input type="text" placeholder="Min: 1 semaines" class="input-min">
+          <input type="text" placeholder="Max: 12 semaines" class="input-max">
+        </div>
+      </div>
+
+      <div class="slide-filter-section">
+        <h4>Niveau d'études :</h4>
+        <div class="slide-checkbox-group">
+          <div class="slide-checkbox-item"><label><input type="checkbox"> Bac +1</label></div>
+          <div class="slide-checkbox-item"><label><input type="checkbox"> Bac +2</label></div>
+          <div class="slide-checkbox-item"><label><input type="checkbox"> Bac +3</label></div>
+          <div class="slide-checkbox-item"><label><input type="checkbox"> Bac +4</label></div>
+          <div class="slide-checkbox-item"><label><input type="checkbox"> Bac +5</label></div>
+        </div>
+      </div>
+
+      <div class="slide-filter-section">
+        <h4>Localisation :</h4>
+        <input type="text" placeholder="Ville, Code Postal, Département, Région" class="input-location">
+      </div>
+
+      <div class="slide-filter-section">
+        <h4>Compétences :</h4>
+        <input type="text" placeholder="Informatique, BTP, Industrie" class="input-skills">
+      </div>
+
+      <button class="slide-apply-btn">Appliquer</button>
+      <button class="close-filter" id="close-filter">✖</button>
+    </div>
+  </div>
   <div class="slide-menu" id="slide-menu">
     <h2><a href="page_étudiant.html" class="menu-item">Accueil</a></h2>
     <h2><a href="wishlist.html" class="menu-item">Wishlist</a></h2>
@@ -29,7 +84,6 @@
     <h2><a href="#" class="menu-item-logout">Se déconnecter</a></h2>
     <button class="close-menu" id="close-menu">✖</button>
   </div>
-
   <div class="main-content">
     <div class="filters">
       <h3>Filtres</h3>

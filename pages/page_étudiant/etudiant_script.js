@@ -19,7 +19,38 @@ document.addEventListener("DOMContentLoaded", function () {
                 slideMenu.classList.remove("open");
             }
         });
-    } else {
-        console.error("Un des éléments du menu burger est introuvable !");
     }
+
+    const filterMenuBtn = document.getElementById('filter-menu');
+    const slideFilter = document.getElementById('slide-filter');
+    const closeFilterBtn = document.getElementById('close-filter');
+
+    if (filterMenuBtn && slideFilter && closeFilterBtn) {
+        // Gestionnaire d'événement principal pour le bouton filtre
+        filterMenuBtn.addEventListener('click', function (e) {
+            e.stopPropagation(); // Arrête la propagation de l'événement
+            slideFilter.classList.add('open');
+        });
+
+        filterMenuBtn.querySelector('img').addEventListener('click', function (e) {
+            e.stopPropagation(); // Arrête la propagation
+            slideFilter.classList.add('open');
+        });
+
+        closeFilterBtn.addEventListener('click', function (e) {
+            e.stopPropagation(); // Arrête la propagation
+            slideFilter.classList.remove('open');
+        });
+    }
+
+    // Fermeture des menus en cliquant en dehors
+    document.addEventListener('click', function (event) {
+        if (slideMenu && !slideMenu.contains(event.target) && event.target !== burgerMenu) {
+            slideMenu.classList.remove("open");
+        }
+
+        if (slideFilter && !slideFilter.contains(event.target) && event.target !== filterMenuBtn && !filterMenuBtn.contains(event.target)) {
+            slideFilter.classList.remove("open");
+        }
+    });
 });
