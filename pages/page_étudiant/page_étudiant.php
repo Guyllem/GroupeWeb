@@ -9,22 +9,7 @@
 <body>
 <main>
 <div class="container">
-  <nav>
-    <div class="nav-left">
-      <a href="wishlist.html" class="nav-item">WishList</a>
-      <a href="#" class="nav-item">Mes Offres</a>
-    </div>
-    <div class="logo">Stage Connect</div>
-    <div class="nav-right">
-      <a href="mon_profil.html" class="nav-item">Mon Profil</a>
-      <a href="#" class="nav-item">Se déconnecter</a>
-    </div>
-    <button class="filter-menu" id="filter-menu">
-      <img src="../../assets/icons/entonnoir.png" alt="Filter Icon">
-    </button>
-    <button class="burger-menu" id="burger-menu">☰</button>
-  </nav>
-
+    <?php include 'navbar.php'; ?>
 
   <div class="slide-filter" id="slide-filter">
     <div class="slide-filter-content">
@@ -75,14 +60,6 @@
       <button class="slide-apply-btn">Appliquer</button>
       <button class="close-filter" id="close-filter">✖</button>
     </div>
-  </div>
-  <div class="slide-menu" id="slide-menu">
-    <h2><a href="page_étudiant.html" class="menu-item">Accueil</a></h2>
-    <h2><a href="wishlist.html" class="menu-item">Wishlist</a></h2>
-    <h2><a href="#" class="menu-item">Mes Offres</a></h2>
-    <h2><a href="mon_profil.html" class="menu-item">Mon Profil</a></h2>
-    <h2><a href="#" class="menu-item-logout">Se déconnecter</a></h2>
-    <button class="close-menu" id="close-menu">✖</button>
   </div>
   <div class="main-content">
     <div class="filters">
@@ -200,13 +177,8 @@
 </div>
 
 </main>
-<footer>
-  <p id="footer-text"> © 2025 - Web4all - Tous droits réservés. |
-    <a href="../Mentions_legales/mentions_legales.html">Mentions légales</a> |
-    <a href="../Mentions_legales/politiques_de_confidentialité.html">Politique de confidentialité</a> |
-    <a href="../Mentions_legales/condition_d'utilisation.html">Conditions d'utilisation</a>
-  </p>
-</footer>
+
+<?php include 'footer.php'; ?>
 </body>
 <script src="etudiant_script.js"></script>
 </html>
