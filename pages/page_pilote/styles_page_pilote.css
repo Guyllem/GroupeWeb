@@ -1,0 +1,361 @@
+
+/* Global styles */
+body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    text-align: center;
+    background: #f8f8f8;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+}
+
+
+.titre {
+    font-size: 5em;
+    color: #3F51B5;
+    position: absolute; 
+    top: 30%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    text-align: center; 
+}
+
+
+/* header */
+nav {
+    position: relative;
+    width: 100%;
+    height: 60px; /* Ajuste la hauteur du header si besoin */
+    background-color: #3F51B5;
+}
+
+.logo {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+    font-size: 2rem;
+    font-weight: bold;
+    color: white;
+}
+
+.nav-item {
+    position: absolute;
+    right: 20px; /* Distance depuis le bord droit */
+    top: 50%; /* Place verticalement au milieu */
+    transform: translateY(-50%) scale(1); /* Ajouté scale(1) pour l'effet de réinitialisation */
+    background-color: #757DE8;
+    padding: 8px 15px;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease; /* Ajouté pour une transition fluide */
+}
+
+.nav-item:hover {
+    transform: translateY(-50%) scale(1.05); /* Centre et agrandit légèrement */
+    box-shadow: 0.5rem 0.5rem 0.5rem rgba(0, 0, 0, 0.3);
+}
+
+
+
+/* Styles for images in background  */
+.arc-en-ciel {
+    position: fixed;
+    left: -0.1%;
+    bottom : 7%;
+    width: 18%;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    transform: rotate(180deg);
+}
+
+.arc-en-ciel2 {
+    position: fixed;
+    margin: 0;
+    padding: 0;
+    width: 10%;
+    height: auto;
+    right: 0;
+    top: 20%;
+    transform: rotate(180deg);
+}
+
+.bulle1 {
+    position: fixed;
+    margin: 0;
+    padding: 0;
+    width: 20%;
+    height: auto;
+    top: 17%;
+    left: 10%;
+}
+
+.bulle2 {
+    position: fixed;
+    margin: 0;
+    padding: 0;
+    width: 8%;
+    right: 25%;
+    top: 20%;
+}
+
+.bulle3 {
+    position: fixed;
+    margin: 0;
+    padding: 0;
+    width: 10%;
+    height: auto;
+    right: 30%;
+    top: 75%;
+}
+
+.bulle4 {
+    position: fixed;
+    margin: 0;
+    padding: 0;
+    width: 15%;
+    right: 5%;
+    top: 55%;
+}
+
+
+.main-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;    gap: 20px; 
+    padding: 20px;
+    gap: 50px;
+    margin-top: 20%; 
+}
+
+.block {
+    background-color: #E3E7FF;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    font-size: 2rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    width: 100%;
+    max-width: 250px; 
+    z-index: 10;
+    height: 100px;
+    font-weight: bold;
+    align-items: center;
+    color: inherit;
+    text-decoration: none;
+}
+
+.block:hover {
+    transform: scale(1.05); /* Effet d'agrandissement au survol */
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Form styles */
+.email-form input,
+.password-form input {
+    margin-bottom: 1rem;
+    width: 30%;
+    padding: 12px;
+    border: 2px solid #3F51B5;
+    border-radius: 8px;
+    font-size: 1rem;
+    color: #2d3748;
+    background-color: #ffffff;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.email-form input:focus,
+.password-form input:focus {
+    border-color: #667eea;
+    outline: none;
+    box-shadow: 0 0 0 1px #3F51B5;
+}
+
+
+/* Footer styles */
+footer {
+    background-color: #3F51B5;
+    color: white;
+    font-size: 0.9em;
+    padding: 0.625rem;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+footer a {
+    color: white;
+    text-decoration: none;
+    position: relative;
+}
+
+footer a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 0;
+    height: 1px;
+    background-color: white;
+    transition: width 0.3s ease-out;
+}
+
+footer a:hover::after {
+    width: 100%;
+}
+
+
+/* FILTRES */
+
+/* Main section with cards styles */
+.main-section {
+    display: flex;
+    flex-grow: 1;
+    padding: 20px;
+}
+
+/* Filter section styles */
+.filters {
+    width: 18%;
+    padding: 20px;
+    background-color: #DEDEFF;
+    border-color: #3F51B5;
+    shadow: 0.2rem 0.2rem 0.2rem rgba(0, 0, 0, 0.3);
+    border-right: 2px solid #3F51B5;
+}
+
+.filters h3{
+    text-align: center;
+    color: #3F51B5;
+    margin-top: 0px;
+    font-size: 30px;
+}
+
+.filter-section {
+    margin-bottom: 20px;
+}
+
+.filter-section h4 {
+    margin-bottom: 10px;
+    color: #3F51B5;
+    text-align: left;
+    font-size: 20px;
+}
+
+.filter-section h5 {
+    margin-bottom: 15px;
+    font-weight: normal;
+    text-align: left;
+}
+
+.radio-group, .checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    text-align: left;
+}
+
+.input-min, .input-max  {
+    width: 10%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+}
+
+.input-location, .input-skills {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+}
+
+.apply-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #ff6b6b;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transform: scale(1);
+    transition: all 0.3s ease;
+}
+
+.apply-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0.5rem 0.5rem 0.5rem rgba(0, 0, 0, 0.3);
+}
+
+.apply-btn:active {
+    transform: scale(0.95);
+}
+
+/* Responsive design -> Media Queries */
+@media (max-width: 768px) {
+    .arc-en-ciel,
+    .arc-en-ciel2,
+    .bulle1,
+    .bulle2,
+    .bulle3 {
+        display: none;
+    }
+
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh; /* Assure que le body prend toute la hauteur de l’écran */
+        box-sizing: border-box; /* Pour éviter des surprises avec padding/margin */
+    }
+
+    main {
+        flex: 1;
+    }
+
+    footer {
+        position: relative;
+        margin-top: auto;
+        padding: 0.5rem;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .titre {
+        font-size: 2em;
+        margin-top: 50%;
+    }
+
+    .slogan {
+        font-size: 1.5em;
+    }
+
+    .submit-btn {
+        width: 80%;
+        padding: 0.75rem;
+        font-size: 1rem;
+    }
+
+    .btn-connexion {
+        padding: 0.75rem 4rem;
+        font-size: 1em;
+    }
+
+    .email-form input,
+    .password-form input {
+        width: 80%;
+    }
+}
