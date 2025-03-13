@@ -123,7 +123,7 @@ nav {
     border: none;
     flex-direction: column;
     cursor: pointer;
-    margin-right: 10px;
+    margin-right: 0px;
 }
 
 /* Styles for slide menu */
@@ -201,6 +201,24 @@ nav {
     margin-top: 3px;
     width: 30px; /* Ajustez cette valeur selon la taille souhaitée */
     height: 30px; /* Gardez la même valeur que width pour conserver les proportions */
+    vertical-align: middle;
+}
+
+/* Styles for filter-menu */
+.filter-menu {
+    display: none;
+    color: white;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.filter-menu img {
+    margin-right: 20px;
+    margin-top: 3px;
+    width: 20px; /* Ajustez cette valeur selon la taille souhaitée */
+    height: 20px; /* Gardez la même valeur que width pour conserver les proportions */
     vertical-align: middle;
 }
 
@@ -345,7 +363,7 @@ footer a:hover::after {
 }
 
 
-/* FILTRES */
+
 
 /* Main section with cards styles */
 .main-section {
@@ -356,7 +374,7 @@ footer a:hover::after {
 
 /* Filter section styles */
 .filters {
-    width: 18%;
+    width: 25%;
     padding: 20px;
     background-color: #DEDEFF;
     border-color: #3F51B5;
@@ -396,7 +414,7 @@ footer a:hover::after {
 }
 
 .input-min, .input-max  {
-    width: 10%;
+    width: 30%;
     padding: 8px;
     margin-top: 5px;
     border: 1px solid #ddd;
@@ -431,6 +449,116 @@ footer a:hover::after {
 .apply-btn:active {
     transform: scale(0.95);
 }
+
+/* Styles pour le slide-filter */
+.slide-filter {
+    position: fixed;
+    top: 0;
+    left: -200%;
+    width: auto;
+    box-shadow: 10em 0 10em rgba(21, 21, 21, 0.50);
+    height: 100vh;
+    background: white;
+    border-radius: 0px 20px 20px 0px;
+    color: white;
+    display: none;
+    flex-direction: column;
+    align-items: start;
+    justify-content: flex-start;
+    transition: left 0.3s ease-in-out;
+    z-index: 1000;
+}
+
+.slide-filter-content {
+    margin-top: 20px;
+}
+
+.slide-filter-section{
+    margin-left: 20px;
+    margin-top: 15px;
+    margin-right: 20px;
+}
+
+.slide-radio-group {
+    display: flex;
+    font-size: 14px;
+    flex-direction: column;
+    align-items: start;
+    padding: 10px;
+    color: #3F51B5 ;
+}
+
+.slide-filter h3 {
+    text-align: center;
+    color: #3F51B5;
+    font-size: 30px;
+    margin-bottom: 30px;
+
+}
+
+.slide-filter h4 {
+    text-align: start;
+    color: #3F51B5;
+    font-size: 14px;
+}
+
+.slide-filter h5 {
+    text-align: start;
+    color: #3F51B5;
+    font-size: 12px;
+}
+
+.slide-input-min, .slide-input-max  {
+    width: 20%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+}
+
+.slide-apply-btn {
+    margin-top: 20px;
+    margin-left: 20px;
+    justify-content: center;
+    display: flex;
+    width: 88%;
+    padding: 10px;
+    background-color: #ff6b6b;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+
+.close-filter {
+    background: none;
+    border: none;
+    color: #3F51B5;
+    font-size: 35px;
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+}
+
+/* Menu ouvert */
+.slide-filter.open {
+    left: 0;
+}
+
+.slide-checkbox-item{
+    margin-top: 7px;
+}
+
+.slide-checkbox-group {
+    margin-top: 5px;
+    color: #3F51B5;
+    display: flex;
+    flex-direction: column;
+}
+
+
 
 /* Responsive design -> Media Queries */
 @media (max-width: 768px) {
@@ -529,10 +657,6 @@ footer a:hover::after {
         display: none;
     }
 
-    .slide-filter-container {
-        display: flex;
-    }
-
     .search-bar {
         width: 100%;
         flex-direction: column;
@@ -606,5 +730,12 @@ footer a:hover::after {
 
     .logout-icon {
         display: block;
+    }
+}
+
+/* add media query */
+@media (max-width: 325px) {
+    .slide-filter {
+        width: 80%;
     }
 }

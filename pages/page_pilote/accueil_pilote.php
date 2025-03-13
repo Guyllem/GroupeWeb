@@ -33,7 +33,7 @@
     <div class="titre">Bienvenue dans votre espace pilote</div>
 
     <main class="main-content">
-    <a class="block" href="#">Gestion des élèves</a>
+    <a class="block" href="gestion_eleves_pilote.php">Gestion des élèves</a>
     <a class="block" href="#">Gestion des offres</a>
     <a class="block" href="#">Gestion des entreprises</a>
 </main>
