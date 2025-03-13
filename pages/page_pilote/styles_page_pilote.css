@@ -43,7 +43,7 @@ nav {
     position: absolute;
     right: 20px; /* Distance depuis le bord droit */
     top: 50%; /* Place verticalement au milieu */
-    transform: translateY(-50%); /* Centre verticalement l'élément */
+    transform: translateY(-50%) scale(1); /* Ajouté scale(1) pour l'effet de réinitialisation */
     background-color: #757DE8;
     padding: 8px 15px;
     color: white;
@@ -51,14 +51,13 @@ nav {
     border-radius: 4px;
     text-decoration: none;
     cursor: pointer;
+    transition: all 0.3s ease; /* Ajouté pour une transition fluide */
 }
 
 .nav-item:hover {
     transform: translateY(-50%) scale(1.05); /* Centre et agrandit légèrement */
     box-shadow: 0.5rem 0.5rem 0.5rem rgba(0, 0, 0, 0.3);
-    transition: all 0.3s ease;
 }
-
 
 
 
@@ -212,6 +211,93 @@ footer a:hover::after {
     width: 100%;
 }
 
+
+/* FILTRES */
+
+/* Main section with cards styles */
+.main-section {
+    display: flex;
+    flex-grow: 1;
+    padding: 20px;
+}
+
+/* Filter section styles */
+.filters {
+    width: 18%;
+    padding: 20px;
+    background-color: #DEDEFF;
+    border-color: #3F51B5;
+    shadow: 0.2rem 0.2rem 0.2rem rgba(0, 0, 0, 0.3);
+    border-right: 2px solid #3F51B5;
+}
+
+.filters h3{
+    text-align: center;
+    color: #3F51B5;
+    margin-top: 0px;
+    font-size: 30px;
+}
+
+.filter-section {
+    margin-bottom: 20px;
+}
+
+.filter-section h4 {
+    margin-bottom: 10px;
+    color: #3F51B5;
+    text-align: left;
+    font-size: 20px;
+}
+
+.filter-section h5 {
+    margin-bottom: 15px;
+    font-weight: normal;
+    text-align: left;
+}
+
+.radio-group, .checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    text-align: left;
+}
+
+.input-min, .input-max  {
+    width: 10%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+}
+
+.input-location, .input-skills {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+}
+
+.apply-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #ff6b6b;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transform: scale(1);
+    transition: all 0.3s ease;
+}
+
+.apply-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0.5rem 0.5rem 0.5rem rgba(0, 0, 0, 0.3);
+}
+
+.apply-btn:active {
+    transform: scale(0.95);
+}
 
 /* Responsive design -> Media Queries */
 @media (max-width: 768px) {
