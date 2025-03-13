@@ -619,12 +619,12 @@ footer a:hover::after {
 }
 
 .slide-filter-content {
-    margin-top: 25px;
+    margin-top: 15px;
 }
 
 .slide-filter-section{
     margin-left: 20px;
-    margin-top: 20px;
+    margin-top: 10px;
     margin-right: 20px;
 }
 
@@ -640,7 +640,7 @@ footer a:hover::after {
     text-align: center;
     color: #3F51B5;
     font-size: 30px;
-    margin-bottom: 50px;
+    margin-bottom: 20px;
 
 }
 
@@ -683,6 +683,7 @@ footer a:hover::after {
 
 .slide-checkbox-item{
     margin-top: 7px;
+    font-size: 12px;
 }
 
 .slide-checkbox-group {
