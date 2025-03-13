@@ -9,7 +9,12 @@
 <body>
 <main>
 <div class="container">
-    <?php include 'navbar.php'; ?>
+
+    <?php
+    $GLOBALS['responsiveFilter'] = true;
+    include 'navbar-etudiant.php';
+    ?>
+
 
   <div class="slide-filter" id="slide-filter">
     <div class="slide-filter-content">
