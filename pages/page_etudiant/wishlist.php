@@ -10,10 +10,10 @@
 <main>
 
   <div class="container">
-      <?php include 'navbar.php'; ?>
+      <?php include 'navbar-etudiant.php'; ?>
     <div class="main-section">
       <div class="back-button">
-        <a href="page_étudiant.php"><span class="arrow">←</span> Accueil</a>
+        <a href="page_etudiant.php"><span class="arrow">←</span> Accueil</a>
       </div>
       <div class="search-bar">
         <div class="tabs">

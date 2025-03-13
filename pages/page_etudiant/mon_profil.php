@@ -8,11 +8,11 @@
 </head>
 <main>
     <div class="container">
-        <?php include 'navbar.php'; ?>
+        <?php include 'navbar-etudiant.php'; ?>
         <div class="profile-container">
             <div class="profile-header">
                 <div class="back-button">
-                    <a href="page_étudiant.php"><span class="arrow">←</span> Accueil</a>
+                    <a href="page_etudiant.php"><span class="arrow">←</span> Accueil</a>
                 </div>
                 <h1 class="profile-title">Mon Profil</h1>
             </div>
