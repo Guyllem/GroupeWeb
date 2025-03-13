@@ -7,12 +7,15 @@
     <link rel="stylesheet" href="styles_page_pilote.css" />
   </head>
   <nav>
-    <nav>
-        <div class="logo">Stage Connect</div>
-        <a href="#" class="nav-item">Se déconnecter</a>
-    </nav>
-    
-</nav>
+      <div class="logo">Stage Connect</div>
+      <div class="nav-right">
+          <a href="#" class="nav-item">Se déconnecter</a>
+      </div>
+      <button class="logout-icon" id="logout-icon">
+          <img src="../../assets/icons/logout.png" alt="Logout Icon">
+      </button>
+  </nav>
+
   <body>
     <header>
       <img class="bulle1" src="../../assets/images/bulle3.png" alt="bulle1" />
@@ -20,30 +23,21 @@
       <img class="bulle2" src="../../assets/images/bulle2.png" alt="bulle2" />
     </header>
     <img src="../../assets/images/bulle3.png" alt="bulle3" class="bulle3" />
-    
-    <h1 class="titre">Bienvenue</h1>
+
     <img
     src="../../assets/images/arc%20en%20ciel2.png"
     alt="arc-en-ciel2"
     class="arc-en-ciel2"
   />
   <img class="bulle4" src="../../assets/images/bulle2.png" alt="bulle4" />
-  
-  <main class="main-content">
+    <div class="titre">Bienvenue dans votre espace pilote</div>
+
+    <main class="main-content">
     <a class="block" href="#">Gestion des élèves</a>
     <a class="block" href="#">Gestion des offres</a>
     <a class="block" href="#">Gestion des entreprises</a>
 </main>
-
-    <footer>
-        
-      <p>
-        © 2025 - Web4all - Tous droits réservés. |
-        <a href="Mentions_legales/mentions_legales.html">Mentions légales</a> |
-        <a href="Mentions_legales/politiques_de_confidentialité.html">Politique de confidentialité</a> |
-        <a href="Mentions_legales/condition_d'utilisation.html">Conditions d'utilisation</a>
-      </p>
-    </footer>
+  <?php include '../page_etudiant/footer.php'; ?>
   </body>
-  <script src="../script.js"></script>
+  <script src="../page_etudiant/etudiant_script.js"></script>
 </html>
