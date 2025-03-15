@@ -19,7 +19,13 @@
       <img src="assets/images/arc en ciel2.png" alt="arc-en-ciel2" class="arc-en-ciel2" />
       <img src="assets/images/bulle3.png" alt="bulle3" class="bulle3" />
     </main>
-    <?php include 'pages/footer.php'; ?>
+    <footer>
+        <p id="bottom-text"> © 2025 - Web4all - Tous droits réservés. |
+            <a href="pages/mentions_legales/mentions_legales.html">Mentions légales</a> |
+            <a href="pages/mentions_legales/politiques_de_confidentialité.html">Politique de confidentialité</a> |
+            <a href="pages/mentions_legales/condition_d'utilisation.html">Conditions d'utilisation</a>
+        </p>
+    </footer>
   </body>
   <script src="script.js"></script>
 </html>
