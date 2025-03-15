@@ -374,7 +374,7 @@ footer a:hover::after {
 
 /* Filter section styles */
 .filters {
-    width: 25%;
+    width: 20%;
     padding: 20px;
     background-color: #DEDEFF;
     border-color: #3F51B5;
@@ -470,7 +470,7 @@ footer a:hover::after {
 }
 
 .slide-filter-content {
-    margin-top: 20px;
+    margin-top: 40px;
 }
 
 .slide-filter-section{
@@ -521,7 +521,7 @@ footer a:hover::after {
     margin-left: 20px;
     justify-content: center;
     display: flex;
-    width: 88%;
+    width: 80%;
     padding: 10px;
     background-color: #ff6b6b;
     color: white;
