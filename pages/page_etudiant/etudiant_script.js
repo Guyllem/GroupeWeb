@@ -77,4 +77,40 @@ document.addEventListener("DOMContentLoaded", function () {
             slideFilter.classList.remove("open");
         }
     });
+
+    const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+    const dropdownItems = document.querySelectorAll('.dropdown-item');
+
+    // Gestion du clic pour ouvrir le menu
+    dropdownToggles.forEach(function (dropdownToggle) {
+        dropdownToggle.addEventListener('click', function () {
+            const dropdown = this.parentElement;
+            dropdown.classList.toggle('active'); // Toggle the active class
+        });
+    });
+
+    // Gestion du clic sur une option de la liste
+    dropdownItems.forEach(function (dropdownItem) {
+        dropdownItem.addEventListener('click', function (e) {
+            e.preventDefault();  // Empêche le comportement par défaut du lien
+            const dropdown = this.closest('.dropdown'); // Récupère le parent
+            const toggleButton = dropdown.querySelector('.dropdown-toggle'); // Le bouton à modifier
+
+            // Met à jour le texte du bouton avec l'option sélectionnée
+            toggleButton.textContent = this.getAttribute('data-value');
+
+            // Ferme le menu
+            dropdown.classList.remove('active');
+        });
+    });
+
+    // Fermeture du menu si on clique en dehors
+    window.addEventListener('click', function (e) {
+        dropdownToggles.forEach(function (dropdownToggle) {
+            const dropdown = dropdownToggle.parentElement;
+            if (!dropdown.contains(e.target)) {
+                dropdown.classList.remove('active');
+            }
+        });
+    });
 });

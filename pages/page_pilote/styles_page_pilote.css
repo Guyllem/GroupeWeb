@@ -559,6 +559,60 @@ footer a:hover::after {
     flex-direction: column;
 }
 
+/* Styles for the Dropdown Menu */
+.dropdown {
+    position: relative;
+    justify-content: start;
+    display: inline-block;
+    width: 100%; /* Assure que le conteneur prend toute la largeur */
+}
+
+.dropdown-toggle {
+    margin-top: 10px;
+    background-color: #ffffff;
+    color: white;
+    padding: 10px;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 10px;
+    text-align: start;
+    width: 100%;
+    position: relative; /* Ajouté pour positionner le menu à l'intérieur */
+}
+
+.dropdown-menu {
+    position: absolute !important; /* Force le positionnement absolu */
+    display: none;
+    top: 100%;
+    left: 0;
+    background-color: white;
+    width: 100%; /* Force la largeur à 100% */
+    min-width: unset; /* Supprime la largeur minimale */
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    border-radius: 5px;
+    margin-top: 5px;
+}
+
+.dropdown-menu .dropdown-item {
+    color: #333;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    cursor: pointer;
+}
+
+.dropdown-menu .dropdown-item:hover {
+    background-color: #f1f1f1;
+}
+
+.dropdown.active .dropdown-menu {
+    display: block;
+    width: 100%; /* Assure que le menu prend toute la largeur quand il est actif */
+}
+
 
 
 /* Responsive design -> Media Queries */
@@ -731,6 +785,10 @@ footer a:hover::after {
 
     .logout-icon {
         display: block;
+    }
+
+    .dropdown-toggle {
+        background-color: #757DE8;
     }
 }
 

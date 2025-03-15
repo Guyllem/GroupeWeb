@@ -44,7 +44,6 @@
   <main>
       <div class="filters">
         <h3>Filtres</h3>
-        <br>
             <div class="filter-section">
                 <h4>Localisation :</h4>
                 <input type="text" placeholder="Ville, Code Postal, Département, Région" class="input-location">

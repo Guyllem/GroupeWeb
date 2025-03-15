@@ -154,6 +154,11 @@
       <phpstan_by_interpreter asDefaultInterpreter="true" interpreter_id="64aa1c78-7f52-4970-8f24-de419e9ef982" timeout="60000" />
     </PhpStan_settings>
   </component>
+  <component name="PhpIncludePathManager">
+    <include_path>
+      <path value="$PROJECT_DIR$/../../../../php" />
+    </include_path>
+  </component>
   <component name="PhpStanOptionsConfiguration">
     <option name="transferred" value="true" />
   </component>
