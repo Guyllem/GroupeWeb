@@ -34,7 +34,7 @@
 
     <main class="main-content">
     <a class="block" href="gestion_eleves_pilote.php">Gestion des élèves</a>
-    <a class="block" href="">Gestion des offres</a>
+    <a class="block" href="gestion_offres_pilotes.php">Gestion des offres</a>
     <a class="block" href="gestion_entreprises_pilotes.php">Gestion des entreprises</a>
 </main>
   <?php include '../page_etudiant/footer.php'; ?>

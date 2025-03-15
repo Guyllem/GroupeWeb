@@ -53,6 +53,7 @@ nav {
 }
 
 .nav-left {
+    margin-left: 30px;
     justify-content: flex-start;
     gap: 20px;
 }
@@ -374,7 +375,7 @@ footer a:hover::after {
 
 /* Filter section styles */
 .filters {
-    width: 20%;
+    width: 25%;
     padding: 20px;
     background-color: #DEDEFF;
     border-color: #3F51B5;
