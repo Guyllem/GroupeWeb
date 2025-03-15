@@ -8,9 +8,18 @@
 
 /* Global styles */
 body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     text-align: center;
     background: #f8f8f8;
+}
+
+main {
+    display: flex;
+    min-height: calc(100vh - 115px); /* Adjust based on your header/footer size */
+    flex: 1;
 }
 
 
@@ -282,7 +291,6 @@ nav {
     justify-content: center;
     align-items: center;
     gap: 40px;
-    margin-top: 325px;
 }
 
 .block {
@@ -340,6 +348,7 @@ footer {
     position: fixed;
     bottom: 0;
     width: 100%;
+    margin-top: auto;
 }
 
 footer a {
@@ -381,6 +390,10 @@ footer a:hover::after {
     border-color: #3F51B5;
     shadow: 0.2rem 0.2rem 0.2rem rgba(0, 0, 0, 0.3);
     border-right: 2px solid #3F51B5;
+    min-height: calc(100vh - 115px);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
 }
 
 .filters h3{
@@ -461,6 +474,7 @@ footer a:hover::after {
     height: 100vh;
     background: white;
     border-radius: 0px 20px 20px 0px;
+    min-height: calc(100vh - 115px); /* Match the main content height */
     color: white;
     display: none;
     flex-direction: column;
@@ -570,7 +584,7 @@ footer a:hover::after {
 .dropdown-toggle {
     margin-top: 10px;
     background-color: #ffffff;
-    color: white;
+    color: #757DE8;
     padding: 10px;
     padding: 10px;
     font-size: 16px;
@@ -788,7 +802,8 @@ footer a:hover::after {
     }
 
     .dropdown-toggle {
-        background-color: #757DE8;
+        background-color: #d2d5ef;
+        color: white;
     }
 }
 

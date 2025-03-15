@@ -21,10 +21,9 @@
           <button class="active">Offres</button>
         </div>
       </div>
-    </div>
-    <div>
       <p class="main-title-wishlist" >Votre Wish-List est actuellement vide.</p>
       <p class="sub-title-wishlist" >C’est bien dommage ...</p>
+    </div>
       <div class="back-design">
         <img class="bulle2-1" src="../../assets/images/bulle2.png" alt="bulle2-1" />
         <img class="bulle2-2" src="../../assets/images/bulle2.png" alt="bulle2-2" />
@@ -32,9 +31,8 @@
         <img class="bulle3-2" src="../../assets/images/bulle3.png" alt="bulle3-2" />
         <img class="bulle3-3" src="../../assets/images/bulle3.png" alt="bulle3-3" />
       </div>
-    </div>
   </div>
 </main>
 <?php include 'footer.php'; ?>
-<script src="etudiant_script.js"></script>
+<script src="../frontend_script.js"></script>
 </html>

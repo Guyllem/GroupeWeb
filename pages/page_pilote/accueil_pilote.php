@@ -39,5 +39,5 @@
 </main>
   <?php include '../page_etudiant/footer.php'; ?>
   </body>
-  <script src="../page_etudiant/etudiant_script.js"></script>
+  <script src="../frontend_script.js"></script>
 </html>

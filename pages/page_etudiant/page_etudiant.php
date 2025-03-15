@@ -128,7 +128,6 @@
 
       <div class="card">
         <div class="card-header">
-          <div class="logo-placeholder"></div>
           <h3>Stage Développeur Full-Stack</h3>
           <div class="tags">
             <span class="tag">Développement logiciel</span>
@@ -185,5 +184,5 @@
 
 <?php include 'footer.php'; ?>
 </body>
-<script src="etudiant_script.js"></script>
+<script src="../frontend_script.js"></script>
 </html>

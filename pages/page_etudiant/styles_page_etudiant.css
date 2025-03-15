@@ -6,22 +6,34 @@
     box-sizing: border-box;
 }
 
-main{
-    min-height: 80vh;
-    justify-content: center;
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
 }
-
 
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
     color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Garantit que le body fait au moins la hauteur de la fenêtre */
 }
 
-/* Main container styles */
+main {
+    flex: 1 0 auto; /* Flex-grow: 1, flex-shrink: 0, flex-basis: auto */
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+/* Modification pour le container principal */
 .container {
-    min-height: 96vh;
-    margin: 0 auto;
+    width: 100%;
+    flex: 1 0 auto; /* Ceci est important pour que le container pousse le footer */
+    display: flex;
+    flex-direction: column;
     background-color: white;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
@@ -29,18 +41,23 @@ body {
 /* Main Content Layout */
 .main-content {
     display: flex;
+    flex-grow: 1;
     border-radius: 5px;
     border-color: #3F51B5;
+    width: 100%;
 }
 
 
 /* Navbar design */
 .logo {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
     font-weight: bold;
     font-size: 2rem;
     text-align: center;
-    flex: 1;
 }
+
 
 nav {
     display: flex;
@@ -55,16 +72,18 @@ nav {
 .nav-left, .nav-right {
     display: flex;
     align-items: center;
-    flex: 1;
 }
 
 .nav-left {
+    margin-left: 30px;
     justify-content: flex-start;
     gap: 20px;
 }
 
 .nav-right {
     justify-content: flex-end;
+    margin-left: auto;
+    width: 40%;
     gap: 20px;
 }
 
@@ -121,18 +140,22 @@ nav {
 
 /* Filter section styles */
 .filters {
-    width: 20%;
+    width: auto;
     padding: 20px;
     background-color: #DEDEFF;
     border-color: #3F51B5;
     shadow: 0.2rem 0.2rem 0.2rem rgba(0, 0, 0, 0.3);
     border-right: 2px solid #3F51B5;
+    min-height: calc(100vh - 115px); /* Subtracting header + footer height */
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
 }
 
 .filters h3{
     text-align: center;
     color: #3F51B5;
-    margin-bottom: 20px;
+    margin-top: 0px;
     font-size: 30px;
 }
 
@@ -143,10 +166,13 @@ nav {
 .filter-section h4 {
     margin-bottom: 10px;
     color: #3F51B5;
+    text-align: left;
+    font-size: 20px;
 }
 
 .radio-group, .checkbox-group {
     display: flex;
+    text-align: left;
     flex-direction: column;
     gap: 5px;
 }
@@ -289,12 +315,11 @@ nav {
 
 /* Footer styles */
 footer {
+    flex-shrink: 0; /* Empêche le footer de rétrécir */
     background-color: #3F51B5;
     color: white;
     font-size: 0.9em;
     padding: 0.625rem;
-    position: static;
-    bottom: 0;
     width: 100%;
     text-align: center;
 }
@@ -302,8 +327,7 @@ footer {
 footer a {
     color: white;
     text-decoration: none;
-    text-align : center;
-    position:relative;
+    position: relative;
 }
 
 footer a::after {
@@ -320,7 +344,6 @@ footer a::after {
 footer a:hover::after {
     width: 100%;
 }
-
 
 
 /* Profile page styles */
@@ -450,9 +473,7 @@ footer a:hover::after {
 
 /* WishList page styles */
 .main-title-wishlist {
-    margin-top: 40px;
     color: #3b5cbc;
-    /* Center the text */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -463,7 +484,6 @@ footer a:hover::after {
     margin-top: 28px;
     font-size: 28px;
     color: rgba(59, 92, 188, 0.7);
-    /* Center the text */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -629,6 +649,7 @@ footer a:hover::after {
 }
 
 .slide-radio-group {
+    text-align: left;
     display: flex;
     font-size: 14px;
     flex-direction: column;
@@ -687,6 +708,7 @@ footer a:hover::after {
 }
 
 .slide-checkbox-group {
+    text-align: left;
     margin-top: 5px;
     color: #3F51B5;
     display: flex;
@@ -703,9 +725,7 @@ footer a:hover::after {
     display: flex;
     flex-direction: column;
     width: 80%;
-    max-width: 800px;
-    margin-top: 50px;
-    margin-left: 13%;
+    margin: 50px auto;
 }
 
 /* Header de la carte */
@@ -741,6 +761,8 @@ h3 {
 
 .tag {
     background-color: white;
+    text-align: center;
+    justify-content: center;
     color: #000000;
     font-size: 12px;
     font-weight: bold;
@@ -925,10 +947,17 @@ h3 {
         margin-top: 100px;
         font-size: 20px;
         display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
     }
 
     .sub-title-wishlist {
         font-size: 18px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
     }
 
     .burger-menu {

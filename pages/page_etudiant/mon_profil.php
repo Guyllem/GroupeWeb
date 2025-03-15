@@ -41,5 +41,5 @@
         </div>
 </main>
 <?php include 'footer.php'; ?>
-<script src="etudiant_script.js"></script>
+<script src="../frontend_script.js"></script>
 </html>
