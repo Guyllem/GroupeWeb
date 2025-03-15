@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Page Connexion</title>
-    <link rel="stylesheet" href="styles_page_pilote.css" />
+    <link rel="stylesheet" href="styles_page_admin.css" />
   </head>
   <nav>
       <div class="logo">Stage Connect</div>
@@ -30,14 +30,15 @@
     class="arc-en-ciel2"
   />
   <img class="bulle4" src="../../assets/images/bulle2.png" alt="bulle4" />
-    <div class="titre">Bienvenue dans votre espace pilote</div>
+    <div class="titre">Bienvenue dans votre espace administrateur</div>
 
     <main class="main-content">
-    <a class="block" href="gestion_eleves_pilote.php">Gestion des élèves</a>
-    <a class="block" href="gestion_offres_pilotes.php">Gestion des offres</a>
-    <a class="block" href="gestion_entreprises_pilotes.php">Gestion des entreprises</a>
-</main>
-  <?php include '../page_etudiant/footer.php'; ?>
+        <a class="block" href="gestion_eleves_pilote.php">Gestion des élèves</a>
+        <a class="block" href="gestion_eleves_pilote.php">Gestion des élèves</a>
+        <a class="block" href="gestion_offres_pilotes.php">Gestion des offres</a>
+        <a class="block" href="gestion_entreprises_pilotes.php">Gestion des entreprises</a>
+    </main>
+    <?php include '../footer.php'; ?>
   </body>
   <script src="../frontend_script.js"></script>
 </html>

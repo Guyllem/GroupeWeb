@@ -15,20 +15,11 @@
       <p class="slogan">La clé pour décrocher le stage parfait</p>
     </header>
     <main>
-      <a href="pages/connexion.html" class="btn-connexion">Se connecter</a>
+      <a href="pages/connexion.php" class="btn-connexion">Se connecter</a>
       <img src="assets/images/arc en ciel2.png" alt="arc-en-ciel2" class="arc-en-ciel2" />
       <img src="assets/images/bulle3.png" alt="bulle3" class="bulle3" />
     </main>
-    <footer>
-      <p>
-        © 2025 - Web4all - Tous droits réservés |
-        <a href="pages/mentions_legales/mentions_legales.html">Mentions légales</a>
-        |
-        <a href="pages/mentions_legales/politiques_de_confidentialité.html">Politique de confidentialité</a>
-        |
-        <a href="pages/mentions_legales/condition_d'utilisation.html">Conditions d'utilisation</a>
-      </p>
-    </footer>
+    <?php include 'pages/footer.php'; ?>
   </body>
   <script src="script.js"></script>
 </html>

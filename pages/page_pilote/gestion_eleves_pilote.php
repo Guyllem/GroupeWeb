@@ -101,7 +101,7 @@
       </div> 
     
   </main>
- <?php include '../page_etudiant/footer.php'; ?>
+    <?php include '../footer.php'; ?>
 </body>
 <script src="../frontend_script.js"></script>
 </html>

@@ -37,7 +37,7 @@
     <a class="block" href="gestion_offres_pilotes.php">Gestion des offres</a>
     <a class="block" href="gestion_entreprises_pilotes.php">Gestion des entreprises</a>
 </main>
-  <?php include '../page_etudiant/footer.php'; ?>
+    <?php include '../footer.php'; ?>
   </body>
   <script src="../frontend_script.js"></script>
 </html>

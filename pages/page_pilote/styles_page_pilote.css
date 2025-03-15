@@ -316,28 +316,6 @@ nav {
     box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
 }
 
-/* Form styles */
-.email-form input,
-.password-form input {
-    margin-bottom: 1rem;
-    width: 30%;
-    padding: 12px;
-    border: 2px solid #3F51B5;
-    border-radius: 8px;
-    font-size: 1rem;
-    color: #2d3748;
-    background-color: #ffffff;
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.email-form input:focus,
-.password-form input:focus {
-    border-color: #667eea;
-    outline: none;
-    box-shadow: 0 0 0 1px #3F51B5;
-}
-
 
 /* Footer styles */
 footer {

@@ -182,7 +182,7 @@
 
 </main>
 
-<?php include 'footer.php'; ?>
+<?php include '../footer.php'; ?>
 </body>
 <script src="../frontend_script.js"></script>
 </html>
