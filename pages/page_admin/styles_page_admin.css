@@ -292,6 +292,15 @@ nav {
     gap: 40px;
 }
 
+
+.main-content-gestion {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+    width: 100%;
+}
+
 .block {
     padding: 10px;
     background-color: #3F51B5;
@@ -607,6 +616,60 @@ footer a:hover::after {
     width: 100%; /* Assure que le menu prend toute la largeur quand il est actif */
 }
 
+/* Styles for the search bar */
+
+.add-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    flex-wrap: wrap; /* Permet le passage à la ligne en version mobile */
+    gap: 15px; /* Espace entre les éléments */
+}
+
+.search-input {
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid #d1d5db;
+    padding: 12px 20px;
+    border-radius: 12px;
+    width: 275px;
+    transition: all 0.3s ease-in-out;
+    outline: none;
+    order: 2;
+}
+
+.search-input:focus {
+    border-width: 2px;
+    width: 300px;
+}
+
+.add-something {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #DEDEFF;
+    color: #000;
+    padding: 15px 25px;
+    border-radius: 25px;
+    font-size: 18px;
+    border-width: 1px;
+    cursor: pointer;
+    width: 350px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    transition: ease-in-out 0.15s;
+    order: 1;
+}
+
+.add-something:hover {
+    transform: scale(1.05);
+    box-shadow: 0.2rem 0.2rem 0.2rem rgba(0, 0, 0, 0.3);
+}
+
+.plus-icon {
+    font-weight: bold;
+    font-size: 24px;
+}
 
 
 /* Responsive design -> Media Queries */
@@ -771,10 +834,29 @@ footer a:hover::after {
         grid-template-columns: repeat(2, 1fr);
     }
 
-    .main-content {
+    .main-content, .main-content-gestion {
         flex-direction: column;
         gap: 20px;
-        margin-top: 50px;
+        margin-top: 20px;
+    }
+
+    .add-header {
+        flex-direction: column; /* Empile les éléments verticalement */
+    }
+
+    .search-input,
+    .add-something {
+        width: 100%; /* Prend toute la largeur disponible */
+        max-width: none;
+        margin: 5px 0; /* Ajoute un peu d'espace vertical entre les éléments */
+    }
+
+    .add-something {
+        justify-content: space-between; /* Garde le "+" aligné à droite */
+    }
+
+    .search-input:focus{
+        width: 90%;
     }
 
     .logout-icon {
