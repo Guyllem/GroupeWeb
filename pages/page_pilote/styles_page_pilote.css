@@ -605,7 +605,211 @@ footer a:hover::after {
     width: 100%; /* Assure que le menu prend toute la largeur quand il est actif */
 }
 
+.main-content{
+    color: white;
+    background-color: #3F51B5;
+    width: 60%;
+    height: 70vh;
+    position: relative;
+    display: inline-block;
+    left: 8%;
+    top: 10vh;
+    border-radius: 15px;
+}
 
+#carré_blanc{
+    margin-left: 2%;
+    margin-top: 2%;
+    background-color: white;
+    width: 3vw;
+    height: 6vh;
+    border-radius: 5px;
+}
+
+.haut-page{
+    display: flex;
+}
+
+.haut-page h1{
+    margin-top: 3.5vh;
+    margin-left: 2vw;
+}
+
+.haut-page p{
+    position: relative;
+    align-content: center;
+    color: black;
+    background-color: white;
+    width: 15vw;
+    height: 4vh;
+    border-radius: 0.4em;
+    margin: 3%;
+    left: 42%;
+}
+
+#info_com{
+    text-align: left;
+    margin-left: 1.3vw;
+}
+
+#second-content{
+    margin-top: 2vh;
+    margin-left: 1.5vw;
+    background-color: #757DE8;
+    width: 25vw;
+    height: 46vh;
+    border-radius: 10px;
+}
+
+#mail-eleves{
+    display: inline-flex;
+    font-size: 140%;
+    margin-top: 13vh;
+}
+
+#mail-eleves #mm{
+    color: #3F51B5;
+    width: 15vw;
+    margin-left: 0.3vw;
+    background-color: white;
+    border-radius: 4px;
+}
+
+#telephone-eleves{
+    display: inline-flex;
+    font-size: 140%;
+    margin-top: 7vh;
+}
+
+#telephone-eleves #mm{
+    color: #3F51B5;
+    width: 15vw;
+    margin-left: 1.5vw;
+    background-color: white;
+    border-radius: 4px;
+}
+
+.boutton-pwd{
+    font-size: 120%;
+    border: none;
+    color: #3F51B5;
+    background-color: white;
+    width: 20vw;
+    height: 5vh;
+    margin-top: 10vh;
+    border-radius: 7px;
+    transition-duration: 0.4s;
+}
+
+.boutton-pwd:hover{
+    transform: translateY(-0.3vh);
+}
+
+.milieu-pages{
+    height: 46vh;
+}
+.milieu-pages h1{
+    position: relative;
+    left: 15vw;
+    bottom: 35vh;
+}
+
+.milieu-pages ul #un{
+    list-style: none;
+    margin: 0;
+    position: relative;
+    background-color:#757DE8;
+    color: white;
+    left: 57%;
+    bottom: 30vh;
+    height: 5vh;
+    width: 10vw;
+    border-radius: 10px;
+    align-content: center;
+}
+
+.milieu-pages ul #de{
+    align-content: center;
+    margin: 0;
+    list-style: none;
+    position: relative;
+    background-color:#757DE8;
+    color: white;
+    left: 78%;
+    bottom: 35vh;
+    height: 5vh;
+    width: 10vw;
+    border-radius: 10px;
+}
+
+.btoo .boutton-wishlist{
+    border: none;
+    position: relative;
+    right: 7.2vw;
+    width: 10.5vw;
+    height: 6vh;
+    color: white;
+    background-color: #757DE8;
+    margin-top: 0.7vh;
+    border-radius: 7px;
+    transition-duration: 0.4s;
+    margin-left: 1.3vw;
+}
+
+.btoo .boutton-wishlist:hover{
+    transform: translateY(-0.3vh);
+}
+
+.btoo .boutton-supp{
+    border: none;
+    position: relative;
+    left: 5vw;
+    width: 11vw;
+    height: 5.5vh;
+    color: white;
+    background-color: orangered;
+    margin-top: 0.7vh;
+    border-radius: 7px;
+    transition-duration: 0.4s;
+}
+
+.btoo .boutton-supp:hover{
+    transform: translateY(-0.3vh);
+}
+
+.btoo .boutton-offres{
+    border: none;
+    position: relative;
+    right: 7vw;
+    width: 10vw;
+    height: 6vh;
+    color: white;
+    background-color: #757DE8;
+    margin-top: 0.4em;
+    border-radius: 7px;
+    transition-duration: 0.4s;
+}
+
+.btoo .boutton-offres:hover{
+    transform: translateY(-0.3vh);
+}
+
+.btoo .boutton-modif{
+    border: none;
+    position: relative;
+    left: 5.5vw;
+    width: 11vw;
+    height: 5.5vh;
+    color: white;
+    background-color: #757DE8;
+    margin-top: 0.4vh;
+    border-radius: 7px;
+    transition-duration: 0.4s;
+}
+
+.btoo .boutton-modif:hover{
+    transform: translateY(-0.3vh);
+}
 
 /* Responsive design -> Media Queries */
 @media (max-width: 768px) {
