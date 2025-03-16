@@ -41,18 +41,6 @@
                 </div>
             </div>
         </div>
-        <div class="slide-filter-section">
-            <h4>Nombres d'offres postulées :</h4>
-            <h5> Min: <input type="text" placeholder="0" class="input-min"> </h5>
-            <h5> Max : <input type="text" placeholder="10" class="input-max"> </h5>
-        </div>
-        <div class="slide-filter-section">
-            <h4>Nombres d'offres en wishlist :</h4>
-            <div class="duration-inputs">
-                <h5> Min : <input type="text" placeholder="0" class="input-min"> </h5>
-                <h5> Max : <input type="text" placeholder="15" class="input-max"> </h5>
-            </div>
-        </div>
         <button class="slide-apply-btn">Appliquer</button>
         <button class="close-filter" id="close-filter">✖</button>
     </div>
@@ -82,18 +70,6 @@
                     <a href="#" class="dropdown-item" data-value = "A2 Info">A2 Info</a>
                     <a href="#" class="dropdown-item" data-value = "A2 Géné">A2 Géné</a>
                 </div>
-            </div>
-        </div>
-        <div class="filter-section">
-            <h4>Nombres d'offres postulées :</h4>
-            <h5> Min: <input type="text" placeholder="0" class="input-min"> </h5>
-            <h5> Max : <input type="text" placeholder="10" class="input-max"> </h5>
-        </div>
-        <div class="filter-section">
-            <h4>Nombres d'offres en wishlist :</h4>
-            <div class="duration-inputs">
-                <h5> Min : <input type="text" placeholder="0" class="input-min"> </h5>
-                <h5> Max : <input type="text" placeholder="15" class="input-max"> </h5>
             </div>
         </div>
         <button class="apply-btn">Appliquer</button>

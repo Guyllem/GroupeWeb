@@ -1,6 +1,19 @@
 <nav>
     <div class="nav-left">
+
+        <?php
+        if (isset($GLOBALS['adminPage']) && $GLOBALS['adminPage'] === true):
+        ?>
+        <a href="accueil_admin.php" class="nav-item">Accueil</a>
+        <?php endif; ?>
+
+        <?php
+        if (isset($GLOBALS['pilotePage']) && $GLOBALS['pilotePage'] === true):
+        ?>
         <a href="accueil_pilote.php" class="nav-item">Accueil</a>
+        <?php endif; ?>
+
+
     </div>
     <div class="logo">Stage Connect</div>
     <div class="nav-right">
@@ -22,7 +35,7 @@
     <?php
     if (isset($GLOBALS['adminPage']) && $GLOBALS['adminPage'] === true):
         ?>
-        <h2><a href="accueil_admin.php" class="menu-item">Accueil</a></h2>
+        <h2><a href="../page_admin/accueil_admin.php" class="menu-item">Accueil</a></h2>
         <h2><a href="gestion_pilote_admin.php" class="menu-item">Gestion pilotes</a></h2>
         <h2><a href="gestion_eleves_admin.php" class="menu-item">Gestion élèves</a></h2>
         <h2><a href="gestion_offres_admin.php" class="menu-item">Gestion offres</a></h2>
