@@ -12,7 +12,6 @@
 
 $GLOBALS['adminPage'] = true;
 
-
 include '../page_pilote/gestion_offres_pilotes.php'
 ?>
 
