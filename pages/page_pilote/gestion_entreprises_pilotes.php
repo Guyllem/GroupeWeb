@@ -9,6 +9,14 @@
 <body>
     <?php
     $GLOBALS['responsiveFilter'] = true;
+
+    if (isset($GLOBALS['adminPage']) && $GLOBALS['adminPage']) {
+        $GLOBALS['pilotePage'] = false;
+    } else {
+        $GLOBALS['pilotePage'] = true;
+        $GLOBALS['adminPage'] = false;
+    }
+
     include 'navbar-pilote.php';
     ?>
 

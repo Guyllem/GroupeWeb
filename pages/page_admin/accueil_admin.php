@@ -33,10 +33,10 @@
     <div class="titre">Bienvenue dans votre espace administrateur</div>
 
     <main class="main-content">
-        <a class="block" href="gestion_eleves_pilote.php">Gestion des élèves</a>
-        <a class="block" href="gestion_eleves_pilote.php">Gestion des élèves</a>
-        <a class="block" href="gestion_offres_pilotes.php">Gestion des offres</a>
-        <a class="block" href="gestion_entreprises_pilotes.php">Gestion des entreprises</a>
+        <a class="block" href="gestion_pilote_admin.php">Gestion des pilotes</a>
+        <a class="block" href="gestion_eleves_admin.php">Gestion des élèves</a>
+        <a class="block" href="gestion_offres_admin.php">Gestion des offres</a>
+        <a class="block" href="gestion_entreprises_admin.php">Gestion des entreprises</a>
     </main>
     <?php include '../footer.php'; ?>
   </body>
