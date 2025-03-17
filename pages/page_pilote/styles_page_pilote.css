@@ -670,8 +670,273 @@ footer a:hover::after {
     font-weight: bold;
     font-size: 24px;
 }
+/* Style global pour la card */
+.card {
+    background-color: #3F51B5;
+    border-radius: 8px;
+    color: white;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    margin-left: 10%;
+    margin-top: 3%;
+    margin-bottom: 5%;
+    height: auto;
+}
 
+/* Header de la carte */
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 15%;
+}
 
+h1 {
+    position: relative;
+    width: 28%;
+    margin: 1%;
+    font-size: 200%;
+}
+
+.tag {
+    width: 20%;
+    background-color: white;
+    text-align: center;
+    justify-content: center;
+    color: #000000;
+    font-size: 120%;
+    margin-right: 4%;
+    margin-top: 0.4%;
+    font-weight: bold;
+    border-radius: 4px;
+    box-shadow: 0.2rem 0.2rem 0.2rem rgba(0, 0, 0, 0.3);
+}
+
+.info-com{
+    position: relative;
+    width: 20%;
+    left: 5%;
+    font-size: 100%;
+}
+
+/* Corps de la carte */
+.card-body {
+    display: flex;
+    height: 100%;
+}
+
+#second-content{
+    margin-top: 0.4%;
+    margin-left: 1%;
+    background-color: #757DE8;
+    height: 100%;
+    width: 50%;
+    border-radius: 20px;
+}
+
+#mail-eleves{
+    display: inline-flex;
+    position: relative;
+    font-size: 120%;
+    right: 12%;
+    margin-top: 7%;
+    height: 9%;
+    width: 80%;
+    align-items: center;
+    justify-content: right;
+}
+
+#mail-eleves #mm{
+    color: #3F51B5;
+    width: 60%;
+    margin-left: 0.3vw;
+    background-color: white;
+    border-radius: 4px;
+    align-content: center;
+    height: 80%;
+}
+
+#telephone-eleves{
+    display: inline-flex;
+    position: relative;
+    font-size: 120%;
+    right: 12%;
+    margin-top: 7%;
+    height: 9%;
+    width: 80%;
+    align-items: center;
+    justify-content: right;
+}
+
+#telephone-eleves #mm{
+    color: #3F51B5;
+    width: 60%;
+    margin-left: 3%;
+    background-color: white;
+    border-radius: 4px;
+    height: 80%;
+    align-content: center;
+}
+
+#Campus-eleves{
+    display: inline-flex;
+    position: relative;
+    font-size: 120%;
+    right: 12%;
+    margin-top: 7%;
+    height: 9%;
+    width: 80%;
+    align-items: center;
+    justify-content: right;
+}
+
+#Campus-eleves #mm{
+    color: #3F51B5;
+    width: 60%;
+    height: 80%;
+    margin-left: 0.3vw;
+    background-color: white;
+    border-radius: 4px;
+    align-content: center;
+}
+.boutton-pwd{
+    font-size: 120%;
+    border: none;
+    color: #3F51B5;
+    background-color: white;
+    width: 50%;
+    height: 10%;
+    margin-top: 10%;
+    margin-bottom: 10%;
+    border-radius: 7px;
+    transition-duration: 0.4s;
+}
+
+.boutton-pwd:hover{
+    transform: scale(1.05);
+    box-shadow: 0.5rem 0.5rem 0.5rem rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+.milieu-pages{
+    width: 45%;
+    height: 100%;
+}
+.milieu-pages h1{
+    top: 15%;
+    left: 38%;
+}
+
+.milieu-pages ul{
+    height: 100%;
+    width: 100%;
+}
+
+.milieu-pages ul #un{
+    list-style: none;
+    margin: 0;
+    position: relative;
+    background-color:#757DE8;
+    color: white;
+    left:22%;
+    top: 20%;
+    height: 13%;
+    width: 30%;
+    border-radius: 10px;
+    align-content: center;
+}
+
+.milieu-pages ul #de{
+    align-content: center;
+    list-style: none;
+    position: relative;
+    background-color:#757DE8;
+    color: white;
+    left:61%;
+    top: 6.7%;
+    height: 13%;
+    width: 30%;
+    border-radius: 10px;
+}
+
+.btoo{
+    height: 30%;
+}
+
+.btoo .boutton-wishlist{
+    border: none;
+    font-size: 120%;
+    top: 15%;
+    position: relative;
+    right: 8.85%;
+    width: 24.5%;
+    height: 70%;
+    color: white;
+    background-color: #757DE8;
+    border-radius: 7px;
+}
+
+.btoo .boutton-wishlist:hover{
+    transform: scale(1.05);
+    box-shadow: 0.5rem 0.5rem 0.5rem rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.btoo .boutton-supp{
+    border: none;
+    position: relative;
+    left: 23%;
+    width: 15%;
+    height: 80%;
+    color: white;
+    background-color: orangered;
+    border-radius: 7px;
+    font-size: 120%;
+}
+
+.btoo .boutton-supp:hover{
+    transform: scale(1.05);
+    box-shadow: 0.5rem 0.5rem 0.5rem rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.btoo .boutton-offres{
+    border: none;
+    position: relative;
+    right: 8.4%;
+    top: 15%;
+    width: 24.5%;
+    height: 70%;
+    color: white;
+    background-color: #757DE8;
+    border-radius: 7px;
+    font-size: 120%;
+}
+
+.btoo .boutton-offres:hover{
+    transform: scale(1.05);
+    box-shadow: 0.5rem 0.5rem 0.5rem rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.btoo .boutton-modif{
+    border: none;
+    position: relative;
+    right: 8%;
+    width: 15%;
+    height: 80%;
+    color: white;
+    background-color: #757DE8;
+    border-radius: 7px;
+    font-size: 120%;
+}
+
+.btoo .boutton-modif:hover{
+    transform: scale(1.05);
+    box-shadow: 0.5rem 0.5rem 0.5rem rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
 
 /* Responsive design -> Media Queries */
 @media (max-width: 768px) {
