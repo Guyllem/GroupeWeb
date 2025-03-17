@@ -138,29 +138,36 @@ nav {
 }
 
 
-/* Filter section styles */
 .filters {
-    width: auto;
+    width: 30%;
     padding: 20px;
     background-color: #DEDEFF;
     border-color: #3F51B5;
     shadow: 0.2rem 0.2rem 0.2rem rgba(0, 0, 0, 0.3);
     border-right: 2px solid #3F51B5;
-    min-height: calc(100vh - 115px); /* Subtracting header + footer height */
+    min-height: calc(100vh - 115px);
     display: flex;
     flex-direction: column;
     overflow-y: auto;
+    height: 100%;
+    justify-content: flex-start; /* Aligne les éléments au début du conteneur */
+}
+
+.filter-sections-container {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Prend l'espace disponible */
 }
 
 .filters h3{
+    margin-bottom: 10px;
     text-align: center;
     color: #3F51B5;
-    margin-top: 0px;
     font-size: 30px;
 }
 
 .filter-section {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 .filter-section h4 {
@@ -169,6 +176,11 @@ nav {
     text-align: left;
     font-size: 20px;
 }
+
+.filter-section:last-of-type {
+    margin-bottom: 20px; /* Pour assurer un espacement correct avant le bouton */
+}
+
 
 .radio-group, .checkbox-group {
     display: flex;
@@ -188,6 +200,7 @@ nav {
 .apply-btn {
     width: 100%;
     padding: 10px;
+    margin-top: auto;     /* Ceci pousse le bouton vers le bas du conteneur */
     background-color: #ff6b6b;
     color: white;
     border: none;
@@ -624,7 +637,7 @@ footer a:hover::after {
     position: fixed;
     top: 0;
     left: -200%;
-    width: 85%;
+    width: auto;
     box-shadow: 10em 0 10em rgba(21, 21, 21, 0.50);
     height: 100vh;
     background: white;
@@ -988,6 +1001,13 @@ h3 {
     .tags {
         margin-top: 15px;
         grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* add media query */
+@media (max-width: 325px) {
+    .slide-filter {
+        width: 80%;
     }
 }
 
