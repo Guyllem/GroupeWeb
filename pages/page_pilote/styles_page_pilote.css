@@ -979,7 +979,7 @@ h1 {
 .tag-entreprise {
     background-color: white;
     color: #333;
-    padding: 3% 10%;
+    padding: 3% 9%;
     border-radius: 15px;
     font-size: 88%;
     font-weight: bold;
@@ -1083,6 +1083,10 @@ h1 {
     transform: scale(1.05);
     box-shadow: 0.5rem 0.5rem 0.5rem rgba(0, 0, 0, 0.3);
     transition: all 0.3s ease;
+}
+
+.publication-info {
+    text-align: left;
 }
 
 
