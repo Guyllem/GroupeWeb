@@ -88,9 +88,15 @@
         </div>
         <button class="apply-btn">Appliquer</button>
       </div>
-    
-      <div class="main-content">
-      </div> 
+
+      <div class="main-content-gestion">
+          <div class="add-header">
+              <input placeholder="Search..." class="search-input" name="search" type="search"/>
+              <button class="add-something">Ajouter une nouvelle offre
+                  <div class="plus-icon">+</div>
+              </button>
+          </div>
+      </div>
     
   </main>
     <?php include '../footer.php'; ?>

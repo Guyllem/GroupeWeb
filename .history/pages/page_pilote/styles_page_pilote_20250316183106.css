@@ -45,6 +45,7 @@ main {
     text-align: center;
 }
 
+
 nav {
     display: flex;
     justify-content: space-between;
@@ -292,7 +293,6 @@ nav {
     gap: 40px;
 }
 
-
 .main-content-gestion {
     display: flex;
     flex-direction: column;
@@ -300,6 +300,8 @@ nav {
     padding: 20px;
     width: 100%;
 }
+
+
 
 .block {
     padding: 10px;
@@ -432,7 +434,6 @@ footer a:hover::after {
 .apply-btn {
     width: 100%;
     padding: 10px;
-    margin-top: 50px;
     background-color: #ff6b6b;
     color: white;
     border: none;
@@ -456,7 +457,7 @@ footer a:hover::after {
     position: fixed;
     top: 0;
     left: -200%;
-    width: 65%;
+    width: auto;
     box-shadow: 10em 0 10em rgba(21, 21, 21, 0.50);
     height: 100vh;
     background: white;
@@ -473,8 +474,6 @@ footer a:hover::after {
 
 .slide-filter-content {
     margin-top: 40px;
-    padding: 10px;
-    width: 100%;
 }
 
 .slide-filter-section{
@@ -521,7 +520,7 @@ footer a:hover::after {
 }
 
 .slide-apply-btn {
-    margin-top: 50px;
+    margin-top: 20px;
     margin-left: 20px;
     justify-content: center;
     display: flex;
@@ -616,6 +615,7 @@ footer a:hover::after {
     width: 100%; /* Assure que le menu prend toute la largeur quand il est actif */
 }
 
+
 /* Styles for the search bar */
 
 .add-header {
@@ -670,6 +670,7 @@ footer a:hover::after {
     font-weight: bold;
     font-size: 24px;
 }
+
 
 
 /* Responsive design -> Media Queries */
@@ -734,7 +735,7 @@ footer a:hover::after {
         width: 80%;
     }
 
-    .profile-container{
+    .profile-container {
         max-width: 90%;
     }
 
@@ -742,7 +743,7 @@ footer a:hover::after {
         flex-direction: column;
     }
 
-    .nav-item{
+    .nav-item {
         display: none;
     }
 
@@ -790,7 +791,7 @@ footer a:hover::after {
         text-align: center;
     }
 
-    .back-design{
+    .back-design {
         display: none;
     }
 
@@ -808,23 +809,23 @@ footer a:hover::after {
         display: block;
     }
 
-    .slide-menu{
+    .slide-menu {
         display: flex;
     }
 
-    .filter-menu{
+    .filter-menu {
         display: block;
     }
 
-    .slide-filter{
+    .slide-filter {
         display: flex;
     }
 
-    .card-header{
+    .card-header {
         flex-direction: column;
     }
 
-    .card{
+    .card {
         margin: 0px;
         width: 100%;
     }
