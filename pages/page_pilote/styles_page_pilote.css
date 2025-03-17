@@ -702,7 +702,9 @@ footer a:hover::after {
 }
 
 .boutton-pwd:hover{
-    transform: translateY(-0.3vh);
+    transform: scale(1.05);
+    box-shadow: 0.5rem 0.5rem 0.5rem rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
 }
 
 .milieu-pages{
@@ -757,7 +759,9 @@ footer a:hover::after {
 }
 
 .btoo .boutton-wishlist:hover{
-    transform: translateY(-0.3vh);
+    transform: scale(1.05);
+    box-shadow: 0.5rem 0.5rem 0.5rem rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
 }
 
 .btoo .boutton-supp{
@@ -774,7 +778,9 @@ footer a:hover::after {
 }
 
 .btoo .boutton-supp:hover{
-    transform: translateY(-0.3vh);
+    transform: scale(1.05);
+    box-shadow: 0.5rem 0.5rem 0.5rem rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
 }
 
 .btoo .boutton-offres{
@@ -791,7 +797,9 @@ footer a:hover::after {
 }
 
 .btoo .boutton-offres:hover{
-    transform: translateY(-0.3vh);
+    transform: scale(1.05);
+    box-shadow: 0.5rem 0.5rem 0.5rem rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
 }
 
 .btoo .boutton-modif{
@@ -808,7 +816,9 @@ footer a:hover::after {
 }
 
 .btoo .boutton-modif:hover{
-    transform: translateY(-0.3vh);
+    transform: scale(1.05);
+    box-shadow: 0.5rem 0.5rem 0.5rem rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
 }
 
 /* Responsive design -> Media Queries */
@@ -987,6 +997,82 @@ footer a:hover::after {
         background-color: #d2d5ef;
         color: white;
     }
+    .main-content{
+        top: 4%;
+        margin-top: 0;
+        width: 84%;
+        height: 92%;
+    }
+    .haut-page{
+        height: 10%;
+    }
+    #carré_blanc{
+        width: 8%;
+    }
+    .haut-page h1{
+        position: relative;
+        margin: 0;
+        margin-left: 2%;
+        top: 20%;
+    }
+    .haut-page p{
+        position: relative;
+        left: 30%;
+    }
+    .milieu-pages{
+        height: 75%;
+    }
+    #second-content{
+        width: 50%;
+        height: 100%;
+    }
+    #mail-eleves{
+        font-size: 100%;
+        width: 100%;
+        height: 10%;
+    }
+    #mail-eleves p{
+        margin-left: 3%;
+    }
+    #mail-eleves #mm{
+        height: 50%;
+        width: 60%;
+    }
+    #telephone-eleves{
+        font-size: 100%;
+        width: 100%;
+        height: 10%;
+    }
+    #telephone-eleves p{
+        margin-left: 3%;
+    }
+    #telephone-eleves #mm{
+        height: 50%;
+        width: 60%;
+    }
+    .boutton-pwd{
+        width: 80%;
+    }
+    .milieu-pages h1{
+        width: 40%;
+        left: 56%;
+        bottom: 80%;
+    }
+    .milieu-pages ul #un{
+        position: relative;
+        bottom: 40vh;
+        height: 5vh;
+        left: 55%;
+        width: 20%;
+    }
+    .milieu-pages ul #de{
+        position: relative;
+        bottom: 45vh;
+        left: 78%;
+        height: 5vh;
+        width: 20%;
+    }
+
 }
 
 /* add media query */
