@@ -32,6 +32,7 @@
   <img class="bulle4" src="../../assets/images/bulle2.png" alt="bulle4" />
     <div class="titre">Bienvenue dans votre espace administrateur</div>
 
+
     <main class="main-content">
         <a class="block" href="gestion_pilote_admin.php">Gestion des pilotes</a>
         <a class="block" href="gestion_eleves_admin.php">Gestion des élèves</a>
