@@ -104,38 +104,12 @@
               <button class="apply-btn">Appliquer</button>
           </div>
 
-      <div class="main-content">
-          <div class="haut-page">
-              <div id="carré_blanc">/</div>
-              <h1>Durenne Louis</h1>
-              <p>Promotion</p>
-          </div>
-          <p id="info_com">Informations complémentaires</p>
-          <div class="milieu-pages">
-          <div id="second-content">
-              <div id="mail-eleves">
-                  <p>Adresse mail :</p>
-                  <p id="mm">Adresse@mail.com</p>
-              </div>
-              <div id="telephone-eleves">
-                  <p>Téléphone :</p>
-                  <p id="mm">06 06 06 06 06</p>
-              </div>
-              <button class="boutton-pwd" type="button">Modifier le Mot de passe</button>
-          </div>
-          <h1>Compétences</h1>
-          <ul>
-              <div id="un"><li>IA</li></div>
-              <div id="de"><li>Web developpement</li></div>
-              <div id="un"><li>MySQL</li></div>
-              <div id="de"><li>Figma</li></div>
-          </ul>
-          </div>
-          <div class="btoo">
-          <button class="boutton-wishlist" type="button">Accéder à la Wishlist</button>
-          <button class="boutton-offres" type="button">Accéder aux offres postulées</button>
-          <button class="boutton-supp" type="button">Supprimer</button>
-          <button class="boutton-modif" type="button">Modifier</button>
+      <div class="main-content-gestion">
+          <div class="add-header">
+              <input placeholder="Search..." class="search-input" name="search" type="search"/>
+              <button class="add-something">Ajouter une nouvelle entreprise
+                  <div class="plus-icon">+</div>
+              </button>
           </div>
       </div>
   </main>

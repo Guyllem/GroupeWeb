@@ -21,7 +21,7 @@
           <button class="active">Offres</button>
         </div>
       </div>
-      <p class="main-title-wishlist" >Votre Wish-List est actuellement vide.</p>
+      <p class="main-title-wishlist" >Votre Wishlist est actuellement vide.</p>
       <p class="sub-title-wishlist" >C’est bien dommage ...</p>
     </div>
       <div class="back-design">
