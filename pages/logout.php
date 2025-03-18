@@ -18,7 +18,7 @@
         <h2>Voulez vous réellement vous déconnecter ?</h2>
         <div class="logout-buttons">
                 <a class="btn-rester" href="javascript:history.back()">Rester sur le site</a>
-                <a href="#" class="btn-deconnecter">Se déconnecter</a>
+                <a href="../index.php" class="btn-deconnecter">Se déconnecter</a>
         </div>
     </div>
         <div class="back-design">
