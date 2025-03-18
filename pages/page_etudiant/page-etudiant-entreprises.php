@@ -140,7 +140,7 @@
                     <div class="card-footer">
                         <span class="publish-date">Evaluation actuelle : 4.2 étoiles</span>
                         <div class="actions">
-                            <button class="view-btn">Regarder</button>
+                            <button class="view-btn" onclick="window.location.href='card_entreprise.php'"> Regarder </button>
                         </div>
                     </div>
                 </div>

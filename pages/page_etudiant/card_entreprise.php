@@ -6,15 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stage Connect</title>
     <link rel="stylesheet" href="../page_pilote/styles_page_pilote.css">
-    <link rel="stylesheet" href="styles_page_etudiant.css">
-</head>
+    <link rel="stylesheet" href="styles_page_etudiant.css"></head>
 <body>
 
 <?php
 
 include 'navbar-etudiant.php';
 ?>
-
 <main class="content-principal">
     <div class="back-button">
         <a href="page_etudiant.php"><span class="arrow">←</span> Accueil</a>
@@ -22,59 +20,40 @@ include 'navbar-etudiant.php';
     <div class="card-entreprise">
         <div class="header-entreprise">
             <div class="logo-container-entreprise">
-                <div class="logo-entreprise"></div>
-                <div class="company-name-entreprise">Stage Développeur Full-Stack</div>
+                <div class="company-name-entreprise">Thalès</div>
             </div>
             <div class="tags-entreprise">
-                <div class="tag-entreprise">Développement logiciel</div>
-                <div class="tag-entreprise">Web</div>
+                <div class="tag-entreprise">Cybersécurité</div>
+                <div class="tag-entreprise">Aérospatiale</div>
             </div>
         </div>
 
         <div class="description-entreprise">
-            Vous intégrerez une équipe dynamique en charge du développement d'une application web innovante. Vous participerez à la conception, au développement et au déploiement des nouvelles fonctionnalités en utilisant des technologies modernes comme React, Node.js et PostgreSQL. Vous serez également impliqué dans l'optimisation des performances et la correction des bugs.
+            Thales est un groupe multinational français spécialisé dans les hautes technologies. Il opère dans plusieurs secteurs stratégiques, notamment la défense, l'aérospatiale, la cybersécurité et le transport. Présent dans plus de 68 pays, Thalès développe des solutions innovantes pour répondre aux défis de sécurité et de transformation numérique des industries critiques.
         </div>
+
+        <div class="section-title-entreprise">Secteur principal : Hautes technologies</div>
 
         <div class="info-container-entreprise">
             <div class="info-column-entreprise">
-                <div class="stage-info-row">
-                    <div class="info-label-entreprise">Niveau attendu :</div>
-                    <div class="info-value-entreprise">Bac+2 et plus</div>
-                </div>
+                <div class="info-label-entreprise">Téléphone :</div>
+                <div class="info-value-entreprise">06 12 45 78 89</div>
 
-                <div class="stage-info-row">
-                    <div class="info-label-entreprise">Rémunération :</div>
-                    <div class="info-value-entreprise">615 €/mois</div>
-                </div>
-
-                <div class="stage-info-row">
-                    <div class="info-label-entreprise">Localisation :</div>
-                    <div class="info-value-entreprise">Nancy</div>
-                </div>
+                <div class="info-label-entreprise">Localisation :</div>
+                <div class="info-value-entreprise">10 Rue des Carmes, 54000, Nancy</div>
             </div>
 
             <div class="info-column-entreprise">
-                <div class="stage-info-row">
-                    <div class="info-label-entreprise">Date minimal du début du stage :</div>
-                    <div class="info-value-entreprise">07 / 04 / 2025</div>
-                </div>
-
-                <div class="stage-info-row">
-                    <div class="info-label-entreprise">Durée minimal du stage :</div>
-                    <div class="info-value-entreprise">12 semaines</div>
-                </div>
-
-                <div class="stage-info-row">
-                    <div class="info-label-entreprise">Durée maximal du stage :</div>
-                    <div class="info-value-entreprise">16 semaines</div>
-                </div>
+                <div class="info-label-entreprise">Adresse mail :</div>
+                <div class="info-value-entreprise email-value-entreprise">contact.recrutement@thalesgroup.com</div>
             </div>
         </div>
 
         <div class="card-footer">
-            <span class="publish-date">Publiée il y a 2 jours</span>
+            <div class="publication-info">
+                Evaluation actuelle : 4.2 étoiles
+            </div>
             <div class="actions">
-
                 <div class="heart-container" title="Like">
                     <input type="checkbox" class="checkbox" id="Give-It-An-Id">
                     <div class="svg-container">
@@ -96,8 +75,9 @@ include 'navbar-etudiant.php';
                         </svg>
                     </div>
                 </div>
-                <button class="view-btn" onclick="window.location.href='#'"> Postuler </button>
+                <button class="view-btn" onclick="window.location.href='#'"> Evaluer </button>
             </div>
+    </div>
 </main>
 <?php include '../footer.php'; ?>
 </body>
