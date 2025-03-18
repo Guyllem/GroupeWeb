@@ -169,9 +169,7 @@
                 </svg>
               </div>
             </div>
-
-            <button class="view-btn">Regarder</button>
-
+              <button class="view-btn" onclick="window.location.href='card_offre.php'">Regarder</button>
           </div>
         </div>
       </div>
