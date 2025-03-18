@@ -58,6 +58,10 @@ include 'navbar-pilote.php';
             <button class="button-entreprise button-edit-entreprise">Modifier</button>
             <button class="button-entreprise button-evaluate-entreprise">Évaluer</button>
         </div>
+
+        <div class="publication-info">
+            Evaluation actuelle : 4.2 étoiles
+        </div>
     </div>
 </main>
 <?php include '../footer.php'; ?>

@@ -74,7 +74,7 @@ include 'navbar-pilote.php';
         </div>
 
         <div class="publication-info">
-            Publié(e) il y a 2 jours
+            Publiée il y a 2 jours
         </div>
 
         <div class="button-container-entreprise">
