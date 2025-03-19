@@ -75,7 +75,7 @@ include 'navbar-etudiant.php';
                         </svg>
                     </div>
                 </div>
-                <button class="view-btn" onclick="window.location.href='#'"> Evaluer </button>
+                <button class="view-btn" onclick="window.location.href='../rate.php'"> Evaluer </button>
             </div>
     </div>
 </main>

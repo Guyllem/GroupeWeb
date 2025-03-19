@@ -38,6 +38,4 @@
         <a href="mentions_legales/condition_d'utilisation.html">Conditions d'utilisation</a>
     </p>
 </footer>
-
-<script src="frontend_script.js"></script>
 </html>
