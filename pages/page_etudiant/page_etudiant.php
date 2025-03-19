@@ -117,11 +117,8 @@
 
     <div class="main-section">
       <div class="search-bar">
-        <div class="tabs">
-          <button >Entreprises</button>
-          <button class="active">Offres</button>
-        </div>
-        <div class="search-container">
+          <a href="page-etudiant-entreprises.php" class="switch-button">Voir les entreprises</a>
+          <div class="search-container">
           <input placeholder="Search..." class="search-input" name="search" type="search"/>
         </div>
       </div>

@@ -79,10 +79,8 @@
 
             <div class="main-section">
                 <div class="search-bar">
-                    <div class="tabs">
-                        <button >Entreprises</button>
-                        <button class="active">Offres</button>
-                    </div>
+                    <a href="page_etudiant.php" class="switch-button">Voir les offres</a>
+
                     <div class="search-container">
                         <input placeholder="Search..." class="search-input" name="search" type="search"/>
                     </div>
@@ -112,35 +110,7 @@
                     <div class="card-footer">
                         <span class="publish-date">Evaluation actuelle : 4.2 étoiles</span>
                         <div class="actions">
-                            <button class="view-btn">Regarder</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-header">
-                        <h3>Thalès</h3>
-                        <div class="tags">
-                            <span class="tag">Développement logiciel</span>
-                            <span class="tag">Web</span>
-                            <span class="tag">Informatique</span>
-
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <p>
-                            Description random d'une entreprise YOUHOU
-                            Description random d'une entreprise YOUHOU
-                            Description random d'une entreprise YOUHOU
-                            Description random d'une entreprise YOUHOU
-                            Description random d'une entreprise YOUHOU
-                            Description random d'une entreprise YOUHOU
-                        </p>
-                    </div>
-
-                    <div class="card-footer">
-                        <span class="publish-date">Evaluation actuelle : 4.2 étoiles</span>
-                        <div class="actions">
-                            <button class="view-btn" onclick="window.location.href='card_entreprise.php'"> Regarder </button>
+                            <button class="view-btn" onclick="window.location.href='card_entreprise.php'">Regarder</button>
                         </div>
                     </div>
                 </div>
