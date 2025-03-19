@@ -706,6 +706,10 @@ footer a:hover::after {
     margin: 50px auto;
 }
 
+.card h3 {
+    margin-right: 10px;
+}
+
 /* Header de la carte */
 .card-header {
     display: flex;
