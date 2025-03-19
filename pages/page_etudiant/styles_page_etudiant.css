@@ -238,16 +238,18 @@ nav {
 
 /* Bouton de navigation entre offres et entreprises */
 .switch-button {
-    display: inline-block;
+    display: inline-flex; /* Permet un meilleur contrôle de la hauteur */
+    align-items: center; /* Centre le texte verticalement */
     background-color: #3F51B5;
     color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
+    padding: 12px 20px; /* Ajusté pour correspondre à search-input */
+    border-radius: 12px; /* Harmonisé avec la recherche */
     text-decoration: none;
     font-weight: bold;
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
     transition: all 0.3s ease;
-    margin-bottom: 20px;
+    height: 44px; /* Hauteur fixe correspondant à l'input */
+    margin-bottom: 0; /* Suppression de la marge qui créait un décalage */
 }
 
 .switch-button:hover {
@@ -262,8 +264,8 @@ nav {
     display: flex;
     margin-bottom: 20px;
     gap: 10px;
-    text-align: right;
-    cursor: pointer;
+    align-items: center; /* Centre verticalement les éléments */
+    justify-content: space-between; /* Espacement optimal entre les éléments */
 }
 
 .search-btn {
@@ -921,14 +923,18 @@ h3 {
         margin: 10px 0;
     }
 
-    .tabs {
+    .search-input {
         width: 100%;
-        justify-content: space-around;
     }
 
-    .tabs button {
-        flex: 1;
-        text-align: center;
+    .search-input:focus {
+        width: 100%;
+    }
+
+    .switch-button {
+        width: 80%; /* Même largeur que le conteneur de recherche */
+        margin-bottom: 10px;
+        justify-content: center; /* Centre le texte horizontalement */
     }
 
     .back-design{
