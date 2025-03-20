@@ -58,52 +58,51 @@
                     <h5> Max : <input type="text" placeholder="15" class="input-max"> </h5>
                 </div>
             </div>
-                <button class="slide-apply-btn">Appliquer</button>
-                <button class="close-filter" id="close-filter">✖</button>
-            </div>
+            <button class="slide-apply-btn">Appliquer</button>
+            <button class="close-filter" id="close-filter">✖</button>
         </div>
     </div>
-
   <main>
       <div class="filters">
           <h3>Filtres</h3>
-          <div class="filter-section">
-              <h4>Campus :</h4>
-              <div class="dropdown">
-                  <button class="dropdown-toggle">Choisir ↓</button>
-                  <div class="dropdown-menu">
-                      <a href="#" class="dropdown-item" data-value = "Nancy">Nancy</a>
-                      <a href="#" class="dropdown-item" data-value = "Metz">Metz</a>
-                      <a href="#" class="dropdown-item" data-value = "Listembourg">Listembourg</a>
+          <div class="filter-sections-container">
+              <div class="filter-section">
+                  <h4>Campus :</h4>
+                  <div class="dropdown">
+                      <button class="dropdown-toggle">Choisir ↓</button>
+                      <div class="dropdown-menu">
+                          <div class="dropdown-item" data-value = "Nancy">Nancy</div>
+                          <div class="dropdown-item" data-value = "Metz">Metz</div>
+                          <div class="dropdown-item" data-value = "Listembourg">Listembourg</div>
+                      </div>
                   </div>
               </div>
-          </div>
-          <div class="filter-section">
-              <h4>Classe :</h4>
-              <div class="dropdown">
-                  <button class="dropdown-toggle">Choisir ↓</button>
-                  <div class="dropdown-menu">
-                      <a href="#" class="dropdown-item" data-value = "A1">A1</a>
-                      <a href="#" class="dropdown-item" data-value = "A2 Info">A2 Info</a>
-                      <a href="#" class="dropdown-item" data-value = "A2 Géné">A2 Géné</a>
+              <div class="filter-section">
+                  <h4>Classe :</h4>
+                  <div class="dropdown">
+                      <button class="dropdown-toggle">Choisir ↓</button>
+                      <div class="dropdown-menu">
+                          <div class="dropdown-item" data-value = "A1">A1</div>
+                          <div class="dropdown-item" data-value = "A2 Info">A2 Info</div>
+                          <div class="dropdown-item" data-value = "A2 Géné">A2 Géné</div>
+                      </div>
                   </div>
-              </div>
-            </div>
-            <div class="filter-section">
-              <h4>Nombres d'offres postulées :</h4>
-              <h5> Min: <input type="text" placeholder="0" class="input-min"> </h5>
-              <h5> Max : <input type="text" placeholder="10" class="input-max"> </h5>
-            </div>
-            <div class="filter-section">
-              <h4>Nombres d'offres en wishlist :</h4>
-              <div class="duration-inputs">
-                  <h5> Min : <input type="text" placeholder="0" class="input-min"> </h5>
-                  <h5> Max : <input type="text" placeholder="15" class="input-max"> </h5>
-              </div>
-            </div>
+                </div>
+                <div class="filter-section">
+                  <h4>Nombres d'offres postulées :</h4>
+                  <h5> Min: <input type="text" placeholder="0" class="input-min"> </h5>
+                  <h5> Max : <input type="text" placeholder="10" class="input-max"> </h5>
+                </div>
+                <div class="filter-section">
+                  <h4>Nombres d'offres en wishlist :</h4>
+                  <div class="duration-inputs">
+                      <h5> Min : <input type="text" placeholder="0" class="input-min"> </h5>
+                      <h5> Max : <input type="text" placeholder="15" class="input-max"> </h5>
+                  </div>
+                </div>
               <button class="apply-btn">Appliquer</button>
           </div>
-
+      </div>
       <div class="main-content-gestion">
           <div class="add-header">
               <input placeholder="Search..." class="search-input" name="search" type="search"/>

@@ -52,28 +52,30 @@
   <main>
       <div class="filters">
         <h3>Filtres</h3>
-            <div class="filter-section">
-                <h4>Localisation :</h4>
-                <input type="text" placeholder="Ville, Code Postal, Département, Région" class="input-location">
-              </div>
+          <div class="filter-sections-container">
               <div class="filter-section">
-                <h4>Secteur :</h4>
-                <input type="text" placeholder="Informatique, BTP, Industrie" class="input-skills">
-              </div>
-            <div class="filter-section">
-            <h4>Nombres d'offres :</h4>
-            <div class="radio-group">
-                <label><input type="radio" name="sort"> Croissant</label>
-                <label><input type="radio" name="sort"> Décroissant</label>
+                    <h4>Localisation :</h4>
+                    <input type="text" placeholder="Ville, Code Postal, Département, Région" class="input-location">
+                  </div>
+                  <div class="filter-section">
+                    <h4>Secteur :</h4>
+                    <input type="text" placeholder="Informatique, BTP, Industrie" class="input-skills">
+                  </div>
+                <div class="filter-section">
+                <h4>Nombres d'offres :</h4>
+                <div class="radio-group">
+                    <label><input type="radio" name="sort"> Croissant</label>
+                    <label><input type="radio" name="sort"> Décroissant</label>
+                </div>
+                </div>
+                <div class="filter-section">
+                <h4>Popularité :</h4>
+                <div class="radio-group">
+                    <label><input type="radio" name="sort"> Croissant</label>
+                    <label><input type="radio" name="sort"> Décroissant</label>
+                </div>
             </div>
-            </div>
-            <div class="filter-section">
-            <h4>Popularité :</h4>
-            <div class="radio-group">
-                <label><input type="radio" name="sort"> Croissant</label>
-                <label><input type="radio" name="sort"> Décroissant</label>
-            </div>
-            </div>
+          </div>
         <button class="apply-btn">Appliquer</button>
       </div>
 
