@@ -1318,7 +1318,7 @@ h1 {
 }
 
 .eleve-btn-password:hover {
-    transform: scale(1.05);
+    transform: scale(1.02);
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
@@ -1703,8 +1703,12 @@ h1 {
 }
 
 /* add media query */
-@media (max-width: 325px) {
+@media (max-width: 360px) {
     .slide-filter {
         width: 80%;
+    }
+
+    .eleve-competences-grid {
+        grid-template-columns: repeat(1, 1fr);
     }
 }
