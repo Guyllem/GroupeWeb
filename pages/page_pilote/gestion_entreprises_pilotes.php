@@ -86,6 +86,24 @@
                   <div class="plus-icon">+</div>
               </button>
           </div>
+          <div class="pilote-card-entreprise">
+              <div class="pilote-card-header">
+                  <div class="pilote-company-name">Thales</div>
+                  <div class="pilote-tags-container">
+                      <div class="pilote-tag">Cybersécurité</div>
+                      <div class="pilote-tag">Aérospatiale</div>
+                  </div>
+              </div>
+
+              <div class="pilote-description">
+                  Thales est un groupe multinational français spécialisé dans les hautes technologies. Il opère dans plusieurs secteurs stratégiques, notamment la défense, l'aérospatiale, la cybersécurité et le transport. Présent dans plus de 68 pays, Thalès développe des solutions innovantes pour répondre aux défis de sécurité et de transformation numérique des industries critiques.
+              </div>
+
+              <div class="pilote-card-footer">
+                  <div class="pilote-offres-count">Nombre d'offres publiées : 4</div>
+                  <button class="pilote-view-btn" onclick="window.location.href='page-gestion-entreprise.php'">Regarder</button>
+              </div>
+          </div>
       </div>
   </main>
     <?php include '../footer.php'; ?>
