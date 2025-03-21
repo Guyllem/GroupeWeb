@@ -381,8 +381,32 @@ footer a:hover::after {
     min-height: 400px; /* Hauteur minimale pour l'aspect visuel */
     display: flex;
     flex-direction: column;
-    overflow-y: auto; /* Active le défilement vertical */
-    overflow-x: hidden; /* Masque le défilement horizontal */
+    overflow-y: auto !important;
+    scrollbar-width: none !important; /* Firefox */
+    -ms-overflow-style: none !important; /* IE/Edge */
+}
+
+/* Solution définitive pour masquer la barre de défilement */
+
+.filters::-webkit-scrollbar,
+.filters::-webkit-scrollbar-thumb,
+.filters::-webkit-scrollbar-track {
+    width: 0 !important;
+    height: 0 !important;
+    background: transparent !important;
+    display: none !important;
+    opacity: 0 !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+}
+
+html body .filters {
+    -ms-overflow-style: none !important;
+    scrollbar-width: none !important;
+}
+
+body .filters * {
+    scrollbar-width: none !important;
 }
 
 /* Création d'un conteneur pour les sections de filtres */
