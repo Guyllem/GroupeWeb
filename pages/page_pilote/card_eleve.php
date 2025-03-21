@@ -20,44 +20,52 @@
 
     include 'navbar-pilote.php';
     ?>
-    <main class="content-principal">
-        <div class="card">
-            <div class="card-header">
-                <h1>Louis Durenne</h1>
-                    <span class="tag">Promotion</span>
-            </div>
-            <span class="info-com">Informations complémentaires</span>
-            <div class="card-body">
-                <div id="second-content">
-                    <div id="mail-eleves">
-                        <p>Adresse mail :</p>
-                        <p id="mm">Adresse@mail.com</p>
-                    </div>
-                    <div id="telephone-eleves">
-                        <p>Téléphone :</p>
-                        <p id="mm">06 06 06 06 06</p>
-                    </div>
-                    <div id="Campus-eleves">
-                        <p>Campus :</p>
-                        <p id="mm">CESI Nancy</p>
-                    </div>
-                    <button class="boutton-pwd" type="button">Modifier le Mot de passe</button>
+    <main>
+        <div class="main-content-gestion">
+            <div class="eleve-detail">
+                <div class="eleve-header">
+                    <div class="eleve-nom-prenom">Durenne Louis</div>
+                    <div class="eleve-promotion">CPI A2 INFO - Nancy</div>
                 </div>
-                <div class="milieu-pages">
-                <h1>Compétences</h1>
-                <ul>
-                    <div id="un"><li>IA</li></div>
-                    <div id="de"><li>Web developpement</li></div>
-                    <div id="un"><li>MySQL</li></div>
-                    <div id="de"><li>Figma</li></div>
-                </ul>
+
+                <div class="eleve-info-container">
+                    <div class="eleve-info-col">
+                        <div class="eleve-info-groupe">
+                            <label>Adresse mail :</label>
+                            <input type="email" value="louis@viacesi.fr" readonly class="eleve-input">
+                        </div>
+
+                        <div class="eleve-info-groupe">
+                            <label>Téléphone :</label>
+                            <input type="tel" value="06 13 33 03 66" readonly class="eleve-input">
+                        </div>
+
+                        <button class="eleve-btn-password">Modifier le mot de passe</button>
+                    </div>
+
+                    <div class="eleve-competences-col">
+                        <h2 class="eleve-competences-titre">Compétences :</h2>
+                        <div class="eleve-competences-grid">
+                            <div class="eleve-competence">IA</div>
+                            <div class="eleve-competence">Web développement</div>
+                            <div class="eleve-competence">MySQL</div>
+                            <div class="eleve-competence">Figma</div>
+
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="btoo">
-                <button class="boutton-wishlist" type="button">Accéder à la Wishlist</button>
-                <button class="boutton-offres" type="button">Accéder aux offres postulées</button>
-                <button class="boutton-supp" type="button">Supprimer</button>
-                <button class="boutton-modif" type="button">Modifier</button>
+
+                <div class="eleve-actions">
+                    <div class="eleve-liens">
+                        <button class="eleve-btn-wishlist">Accéder à la wishlist</button>
+                        <button class="eleve-btn-offres">Accéder aux offres postulées</button>
+                    </div>
+
+                    <div class="eleve-admin-actions">
+                        <button class="eleve-btn-modifier">Modifier</button>
+                        <button class="eleve-btn-supprimer">Supprimer</button>
+                    </div>
+                </div>
             </div>
         </div>
   </main>

@@ -20,6 +20,7 @@ main {
     display: flex;
     min-height: calc(100vh - 115px); /* Adjust based on your header/footer size */
     flex: 1;
+    overflow-y: auto;
 }
 
 
@@ -28,7 +29,7 @@ main {
     color: #3F51B5;
     position: absolute;
     font-weight: bold;
-    top: 225px;
+    top: 200px;
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
@@ -299,6 +300,7 @@ nav {
     align-items: flex-start;
     padding: 20px;
     width: 100%;
+    min-height: calc(100vh - 170px); /* Hauteur de viewport moins navbar et footer */
 }
 
 
@@ -333,10 +335,11 @@ footer {
     color: white;
     font-size: 0.9em;
     padding: 0.625rem;
-    position: fixed;
+    position: relative;
     bottom: 0;
     width: 100%;
     margin-top: auto;
+    flex-shrink: 0;
 }
 
 footer a {
@@ -1228,6 +1231,185 @@ h1 {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
+.eleve-detail {
+    background-color: #3F51B5;
+    color: white;
+    border-radius: 10px;
+    padding: 20px;
+    width: 90%;
+    margin: 20px auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* En-tête avec avatar et nom */
+.eleve-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+
+.eleve-nom-prenom {
+    font-size: 30px;
+    font-weight: bold;
+    margin-right: auto;
+    margin-left: 10px;
+}
+
+.eleve-promotion {
+    background-color: white;
+    color: #333;
+    padding: 8px 15px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+
+
+.eleve-info-container {
+    display: flex;
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.eleve-info-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.eleve-info-groupe {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.eleve-info-groupe label {
+    width: 150px;
+    min-width: 150px;
+    font-size: 18px;
+    color: #3C4CAA;
+}
+
+.eleve-input {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    color: #3F51B5;
+    font-size: 16px;
+}
+
+.eleve-btn-password {
+    align-self: center;
+    background-color: #3C4CAA;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.eleve-btn-password:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Section des compétences */
+.eleve-competences-col {
+    flex: 1;
+    padding-left: 30px;
+}
+
+.eleve-competences-titre {
+    font-size: 18px;
+    margin-bottom: 15px;
+    color: #3C4CAA;
+    text-align: left;
+}
+
+.eleve-competences-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    padding: 10px;
+}
+
+.eleve-competence {
+    background-color: #3F51B5;
+    color: white;
+    padding: 8px;
+    border-radius: 20px;
+    text-align: center;
+}
+
+/* Actions (boutons) */
+.eleve-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+.eleve-liens {
+    display: flex;
+    gap: 15px;
+}
+
+.eleve-btn-wishlist,
+.eleve-btn-offres {
+    background-color: #757DE8;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.eleve-btn-wishlist:hover,
+.eleve-btn-offres:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.eleve-admin-actions {
+    display: flex;
+    gap: 15px;
+}
+
+.eleve-btn-modifier {
+    background-color: #757DE8;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.eleve-btn-supprimer {
+    background-color: #FF6B6B;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.eleve-btn-modifier:hover,
+.eleve-btn-supprimer:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
 /* Responsive design -> Media Queries */
 @media (max-width: 768px) {
     .arc-en-ciel,
@@ -1239,11 +1421,6 @@ h1 {
         display: none;
     }
 
-    html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-    }
 
     body {
         display: flex;
@@ -1252,8 +1429,10 @@ h1 {
         box-sizing: border-box; /* Pour éviter des surprises avec padding/margin */
     }
 
+
     main {
         flex: 1;
+        padding-bottom: 20px; /* Espace pour le footer */
     }
 
     footer {
@@ -1396,6 +1575,10 @@ h1 {
         margin-top: 20px;
     }
 
+    .main-content-gestion {
+        padding-bottom: 80px;
+    }
+
     .add-header {
         flex-direction: column; /* Empile les éléments verticalement */
     }
@@ -1442,6 +1625,79 @@ h1 {
     }
 
     .view-btn-student {
+        width: 100%;
+    }
+
+    .eleve-header{
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .eleve-nom-prenom {
+        margin-bottom: 10px;
+        font-size: 24px;
+    }
+
+    .eleve-promotion {
+        align-self: flex-start;
+    }
+
+    .eleve-input {
+        width: 100%;
+        text-align: center;
+    }
+
+    .eleve-info-groupe {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .eleve-admin-actions, .eleve-liens {
+        width: 100%;
+    }
+
+    .eleve-btn-wishlist, .eleve-btn-offres,
+    .eleve-btn-modifier, .eleve-btn-supprimer {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .eleve-info-container {
+        flex-direction: column;
+    }
+
+    .eleve-competences-col {
+        padding-left: 0;
+        margin-top: 20px;
+    }
+
+    .eleve-actions {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .eleve-liens {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .eleve-admin-actions {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .eleve-btn-password {
+        width: 80%;
+    }
+
+    .eleve-info-groupe {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .eleve-info-groupe label {
+        text-align: center;
         width: 100%;
     }
 }
