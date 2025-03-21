@@ -1133,6 +1133,100 @@ h1 {
     text-align: left;
 }
 
+.card-student {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #3F51B5;
+    color: white;
+    border-radius: 8px;
+    padding: 15px;
+    margin-top: 20px;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    min-height: 120px;
+}
+
+.card-student-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.card-student-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    width: 100%;
+}
+
+.name-student {
+    display: flex;
+    flex-direction: column;
+}
+
+.name-student h3 {
+    margin: 0;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.location-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 5px;
+}
+
+.promotion-student {
+    background-color: white;
+    color: #333;
+    padding: 5px 15px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 14px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+
+
+.stats-student {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    font-size: 12px;
+    opacity: 0.7;
+    font-style: italic;
+}
+
+.stat-item-student {
+    margin-top: 5px;
+}
+
+.actions-student {
+    display: flex;
+    align-items: flex-end;
+}
+
+.view-btn-student {
+    background-color: #757DE8;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+}
+
+.view-btn-student:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
 
 /* Responsive design -> Media Queries */
 @media (max-width: 768px) {
@@ -1328,6 +1422,27 @@ h1 {
     .dropdown-toggle {
         background-color: #d2d5ef;
         color: white;
+    }
+
+    .card-student-header,
+    .card-student-footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .location-info {
+        align-items: flex-start;
+        margin-top: 10px;
+    }
+
+    .actions-student {
+        width: 100%;
+        margin-top: 15px;
+    }
+
+    .view-btn-student {
+        width: 100%;
     }
 }
 

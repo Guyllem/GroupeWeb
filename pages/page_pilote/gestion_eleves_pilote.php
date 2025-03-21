@@ -110,6 +110,29 @@
                   <div class="plus-icon">+</div>
               </button>
           </div>
+          <div class="card-student">
+              <div class="card-student-header">
+                  <div class="name-student">
+                      <h3>DURENNE Louis</h3>
+                  </div>
+                  <div class="location-info">
+                      <div class="promotion-student">CPI A2 INFO - Nancy</div>
+                  </div>
+              </div>
+              <div class="card-student-footer">
+                  <div class="stats-student">
+                      <div class="stat-item-student">
+                          <span>nombre offre postulé : 2</span>
+                      </div>
+                      <div class="stat-item-student">
+                          <span>nombre offre en wishlist : 14</span>
+                      </div>
+                  </div>
+                  <div class="actions-student">
+                      <button class="view-btn-student" onclick="window.location.href='card_eleve.php'">Regarder</button>
+                  </div>
+              </div>
+          </div>
       </div>
   </main>
     <?php include '../footer.php'; ?>
