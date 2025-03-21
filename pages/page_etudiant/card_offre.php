@@ -96,7 +96,7 @@ include 'navbar-etudiant.php';
                         </svg>
                     </div>
                 </div>
-                <button class="view-btn" onclick="window.location.href='#'"> Postuler </button>
+                <button class="view-btn" onclick="window.location.href='postulation.php'"> Postuler </button>
             </div>
 </main>
 <?php include '../footer.php'; ?>
