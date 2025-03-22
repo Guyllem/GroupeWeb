@@ -781,6 +781,12 @@ footer a:hover::after {
 
 .card h3 {
     margin-right: 10px;
+    font-size: 25px;
+}
+
+.card h4 {
+    font-size: 16px;
+    opacity: 0.7;
 }
 
 /* Header de la carte */
@@ -788,6 +794,12 @@ footer a:hover::after {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.name-and-company {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .logo-placeholder {
@@ -1112,6 +1124,7 @@ h3 {
 
     .tags {
         margin-top: 15px;
+        grid-template-columns: repeat(2, 1fr);
     }
 
     .skills-grid {
@@ -1142,6 +1155,10 @@ h3 {
     }
 
     .file-info {
+        text-align: center;
+    }
+
+    .name-and-company {
         text-align: center;
     }
 }

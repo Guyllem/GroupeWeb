@@ -22,8 +22,8 @@ include 'navbar-etudiant.php';
     <div class="card-entreprise">
         <div class="header-entreprise">
             <div class="logo-container-entreprise">
-                <div class="logo-entreprise"></div>
                 <div class="company-name-entreprise">Stage Développeur Full-Stack</div>
+                <div class="name-company">EDF</div>
             </div>
             <div class="tags-entreprise">
                 <div class="tag-entreprise">Développement logiciel</div>

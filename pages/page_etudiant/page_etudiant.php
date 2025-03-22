@@ -125,8 +125,11 @@
 
       <div class="card">
         <div class="card-header">
-          <h3>Stage Développeur Full-Stack</h3>
-          <div class="tags">
+            <div class="name-and-company">
+                <h3>Stage Développeur Full-Stack</h3>
+                <h4>EDF</h4>
+            </div>
+            <div class="tags">
             <span class="tag">Développement logiciel</span>
             <span class="tag">Web</span>
             <span class="tag">Informatique</span>
