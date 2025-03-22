@@ -15,7 +15,7 @@ include 'navbar-etudiant.php';
 ?>
 <main class="content-principal">
     <div class="back-button">
-        <a href="page_etudiant.php"><span class="arrow">←</span> Accueil</a>
+        <a href="javascript:history.back()"><span class="arrow">←</span> Accueil</a>
     </div>
     <div class="card-entreprise">
         <div class="header-entreprise">
@@ -47,6 +47,10 @@ include 'navbar-etudiant.php';
                 <div class="info-label-entreprise">Adresse mail :</div>
                 <div class="info-value-entreprise email-value-entreprise">contact.recrutement@thalesgroup.com</div>
             </div>
+        </div>
+
+        <div class="offers-button-container">
+            <button class="button-offers-entreprise">Voir les offres publiées par cette entreprise</button>
         </div>
 
         <div class="card-footer">

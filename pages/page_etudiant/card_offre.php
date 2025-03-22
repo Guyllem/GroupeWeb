@@ -17,7 +17,7 @@ include 'navbar-etudiant.php';
 
 <main class="content-principal">
     <div class="back-button">
-        <a href="page_etudiant.php"><span class="arrow">←</span> Accueil</a>
+        <a href="javascript:history.back()"><span class="arrow">←</span> Accueil</a>
     </div>
     <div class="card-entreprise">
         <div class="header-entreprise">
