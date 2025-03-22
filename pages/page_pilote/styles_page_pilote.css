@@ -1552,6 +1552,20 @@ h1 {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
+.back-button {
+    margin-left: 25px;
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+.back-button a {
+    color: #4056b4;
+    text-decoration: none;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}
+
 
 
 

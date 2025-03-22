@@ -21,6 +21,9 @@ if (isset($GLOBALS['adminPage']) && $GLOBALS['adminPage']) {
 include 'navbar-pilote.php';
 ?>
 <main class="main-content-gestion">
+    <div class="back-button">
+        <a href="javascript:history.back()"><span class="arrow">←</span> Retour</a>
+    </div>
     <div class="card-entreprise">
         <div class="header-entreprise">
             <div class="logo-container-entreprise">

@@ -60,7 +60,7 @@
     <div class="confirmation-popup" id="confirmationPopup">
         <div class="popup-content">
             <p>Évaluation bien prise en compte</p>
-            <button class="close-popup" onclick="history.go(-1)">Fermer</button>
+            <button class="close-popup" onclick="history.back()">Fermer</button>
         </div>
     </div>
 </main>

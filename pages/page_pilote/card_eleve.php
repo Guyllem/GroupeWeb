@@ -22,6 +22,9 @@
     ?>
     <main>
         <div class="main-content-gestion">
+            <div class="back-button">
+                <a href="javascript:history.back()"><span class="arrow">←</span> Retour</a>
+            </div>
             <div class="eleve-detail">
                 <div class="eleve-header">
                     <div class="eleve-nom-prenom">Durenne Louis</div>
