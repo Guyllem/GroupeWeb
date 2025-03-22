@@ -117,8 +117,8 @@
               </div>
 
               <div class="pilote-card-footer">
-                  <div class="pilote-offres-count">Nombre d'offres publiées : 4</div>
-                  <button class="pilote-view-btn" onclick="window.location.href='card_entreprise_pilote.php'">Regarder</button>
+                  <div class="pilote-offres-count">Publiée il y a 17 jours</div>
+                  <button class="pilote-view-btn" onclick="window.location.href='card_offre_pilote.php'">Regarder</button>
               </div>
           </div>
       </div>
