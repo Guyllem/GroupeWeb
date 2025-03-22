@@ -98,6 +98,29 @@
                   <div class="plus-icon">+</div>
               </button>
           </div>
+          <div class="pilote-card-entreprise">
+              <div class="pilote-card-header">
+                  <div class="logo-container-entreprise">
+                      <div class="company-name-entreprise">Ingénieur en informatique H/F</div>
+                      <div class="name-company">Jupino</div>
+                  </div>
+                  <div class="pilote-tags-container">
+                      <div class="pilote-tag">C++</div>
+                      <div class="pilote-tag">Git / GitHub</div>
+                      <div class="pilote-tag">Gestion de projet</div>
+                      <div class="pilote-tag">Logique calculatoire</div>
+                  </div>
+              </div>
+
+              <div class="pilote-description">
+                  Thales est un groupe multinational français spécialisé dans les hautes technologies. Il opère dans plusieurs secteurs stratégiques, notamment la défense, l'aérospatiale, la cybersécurité et le transport. Présent dans plus de 68 pays, Thalès développe des solutions innovantes pour répondre aux défis de sécurité et de transformation numérique des industries critiques.
+              </div>
+
+              <div class="pilote-card-footer">
+                  <div class="pilote-offres-count">Nombre d'offres publiées : 4</div>
+                  <button class="pilote-view-btn" onclick="window.location.href='card_entreprise_pilote.php'">Regarder</button>
+              </div>
+          </div>
       </div>
     
   </main>

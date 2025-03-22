@@ -103,6 +103,7 @@
               <button class="apply-btn">Appliquer</button>
           </div>
       </div>
+
       <div class="main-content-gestion">
           <div class="add-header">
               <input placeholder="Search..." class="search-input" name="search" type="search"/>

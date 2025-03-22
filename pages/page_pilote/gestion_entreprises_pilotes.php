@@ -100,7 +100,7 @@
               </div>
 
               <div class="pilote-card-footer">
-                  <div class="pilote-offres-count">Nombre d'offres publiées : 4</div>
+                  <div class="pilote-offres-count">Nombre d'offres publiées : 4 </br> Evaluation actuelle : 4.2 étoiles</div>
                   <button class="pilote-view-btn" onclick="window.location.href='card_entreprise_pilote.php'">Regarder</button>
               </div>
           </div>
