@@ -23,6 +23,7 @@
                     <div class="user-card">
                         <p class="username">Louis</p>
                         <p class="lastname">Durenne</p>
+                        <p class="campus">Nancy - CPI A2 INFO</p>
                         <p class="email">dresserlouis2005@gmail.com</p>
                     </div>
                 </div>

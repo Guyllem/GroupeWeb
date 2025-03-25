@@ -384,7 +384,7 @@ footer a:hover::after {
     display: flex;
     justify-content: center;
     align-items: center;
-    text-align: center;
+    text-align: start;
 }
 
 .user-card {
@@ -400,9 +400,10 @@ footer a:hover::after {
     margin-bottom: 5px;
 }
 
-.email {
+
+.email, .campus {
     font-size: 20px;
-    margin-top: 15px;
+    margin-top: 5px;
     word-break: break-all;
 }
 
