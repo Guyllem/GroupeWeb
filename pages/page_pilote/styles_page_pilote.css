@@ -1580,6 +1580,7 @@ h1 {
 
 .form-title {
     color: #3F51B5;
+    margin-top: 1rem;
     margin-bottom: 1.5rem;
     font-size: 1.8rem;
     text-align: center;

@@ -82,7 +82,7 @@
       <div class="main-content-gestion">
           <div class="add-header">
               <input placeholder="Search..." class="search-input" name="search" type="search"/>
-              <button class="add-something">Ajouter une nouvelle entreprise
+              <button class="add-something" onclick="window.location.href='add_entreprise.php'">Ajouter une nouvelle entreprise
                   <div class="plus-icon">+</div>
               </button>
           </div>

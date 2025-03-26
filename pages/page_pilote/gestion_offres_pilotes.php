@@ -94,7 +94,7 @@
       <div class="main-content-gestion">
           <div class="add-header">
               <input placeholder="Search..." class="search-input" name="search" type="search"/>
-              <button class="add-something">Ajouter une nouvelle offre
+              <button class="add-something" onclick="window.location.href='add_offre.php'">Ajouter une nouvel offre de stage
                   <div class="plus-icon">+</div>
               </button>
           </div>
