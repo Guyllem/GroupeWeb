@@ -1589,6 +1589,87 @@ h1 {
     margin-bottom: 1.5rem;
 }
 
+.form-control {
+    width: 100%;
+    max-width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border 0.3s;
+    box-sizing: border-box;
+}
+
+.form-control:focus {
+    border-color: #3F51B5;
+    outline: none;
+}
+
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+    text-align: left;
+    min-height: 20px;
+}
+
+
+
+.form-submit {
+    background-color: #3F51B5;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 12px 25px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 20px;
+}
+
+.form-submit:hover:not([disabled]) {
+    background-color: #303f9f;
+}
+
+.form-submit[disabled] {
+    background-color: #b3b3b3;
+    cursor: not-allowed;
+}
+
+.form-row {
+    display: flex;
+    gap: 20px;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+.textarea-container {
+    position: relative;
+}
+
+textarea.form-control {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.char-count {
+    position: absolute;
+    bottom: 5px;
+    right: 10px;
+    font-size: 12px;
+    color: #666;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #3F51B5;
+    font-weight: bold;
+    text-align: left;
+}
+
 .form-label {
     display: block;
     margin-bottom: 0.5rem;
@@ -1693,6 +1774,54 @@ h1 {
 .btn-return:hover {
     transform: translateX(-3px);
 }
+
+.skills-dropdown-container {
+    position: relative;
+}
+
+select[multiple] {
+    height: 120px;
+    padding: 8px;
+}
+
+select.form-control {
+    background-position: right 10px center; /* Ajuste la position de la flèche du select */
+    text-overflow: ellipsis; /* Ajoute des points de suspension pour le texte trop long */
+    white-space: nowrap;    /* Empêche le retour à la ligne du texte */
+    overflow: hidden;       /* Cache le texte qui déborde */
+}
+
+.selected-skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.skill-tag {
+    background-color: #3F51B5;
+    color: white;
+    border-radius: 4px;
+    padding: 5px 10px;
+    display: inline-flex;
+    align-items: center;
+}
+
+.remove-skill {
+    background: none;
+    border: none;
+    color: white;
+    margin-left: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.remove-skill:hover {
+    transform: scale(1.2);
+}
+
+
 
 
 
@@ -2118,6 +2247,32 @@ h1 {
         top: 0.8rem;
         left: 1rem;
         font-size: 0.9rem;
+    }
+
+    select[multiple] {
+        position: relative;
+        z-index: 10;
+    }
+
+    /* Force le menu à s'ouvrir vers le haut sur mobile */
+    .skills-dropdown-container::after {
+        content: "";
+        position: absolute;
+        bottom: 100%;
+        left: 0;
+        right: 0;
+        height: 10px;
+    }
+
+    .form-group {
+        max-width: 100%;
+        overflow-x: hidden; /* Empêche tout débordement horizontal */
+    }
+
+    select.form-control option {
+        max-width: 100%;    /* Limite la largeur des options du select */
+        overflow: hidden;   /* Cache le contenu qui déborde */
+        text-overflow: ellipsis; /* Ajoute des points de suspension */
     }
 }
 
