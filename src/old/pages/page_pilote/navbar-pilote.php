@@ -17,7 +17,7 @@
     </div>
     <div class="logo">Stage Connect</div>
     <div class="nav-right">
-        <a href="#" class="nav-item">Se déconnecter</a>
+        <a href="../logout.php" class="nav-item">Se déconnecter</a>
     </div>
 
     <?php
@@ -51,6 +51,6 @@
     <h2><a href="gestion_entreprises_pilotes.php" class="menu-item">Gestion entreprises</a></h2>
     <?php endif; ?>
 
-    <h2><a href="#" class="menu-item-logout">Se déconnecter</a></h2>
+    <h2><a href="../logout.php" class="menu-item-logout">Se déconnecter</a></h2>
     <button class="close-menu" id="close-menu">✖</button>
 </div>

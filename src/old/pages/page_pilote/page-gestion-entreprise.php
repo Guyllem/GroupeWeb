@@ -20,7 +20,10 @@ if (isset($GLOBALS['adminPage']) && $GLOBALS['adminPage']) {
 
 include 'navbar-pilote.php';
 ?>
-<main class="content-principal">
+<main class="main-content-gestion">
+    <div class="back-button">
+        <a href="javascript:history.back()"><span class="arrow">←</span> Retour</a>
+    </div>
     <div class="card-entreprise">
         <div class="header-entreprise">
             <div class="logo-container-entreprise">
@@ -29,6 +32,7 @@ include 'navbar-pilote.php';
             <div class="tags-entreprise">
                 <div class="tag-entreprise">Cybersécurité</div>
                 <div class="tag-entreprise">Aérospatiale</div>
+
             </div>
         </div>
 
@@ -53,14 +57,22 @@ include 'navbar-pilote.php';
             </div>
         </div>
 
-        <div class="button-container-entreprise">
-            <button class="button-entreprise button-delete-entreprise">Supprimer</button>
-            <button class="button-entreprise button-edit-entreprise">Modifier</button>
-            <button class="button-entreprise button-evaluate-entreprise">Évaluer</button>
+        <div class="offers-button-container">
+            <button class="button-offers-entreprise">Voir les offres publiées par cette entreprise</button>
         </div>
 
-        <div class="publication-info">
-            Evaluation actuelle : 4.2 étoiles
+        <div class="button-container-entreprise">
+            <div class="publication-info-container">
+                <div class="publication-info">
+                    Nombre d'offres publiées : 4
+                </div>
+                <div class="publication-info">
+                    Evaluation actuelle : 4.2 étoiles
+                </div>
+            </div>
+            <button class="button-entreprise button-edit-entreprise">Modifier</button>
+            <button class="button-entreprise button-evaluate-entreprise" onclick="window.location.href='../rate.php'">Évaluer</button>
+            <button class="button-entreprise button-delete-entreprise" onclick="window.location.href='../delete.php'">Supprimer</button>
         </div>
     </div>
 </main>

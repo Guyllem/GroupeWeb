@@ -9,11 +9,11 @@
   <nav>
       <div class="logo">Stage Connect</div>
       <div class="nav-right">
-          <a href="#" class="nav-item">Se déconnecter</a>
+          <a href="../logout.php" class="nav-item">Se déconnecter</a>
       </div>
-      <button class="logout-icon" id="logout-icon">
+      <a class="logout-icon" id="logout-icon" href="../logout.php">
           <img src="../../assets/icons/logout.png" alt="Logout Icon">
-      </button>
+      </a>
   </nav>
 
   <body>
