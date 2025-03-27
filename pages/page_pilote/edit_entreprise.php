@@ -19,7 +19,7 @@
         <a href="javascript:history.back()" class="btn-return">
             <span class="arrow">←</span> Retour
         </a>
-        <h2 class="form-title">Ajouter une nouvelle entreprise</h2>
+        <h2 class="form-title">Modifier l'entreprise</h2>
 
         <form id="add-offre-form">
             <div class="form-group">
@@ -74,7 +74,7 @@
 
     <div class="confirmation-popup" id="confirmationPopup">
         <div class="popup-content">
-            <p>L'entreprise a bien été ajoutée</p>
+            <p>L'entreprise a bien été modifiée</p>
             <button class="close-popup" onclick="history.back()">Fermer</button>
         </div>
     </div>

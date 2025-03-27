@@ -85,7 +85,7 @@ include 'navbar-pilote.php';
                     Publiée il y a 17 jours
                 </div>
             </div>
-            <button class="button-entreprise button-edit-entreprise">Modifier</button>
+            <button class="button-entreprise button-edit-entreprise" onclick="window.location.href='edit_offre.php'">Modifier</button>
             <button class="button-entreprise button-delete-entreprise" onclick="window.location.href='../delete.php'">Supprimer</button>
         </div>
     </div>
