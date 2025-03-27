@@ -453,7 +453,7 @@ footer a:hover::after {
 /* Style pour les badges de compétences */
 .skills-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 10px;
     margin-bottom: 20px;
 }
@@ -1138,12 +1138,9 @@ h3 {
         margin-top: 0; /* Supprime la marge du haut */
         margin-bottom: 5px; /* Ajoute une marge en bas */
         max-height: 180px; /* Réduit légèrement la hauteur max */
-    }
-
-    /* Style de bordure ajusté pour l'apparence quand ouvert vers le haut */
-    .skill-dropdown {
         border-radius: 4px 4px 0 0; /* Arrondit seulement les coins supérieurs */
     }
+
 
     .file-upload-label {
         flex-direction: column;
