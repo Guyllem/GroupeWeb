@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stage Connect - Évaluation</title>
-    <link rel="stylesheet" href="styles_page_pilote.css">
+    <link rel="stylesheet" href="../page_pilote/styles_page_pilote.css">
     <link rel="stylesheet" href="../modal.css">
 </head>
 
@@ -19,7 +19,7 @@
         <a href="javascript:history.back()" class="btn-return">
             <span class="arrow">←</span> Retour
         </a>
-        <h2 class="form-title">Ajouter un nouvel élève</h2>
+        <h2 class="form-title">Ajouter un nouveau pilote</h2>
         <form id="add-eleve-form" novalidate>
             <div class="form-row">
                 <div class="form-column">
@@ -113,5 +113,5 @@
 </footer>
 
 <script src="../frontend_script.js"></script>
-<script src="form_eleve.js"></script>
+<script src="form_pilote.js"></script>
 </html>

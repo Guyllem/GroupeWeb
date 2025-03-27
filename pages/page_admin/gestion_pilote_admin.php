@@ -80,7 +80,7 @@
     <div class="main-content-gestion">
         <div class="add-header">
             <input placeholder="Search..." class="search-input" name="search" type="search"/>
-            <button class="add-something">Ajouter un nouveau pilote
+            <button class="add-something" onclick="window.location.href='add_pilote.php'">Ajouter un nouveau pilote
                 <div class="plus-icon">+</div>
             </button>
         </div>
