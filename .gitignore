@@ -1,0 +1,51 @@
+# Composer dependencies
+/vendor/
+composer.phar
+/composer.lock
+
+# Environment files
+.env
+.env.local
+.env.*.local
+.env.backup
+
+# Cache and logs
+/var/cache/
+/var/logs/
+/var/sessions/
+*.log
+
+# IDE specific files
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+.phpstorm.meta.php
+_ide_helper.php
+
+# OS specific files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Build files
+/public/build/
+/node_modules/
+
+# Application specific
+/config/parameters.yml
+/config/secrets/
+
+# Test coverage
+/coverage/
+/.phpunit.result.cache
+/phpunit.xml
+
+# Temporary files
+*.swp
+*.swo
+*~
+
+/.history/
+/.github/
+/var/
