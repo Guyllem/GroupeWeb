@@ -58,84 +58,81 @@
                     <h5> Max : <input type="text" placeholder="15" class="input-max"> </h5>
                 </div>
             </div>
-                <button class="slide-apply-btn">Appliquer</button>
-                <button class="close-filter" id="close-filter">✖</button>
-            </div>
+            <button class="slide-apply-btn">Appliquer</button>
+            <button class="close-filter" id="close-filter">✖</button>
         </div>
     </div>
-
   <main>
       <div class="filters">
           <h3>Filtres</h3>
-          <div class="filter-section">
-              <h4>Campus :</h4>
-              <div class="dropdown">
-                  <button class="dropdown-toggle">Choisir ↓</button>
-                  <div class="dropdown-menu">
-                      <a href="#" class="dropdown-item" data-value = "Nancy">Nancy</a>
-                      <a href="#" class="dropdown-item" data-value = "Metz">Metz</a>
-                      <a href="#" class="dropdown-item" data-value = "Listembourg">Listembourg</a>
+          <div class="filter-sections-container">
+              <div class="filter-section">
+                  <h4>Campus :</h4>
+                  <div class="dropdown">
+                      <button class="dropdown-toggle">Choisir ↓</button>
+                      <div class="dropdown-menu">
+                          <div class="dropdown-item" data-value = "Nancy">Nancy</div>
+                          <div class="dropdown-item" data-value = "Metz">Metz</div>
+                          <div class="dropdown-item" data-value = "Listembourg">Listembourg</div>
+                      </div>
                   </div>
               </div>
-          </div>
-          <div class="filter-section">
-              <h4>Classe :</h4>
-              <div class="dropdown">
-                  <button class="dropdown-toggle">Choisir ↓</button>
-                  <div class="dropdown-menu">
-                      <a href="#" class="dropdown-item" data-value = "A1">A1</a>
-                      <a href="#" class="dropdown-item" data-value = "A2 Info">A2 Info</a>
-                      <a href="#" class="dropdown-item" data-value = "A2 Géné">A2 Géné</a>
+              <div class="filter-section">
+                  <h4>Classe :</h4>
+                  <div class="dropdown">
+                      <button class="dropdown-toggle">Choisir ↓</button>
+                      <div class="dropdown-menu">
+                          <div class="dropdown-item" data-value = "A1">A1</div>
+                          <div class="dropdown-item" data-value = "A2 Info">A2 Info</div>
+                          <div class="dropdown-item" data-value = "A2 Géné">A2 Géné</div>
+                      </div>
                   </div>
-              </div>
-            </div>
-            <div class="filter-section">
-              <h4>Nombres d'offres postulées :</h4>
-              <h5> Min: <input type="text" placeholder="0" class="input-min"> </h5>
-              <h5> Max : <input type="text" placeholder="10" class="input-max"> </h5>
-            </div>
-            <div class="filter-section">
-              <h4>Nombres d'offres en wishlist :</h4>
-              <div class="duration-inputs">
-                  <h5> Min : <input type="text" placeholder="0" class="input-min"> </h5>
-                  <h5> Max : <input type="text" placeholder="15" class="input-max"> </h5>
-              </div>
-            </div>
+                </div>
+                <div class="filter-section">
+                  <h4>Nombres d'offres postulées :</h4>
+                  <h5> Min: <input type="text" placeholder="0" class="input-min"> </h5>
+                  <h5> Max : <input type="text" placeholder="10" class="input-max"> </h5>
+                </div>
+                <div class="filter-section">
+                  <h4>Nombres d'offres en wishlist :</h4>
+                  <div class="duration-inputs">
+                      <h5> Min : <input type="text" placeholder="0" class="input-min"> </h5>
+                      <h5> Max : <input type="text" placeholder="15" class="input-max"> </h5>
+                  </div>
+                </div>
               <button class="apply-btn">Appliquer</button>
           </div>
+      </div>
 
-      <div class="main-content">
-          <div class="haut-page">
-              <div id="carré_blanc">/</div>
-              <h1>Durenne Louis</h1>
-              <p>Promotion</p>
+      <div class="main-content-gestion">
+          <div class="add-header">
+              <input placeholder="Search..." class="search-input" name="search" type="search"/>
+              <button class="add-something" onclick="window.location.href='add_eleve.php'">Ajouter une nouvel élève
+                  <div class="plus-icon">+</div>
+              </button>
           </div>
-          <p id="info_com">Informations complémentaires</p>
-          <div class="milieu-pages">
-          <div id="second-content">
-              <div id="mail-eleves">
-                  <p>Adresse mail :</p>
-                  <p id="mm">Adresse@mail.com</p>
+          <div class="card-student">
+              <div class="card-student-header">
+                  <div class="name-student">
+                      <h3>DURENNE Louis</h3>
+                  </div>
+                  <div class="location-info">
+                      <div class="promotion-student">CPI A2 INFO - Nancy</div>
+                  </div>
               </div>
-              <div id="telephone-eleves">
-                  <p>Téléphone :</p>
-                  <p id="mm">06 06 06 06 06</p>
+              <div class="card-student-footer">
+                  <div class="stats-student">
+                      <div class="stat-item-student">
+                          <span>nombre offre postulé : 2</span>
+                      </div>
+                      <div class="stat-item-student">
+                          <span>nombre offre en wishlist : 14</span>
+                      </div>
+                  </div>
+                  <div class="actions-student">
+                      <button class="view-btn-student" onclick="window.location.href='card_eleve.php'">Regarder</button>
+                  </div>
               </div>
-              <button class="boutton-pwd" type="button">Modifier le Mot de passe</button>
-          </div>
-          <h1>Compétences</h1>
-          <ul>
-              <div id="un"><li>IA</li></div>
-              <div id="de"><li>Web developpement</li></div>
-              <div id="un"><li>MySQL</li></div>
-              <div id="de"><li>Figma</li></div>
-          </ul>
-          </div>
-          <div class="btoo">
-          <button class="boutton-wishlist" type="button">Accéder à la Wishlist</button>
-          <button class="boutton-offres" type="button">Accéder aux offres postulées</button>
-          <button class="boutton-supp" type="button">Supprimer</button>
-          <button class="boutton-modif" type="button">Modifier</button>
           </div>
       </div>
   </main>

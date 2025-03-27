@@ -52,37 +52,57 @@
   <main>
       <div class="filters">
         <h3>Filtres</h3>
-            <div class="filter-section">
-                <h4>Localisation :</h4>
-                <input type="text" placeholder="Ville, Code Postal, Département, Région" class="input-location">
-              </div>
+          <div class="filter-sections-container">
               <div class="filter-section">
-                <h4>Secteur :</h4>
-                <input type="text" placeholder="Informatique, BTP, Industrie" class="input-skills">
-              </div>
-            <div class="filter-section">
-            <h4>Nombres d'offres :</h4>
-            <div class="radio-group">
-                <label><input type="radio" name="sort"> Croissant</label>
-                <label><input type="radio" name="sort"> Décroissant</label>
+                    <h4>Localisation :</h4>
+                    <input type="text" placeholder="Ville, Code Postal, Département, Région" class="input-location">
+                  </div>
+                  <div class="filter-section">
+                    <h4>Secteur :</h4>
+                    <input type="text" placeholder="Informatique, BTP, Industrie" class="input-skills">
+                  </div>
+                <div class="filter-section">
+                <h4>Nombres d'offres :</h4>
+                <div class="radio-group">
+                    <label><input type="radio" name="sort"> Croissant</label>
+                    <label><input type="radio" name="sort"> Décroissant</label>
+                </div>
+                </div>
+                <div class="filter-section">
+                <h4>Popularité :</h4>
+                <div class="radio-group">
+                    <label><input type="radio" name="sort"> Croissant</label>
+                    <label><input type="radio" name="sort"> Décroissant</label>
+                </div>
             </div>
-            </div>
-            <div class="filter-section">
-            <h4>Popularité :</h4>
-            <div class="radio-group">
-                <label><input type="radio" name="sort"> Croissant</label>
-                <label><input type="radio" name="sort"> Décroissant</label>
-            </div>
-            </div>
+          </div>
         <button class="apply-btn">Appliquer</button>
       </div>
 
       <div class="main-content-gestion">
           <div class="add-header">
               <input placeholder="Search..." class="search-input" name="search" type="search"/>
-              <button class="add-something">Ajouter une nouvelle entreprise
+              <button class="add-something" onclick="window.location.href='add_entreprise.php'">Ajouter une nouvelle entreprise
                   <div class="plus-icon">+</div>
               </button>
+          </div>
+          <div class="pilote-card-entreprise">
+              <div class="pilote-card-header">
+                  <div class="pilote-company-name">Thales</div>
+                  <div class="pilote-tags-container">
+                      <div class="pilote-tag">Cybersécurité</div>
+                      <div class="pilote-tag">Aérospatiale</div>
+                  </div>
+              </div>
+
+              <div class="pilote-description">
+                  Thales est un groupe multinational français spécialisé dans les hautes technologies. Il opère dans plusieurs secteurs stratégiques, notamment la défense, l'aérospatiale, la cybersécurité et le transport. Présent dans plus de 68 pays, Thalès développe des solutions innovantes pour répondre aux défis de sécurité et de transformation numérique des industries critiques.
+              </div>
+
+              <div class="pilote-card-footer">
+                  <div class="pilote-offres-count">Nombre d'offres publiées : 4 </br> Evaluation actuelle : 4.2 étoiles</div>
+                  <button class="pilote-view-btn" onclick="window.location.href='card_entreprise_pilote.php'">Regarder</button>
+              </div>
           </div>
       </div>
   </main>

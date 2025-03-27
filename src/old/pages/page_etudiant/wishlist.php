@@ -15,13 +15,7 @@
       <div class="back-button">
         <a href="page_etudiant.php"><span class="arrow">←</span> Accueil</a>
       </div>
-      <div class="search-bar">
-        <div class="tabs">
-          <button >Entreprises</button>
-          <button class="active">Offres</button>
-        </div>
-      </div>
-      <p class="main-title-wishlist" >Votre Wish-List est actuellement vide.</p>
+      <p class="main-title-wishlist" >Votre Wishlist est actuellement vide.</p>
       <p class="sub-title-wishlist" >C’est bien dommage ...</p>
     </div>
       <div class="back-design">

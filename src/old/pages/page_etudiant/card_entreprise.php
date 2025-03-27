@@ -5,24 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stage Connect</title>
-    <link rel="stylesheet" href="styles_page_pilote.css">
-</head>
+    <link rel="stylesheet" href="../page_pilote/styles_page_pilote.css">
+    <link rel="stylesheet" href="styles_page_etudiant.css"></head>
 <body>
 
 <?php
 
-if (isset($GLOBALS['adminPage']) && $GLOBALS['adminPage']) {
-    $GLOBALS['pilotePage'] = false;
-} else {
-    $GLOBALS['pilotePage'] = true;
-    $GLOBALS['adminPage'] = false;
-}
-
-include 'navbar-pilote.php';
+include 'navbar-etudiant.php';
 ?>
-<main class="main-content-gestion">
+<main class="content-principal">
     <div class="back-button">
-        <a href="javascript:history.back()"><span class="arrow">←</span> Retour</a>
+        <a href="javascript:history.back()"><span class="arrow">←</span> Accueil</a>
     </div>
     <div class="card-entreprise">
         <div class="header-entreprise">
@@ -32,7 +25,6 @@ include 'navbar-pilote.php';
             <div class="tags-entreprise">
                 <div class="tag-entreprise">Cybersécurité</div>
                 <div class="tag-entreprise">Aérospatiale</div>
-
             </div>
         </div>
 
@@ -61,19 +53,12 @@ include 'navbar-pilote.php';
             <button class="button-offers-entreprise">Voir les offres publiées par cette entreprise</button>
         </div>
 
-        <div class="button-container-entreprise">
-            <div class="publication-info-container">
-                <div class="publication-info">
-                    Nombre d'offres publiées : 4
-                </div>
-                <div class="publication-info">
-                    Evaluation actuelle : 4.2 étoiles
-                </div>
+        <div class="card-footer">
+            <div class="publication-info">
+                Evaluation actuelle : 4.2 étoiles
             </div>
-            <button class="button-entreprise button-edit-entreprise">Modifier</button>
-            <button class="button-entreprise button-evaluate-entreprise" onclick="window.location.href='../rate.php'">Évaluer</button>
-            <button class="button-entreprise button-delete-entreprise" onclick="window.location.href='../delete.php'">Supprimer</button>
-        </div>
+                <button class="view-btn" onclick="window.location.href='../rate.php'"> Evaluer </button>
+            </div>
     </div>
 </main>
 <?php include '../footer.php'; ?>

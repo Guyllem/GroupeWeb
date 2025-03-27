@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stage Connect</title>
     <link rel="stylesheet" href="styles_page_admin.css">
+    <link rel="stylesheet" href="../page_pilote/styles_page_pilote.css">
+
 </head>
 <body>
 
@@ -78,9 +80,29 @@
     <div class="main-content-gestion">
         <div class="add-header">
             <input placeholder="Search..." class="search-input" name="search" type="search"/>
-            <button class="add-something">Ajouter un nouveau pilote
+            <button class="add-something" onclick="window.location.href='add_pilote.php'">Ajouter un nouveau pilote
                 <div class="plus-icon">+</div>
             </button>
+        </div>
+        <div class="card-student">
+            <div class="card-student-header">
+                <div class="name-student">
+                    <h3> Imene ZAIDI</h3>
+                </div>
+                <div class="location-info">
+                    <div class="promotion-student">CPI A2 INFO - Nancy</div>
+                </div>
+            </div>
+            <div class="card-student-footer">
+                <div class="stats-student">
+                    <div class="stat-item-student">
+                        <span></span>
+                    </div>
+                </div>
+                <div class="actions-student">
+                    <button class="view-btn-student" onclick="window.location.href='card_pilote.php'">Regarder</button>
+                </div>
+            </div>
         </div>
     </div>
 

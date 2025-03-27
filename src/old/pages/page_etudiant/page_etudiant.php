@@ -117,19 +117,19 @@
 
     <div class="main-section">
       <div class="search-bar">
-        <div class="tabs">
-          <button >Entreprises</button>
-          <button class="active">Offres</button>
-        </div>
-        <div class="search-container">
+          <a href="page-etudiant-entreprises.php" class="switch-button">Voir les entreprises</a>
+          <div class="search-container">
           <input placeholder="Search..." class="search-input" name="search" type="search"/>
         </div>
       </div>
 
       <div class="card">
         <div class="card-header">
-          <h3>Stage Développeur Full-Stack</h3>
-          <div class="tags">
+            <div class="name-and-company">
+                <h3>Stage Développeur Full-Stack</h3>
+                <h4>EDF</h4>
+            </div>
+            <div class="tags">
             <span class="tag">Développement logiciel</span>
             <span class="tag">Web</span>
             <span class="tag">Informatique</span>
@@ -169,9 +169,7 @@
                 </svg>
               </div>
             </div>
-
-            <button class="view-btn">Regarder</button>
-
+              <button class="view-btn" onclick="window.location.href='card_offre.php'">Regarder</button>
           </div>
         </div>
       </div>

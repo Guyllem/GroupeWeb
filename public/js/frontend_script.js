@@ -89,4 +89,85 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     });
+
+    // Éléments du DOM
+    const starInputs = document.querySelectorAll('.star-rating input');
+    const validateBtn = document.querySelector('.validate-btn');
+    const backBtn = document.querySelector('.back-btn');
+    const ratingValue = document.querySelector('.rating-value');
+    const confirmationPopup = document.getElementById('confirmationPopup');
+    const closePopupBtn = document.querySelector('.close-popup');
+
+    let selectedRating = 0;
+
+    // Gestion des étoiles
+    starInputs.forEach(input => {
+        input.addEventListener('change', function() {
+            selectedRating = this.value;
+            ratingValue.textContent = `${selectedRating}/5`;
+
+            // Activer le bouton de validation
+            validateBtn.disabled = false;
+
+            // Mise à jour visuelle des étoiles sélectionnées
+            updateStarsDisplay(selectedRating);
+        });
+    });
+
+    // Fonction pour mettre à jour l'affichage des étoiles
+    function updateStarsDisplay(rating) {
+        // Réinitialiser toutes les étoiles
+        starInputs.forEach(input => {
+            const label = document.querySelector(`label[for="${input.id}"]`);
+            if (parseInt(input.value) <= parseInt(rating)) {
+                label.classList.add('selected');
+            } else {
+                label.classList.remove('selected');
+            }
+        });
+    }
+
+    // Gestion du bouton retour
+    backBtn.addEventListener('click', function() {
+        // Redirection vers la page précédente
+        window.history.back();
+    });
+
+    // Gestion du bouton valider
+    validateBtn.addEventListener('click', function() {
+        if (selectedRating > 0) {
+            // Ici, vous pouvez ajouter le code pour envoyer la note à votre backend
+            // Par exemple avec une requête AJAX ou fetch
+
+            // Simulation d'envoi (à remplacer par votre logique d'envoi réelle)
+            console.log(`Note envoyée: ${selectedRating}/5`);
+
+            // Afficher la popup de confirmation
+            confirmationPopup.style.display = 'flex';
+        }
+    });
+
+
+    // Animation sur hover des étoiles
+    const starLabels = document.querySelectorAll('.star-rating label');
+
+    starLabels.forEach(label => {
+        label.addEventListener('mouseover', function() {
+            const rating = this.getAttribute('for').replace('star', '');
+
+            // Effet visuel temporaire au survol
+            showTemporaryRating(rating);
+        });
+
+        label.addEventListener('mouseout', function() {
+            // Rétablir la note sélectionnée et l'affichage lorsque la souris quitte
+            updateStarsDisplay(selectedRating);
+            // Réinitialiser également le texte d'affichage de la note
+            ratingValue.textContent = selectedRating > 0 ? `${selectedRating}/5` : `0/5`;
+        });
+    });
+
+    function showTemporaryRating(rating) {
+        ratingValue.textContent = `${rating}/5`;
+    }
 });

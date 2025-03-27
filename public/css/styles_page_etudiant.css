@@ -28,6 +28,10 @@ main {
     width: 100%;
 }
 
+.content-principal {
+    padding: 20px;
+}
+
 /* Modification pour le container principal */
 .container {
     width: 100%;
@@ -139,18 +143,20 @@ nav {
 
 
 .filters {
-    width: 30%;
+    width: 300px; /* Remplace le pourcentage par une valeur fixe */
+    min-width: 300px; /* Empêche le rétrécissement */
+    flex-shrink: 0; /* Empêche le rétrécissement avec flexbox */
     padding: 20px;
     background-color: #DEDEFF;
     border-color: #3F51B5;
-    shadow: 0.2rem 0.2rem 0.2rem rgba(0, 0, 0, 0.3);
     border-right: 2px solid #3F51B5;
     min-height: calc(100vh - 115px);
     display: flex;
     flex-direction: column;
     overflow-y: auto;
     height: 100%;
-    justify-content: flex-start; /* Aligne les éléments au début du conteneur */
+    justify-content: flex-start;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Remplace la propriété 'shadow' incorrecte */
 }
 
 .filter-sections-container {
@@ -230,64 +236,27 @@ nav {
 
 
 
-
-/* Tabs bar styles */
-.tabs {
-    position: relative;
-    display: flex;
-    gap: 10px;
-    background-color: #f0f0f0;
-    border-radius: 10px;
-    color: #3F51B5;
-    border: 1px solid black;
-    box-shadow: 0.2rem 0.2rem 0.2rem rgba(0, 0, 0, 0.3);
-    overflow: hidden;
+/* Bouton de navigation entre offres et entreprises */
+.switch-button {
+    display: inline-flex; /* Permet un meilleur contrôle de la hauteur */
+    align-items: center; /* Centre le texte verticalement */
+    background-color: #3F51B5;
+    color: white;
+    padding: 12px 20px; /* Ajusté pour correspondre à search-input */
+    border-radius: 12px; /* Harmonisé avec la recherche */
+    text-decoration: none;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+    height: 44px; /* Hauteur fixe correspondant à l'input */
+    margin-bottom: 0; /* Suppression de la marge qui créait un décalage */
 }
 
-.tabs .active {
-    border: 0.5px solid black;
+.switch-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0.5rem 0.5rem 0.5rem rgba(0, 0, 0, 0.3);
 }
 
-.tabs::before {
-    content: "";
-    position: absolute;
-    width: 50%;
-    height: 100%;
-    background-color: #DEDEFF;
-    border-radius: 10px;
-    left: 50%;
-    transition: left 0.3s ease-in-out;
-    z-index: 0;
-}
-
-.tabs button {
-    flex: 1;
-    padding: 8px 15px;
-    background-color: transparent;
-    border: none;
-    border-radius: 10px;
-    color: #3F51B5;
-    cursor: pointer;
-    position: relative;
-    z-index: 1;
-    transition: color 0.3s ease-in-out;
-}
-
-.tabs:hover::before {
-    left: 0%;
-}
-
-.tabs button.active {
-    color: #3F51B5;
-    padding-left: 20px;
-    padding-right: 20px;
-    z-index: 1;
-    border: none;
-}
-
-.tabs button:first-child:hover {
-    color: #3F51B5;
-}
 
 
 /* Search bar styles */
@@ -295,8 +264,8 @@ nav {
     display: flex;
     margin-bottom: 20px;
     gap: 10px;
-    text-align: right;
-    cursor: pointer;
+    align-items: center; /* Centre verticalement les éléments */
+    justify-content: space-between; /* Espacement optimal entre les éléments */
 }
 
 .search-btn {
@@ -431,9 +400,10 @@ footer a:hover::after {
     margin-bottom: 5px;
 }
 
-.email {
+
+.email, .campus {
     font-size: 20px;
-    margin-top: 15px;
+    margin-top: 5px;
     word-break: break-all;
 }
 
@@ -442,15 +412,48 @@ footer a:hover::after {
     text-align: center;
 }
 
-.skills-title {
-    color: #757DE8;
-    margin-bottom: 15px;
-    font-size: 22px;
+/* Styles pour le dropdown de compétences */
+.skill-dropdown-container {
+    position: relative;
+    width: 100%;
 }
 
+.skill-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    z-index: 100;
+    margin-top: 5px;
+}
+
+.skill-dropdown.active {
+    display: block;
+}
+
+.skill-dropdown-item {
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-size: 14px;
+    color: #333;
+}
+
+.skill-dropdown-item:hover {
+    background-color: #f4f4f4;
+}
+
+/* Style pour les badges de compétences */
 .skills-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 10px;
     margin-bottom: 20px;
 }
@@ -458,28 +461,56 @@ footer a:hover::after {
 .skill-badge {
     background-color: #757DE8;
     color: white;
-    text-align: center;
-    padding: 10px;
+    padding: 8px 12px;
     border-radius: 5px;
     font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
+/* Style pour la croix de suppression */
+.skill-delete {
+    display: inline-block;
+    margin-left: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    text-align: center;
+    border-radius: 50%;
+    transition: background-color 0.2s;
+}
+
+.skill-delete:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Style pour le bouton d'ajout */
 .add-skill-button {
     background-color: #f4f4f4;
-    color: black;
-    border-width: 0.5px;
+    color: #333;
+    border: 1px solid #ddd;
     border-radius: 25px;
     padding: 12px 20px;
     font-size: 16px;
     cursor: pointer;
     width: 100%;
     margin-bottom: 15px;
+    transition: all 0.2s ease;
 }
 
 .add-skill-button:hover {
+    background-color: #e8e8e8;
     transform: scale(1.01);
-    box-shadow: 0.2rem 0.2rem 0.2rem rgba(0, 0, 0, 0.3);
-    transition: all 0.3s ease-in-out;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.skills-title {
+    color: #757DE8;
+    margin-bottom: 15px;
+    font-size: 22px;
 }
 
 
@@ -487,19 +518,28 @@ footer a:hover::after {
 /* WishList page styles */
 .main-title-wishlist {
     color: #3b5cbc;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     font-size: 40px;
+    text-align: center;
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    margin: 0;
+    z-index: 10;
 }
 
 .sub-title-wishlist {
-    margin-top: 28px;
     font-size: 28px;
     color: rgba(59, 92, 188, 0.7);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    text-align: center;
+    position: absolute;
+    top: calc(30% + 40px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    margin: 0;
+    z-index: 10;
 }
 
 
@@ -568,8 +608,7 @@ footer a:hover::after {
     display: none;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
-    padding-top: 50%;
+    justify-content: center; /* Remplace flex-start pour centrer verticalement */
     transition: left 0.3s ease-in-out;
     z-index: 1000;
 }
@@ -737,8 +776,18 @@ footer a:hover::after {
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
-    width: 80%;
+    width: 90%;
     margin: 50px auto;
+}
+
+.card h3 {
+    margin-right: 10px;
+    font-size: 25px;
+}
+
+.card h4 {
+    font-size: 16px;
+    opacity: 0.7;
 }
 
 /* Header de la carte */
@@ -746,6 +795,12 @@ footer a:hover::after {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.name-and-company {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .logo-placeholder {
@@ -768,7 +823,7 @@ h3 {
 .tags {
     display: grid;
     gap: 12px;
-    grid-template-columns: repeat(3, 2fr);
+    grid-template-columns: repeat(3, 1fr);
     justify-content: end;
 }
 
@@ -796,6 +851,7 @@ h3 {
 /* Footer */
 .card-footer {
     display: flex;
+    margin-top: 20px ;
     justify-content: space-between;
     align-items: center;
 }
@@ -814,19 +870,17 @@ h3 {
 .view-btn {
     border: none;
     font-size: 14px;
-    padding: 8px 12px;
+    padding: 10px 15px;
+    margin-left: 10px;
     cursor: pointer;
     border-radius: 4px;
+    background-color: #757DE8;
+    color: white;
 }
 
 .heart-btn {
     color: #ff6b6b;
     background-color: transparent;
-}
-
-.view-btn {
-    background-color: #757DE8;
-    color: white;
 }
 
 .view-btn:hover {
@@ -892,6 +946,78 @@ h3 {
     display: block
 }
 
+/* Styles spécifiques pour la page de postulation */
+.postulate-section {
+    margin: 2rem 0;
+    text-align: center;
+}
+
+.file-upload-container {
+    margin: 1.5rem 0;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.file-upload-label {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.file-upload-label:hover {
+    background-color: #ebebeb;
+}
+
+.file-icon {
+    margin-right: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(63, 81, 181, 0.1);
+}
+
+.file-info {
+    flex: 1;
+    text-align: left;
+}
+
+.file-title {
+    font-size: 14px;
+    font-weight: bold;
+    color: #3F51B5;
+    margin-bottom: 4px;
+}
+
+.file-subtitle {
+    font-size: 12px;
+    color: #666;
+}
+
+.file-input {
+    display: none;
+}
+
+.file-error {
+    color: #ff5252;
+    font-size: 12px;
+    text-align: left;
+    padding: 0 15px 10px;
+    min-height: 18px;
+}
+
+.submission-date {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 15px;
+}
+
 
 /* Responsive design -> Media Queries */
 @media (max-width: 768px) {
@@ -910,11 +1036,6 @@ h3 {
 
     .email {
         font-size: 16px;
-    }
-
-    .skills-grid {
-        grid-template-columns: repeat(2, 1fr);
-
     }
 
     .logo {
@@ -942,14 +1063,18 @@ h3 {
         margin: 10px 0;
     }
 
-    .tabs {
+    .search-input {
         width: 100%;
-        justify-content: space-around;
     }
 
-    .tabs button {
-        flex: 1;
-        text-align: center;
+    .search-input:focus {
+        width: 100%;
+    }
+
+    .switch-button {
+        width: 80%; /* Même largeur que le conteneur de recherche */
+        margin-bottom: 10px;
+        justify-content: center; /* Centre le texte horizontalement */
     }
 
     .back-design{
@@ -1002,12 +1127,48 @@ h3 {
         margin-top: 15px;
         grid-template-columns: repeat(2, 1fr);
     }
+
+    .skills-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .skill-dropdown {
+        top: auto; /* Annule la position par défaut */
+        bottom: 100%; /* Place le dropdown au-dessus du bouton */
+        margin-top: 0; /* Supprime la marge du haut */
+        margin-bottom: 5px; /* Ajoute une marge en bas */
+        max-height: 180px; /* Réduit légèrement la hauteur max */
+        border-radius: 4px 4px 0 0; /* Arrondit seulement les coins supérieurs */
+    }
+
+
+    .file-upload-label {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .file-icon {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+
+    .file-info {
+        text-align: center;
+    }
+
+    .name-and-company {
+        text-align: center;
+    }
 }
 
 /* add media query */
-@media (max-width: 325px) {
+@media (max-width: 480px) {
     .slide-filter {
-        width: 80%;
+        width: 75%;
+    }
+
+    .skills-grid {
+        grid-template-columns: 1fr;
     }
 }
 

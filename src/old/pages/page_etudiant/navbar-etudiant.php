@@ -7,7 +7,7 @@
     <div class="logo">Stage Connect</div>
     <div class="nav-right">
         <a href="mon_profil.php" class="nav-item">Mon Profil</a>
-        <a href="#" class="nav-item">Se déconnecter</a>
+        <a href="../logout.php" class="nav-item">Se déconnecter</a>
     </div>
 
     <?php
@@ -25,7 +25,7 @@
     <h2><a href="wishlist.php" class="menu-item">Wishlist</a></h2>
     <h2><a href="mes_offres.php" class="menu-item">Mes Offres</a></h2>
     <h2><a href="mon_profil.php" class="menu-item">Mon Profil</a></h2>
-    <h2><a href="#" class="menu-item-logout">Se déconnecter</a></h2>
+    <h2><a href="../logout.php" class="menu-item-logout">Se déconnecter</a></h2>
     <button class="close-menu" id="close-menu">✖</button>
 </div>
 
