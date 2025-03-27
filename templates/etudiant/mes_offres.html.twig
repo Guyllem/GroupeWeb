@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StageConnect - Mes Offres</title>
+    <link rel="stylesheet" href="{{ asset('css/styles_page_etudiant.css') }}">
+</head>
+<body>
+<main>
+    <div class="container">
+        {% include 'partials/navbar-etudiant.html.twig' %}
+
+        <div class="main-content">
+            <div class="main-section">
+                <div class="search-bar">
+                    <div class="back-button">
+                        <a href="{{ url('etudiant') }}"><span class="arrow">←</span> Accueil</a>
+                    </div>
+                    <div class="search-container">
+                        <input placeholder="Search..." class="search-input" name="search" type="search"/>
+                    </div>
+                </div>
+
+                {% if offers|length > 0 %}
+                    {% for offer in offers %}
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>{{ offer.Titre_Offre }}</h3>
+                                <div class="tags">
+                                    {% for skill in offer.skills %}
+                                        <span class="tag">{{ skill.Nom_Competence }}</span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <p>{{ offer.Description_Offre }}</p>
+                            </div>
+                            <div class="card-footer">
+                                <span class="publish-date">Candidature du {{ offer.Date_Candidature|date('d/m/Y') }}</span>
+                                <div class="actions">
+                                    <a href="{{ url('offres/details/' ~ offer.Id_Offre) }}" class="view-btn">Regarder</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="no-applications">
+                        <p>Vous n'avez pas encore postulé à des offres.</p>
+                        <a href="{{ url('etudiant') }}" class="view-btn">Découvrir les offres</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</main>
+{% include 'partials/footer.html.twig' %}
+<script src="{{ asset('js/frontend_script.js') }}"></script>
+</body>
+</html>

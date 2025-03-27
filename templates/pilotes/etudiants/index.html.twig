@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StageConnect - Gestion des Étudiants</title>
+    <link rel="stylesheet" href="{{ asset('css/styles_page_pilote.css') }}">
+</head>
+<body>
+{% set responsiveFilter = true %}
+{% set pilotePage = true %}
+{% include 'partials/navbar-pilote.html.twig' %}
+
+<div class="slide-filter" id="slide-filter">
+    <div class="slide-filter-content">
+        <h3>Filtres</h3>
+        <div class="slide-filter-section">
+            <h4>Campus :</h4>
+            <div class="dropdown">
+                <button class="dropdown-toggle">Choisir ↓</button>
+                <div class="dropdown-menu">
+                    <a href="#" class="dropdown-item" data-value="Nancy">Nancy</a>
+                    <a href="#" class="dropdown-item" data-value="Metz">Metz</a>
+                    <a href="#" class="dropdown-item" data-value="Listembourg">Listembourg</a>
+                </div>
+            </div>
+        </div>
+        <div class="slide-filter-section">
+            <h4>Classe :</h4>
+            <div class="dropdown">
+                <button class="dropdown-toggle">Choisir ↓</button>
+                <div class="dropdown-menu">
+                    <a href="#" class="dropdown-item" data-value="A1">A1</a>
+                    <a href="#" class="dropdown-item" data-value="A2 Info">A2 Info</a>
+                    <a href="#" class="dropdown-item" data-value="A2 Géné">A2 Géné</a>
+                </div>
+            </div>
+        </div>
+        <div class="slide-filter-section">
+            <h4>Nombres d'offres postulées :</h4>
+            <h5> Min: <input type="text" placeholder="0" class="input-min"> </h5>
+            <h5> Max : <input type="text" placeholder="10" class="input-max"> </h5>
+        </div>
+        <div class="slide-filter-section">
+            <h4>Nombres d'offres en wishlist :</h4>
+            <div class="duration-inputs">
+                <h5> Min : <input type="text" placeholder="0" class="input-min"> </h5>
+                <h5> Max : <input type="text" placeholder="15" class="input-max"> </h5>
+            </div>
+        </div>
+        <button class="slide-apply-btn">Appliquer</button>
+        <button class="close-filter" id="close-filter">✖</button>
+    </div>
+</div>
+
+<main>
+    <div class="filters">
+        <h3>Filtres</h3>
+        <div class="filter-section">
+            <h4>Campus :</h4>
+            <div class="dropdown">
+                <button class="dropdown-toggle">Choisir ↓</button>
+                <div class="dropdown-menu">
+                    <a href="#" class="dropdown-item" data-value="Nancy">Nancy</a>
+                    <a href="#" class="dropdown-item" data-value="Metz">Metz</a>
+                    <a href="#" class="dropdown-item" data-value="Listembourg">Listembourg</a>
+                </div>
+            </div>
+        </div>
+        <div class="filter-section">
+            <h4>Classe :</h4>
+            <div class="dropdown">
+                <button class="dropdown-toggle">Choisir ↓</button>
+                <div class="dropdown-menu">
+                    <a href="#" class="dropdown-item" data-value="A1">A1</a>
+                    <a href="#" class="dropdown-item" data-value="A2 Info">A2 Info</a>
+                    <a href="#" class="dropdown-item" data-value="A2 Géné">A2 Géné</a>
+                </div>
+            </div>
+        </div>
+        <div class="filter-section">
+            <h4>Nombres d'offres postulées :</h4>
+            <h5> Min: <input type="text" placeholder="0" class="input-min"> </h5>
+            <h5> Max : <input type="text" placeholder="10" class="input-max"> </h5>
+        </div>
+        <div class="filter-section">
+            <h4>Nombres d'offres en wishlist :</h4>
+            <div class="duration-inputs">
+                <h5> Min : <input type="text" placeholder="0" class="input-min"> </h5>
+                <h5> Max : <input type="text" placeholder="15" class="input-max"> </h5>
+            </div>
+        </div>
+        <button class="apply-btn">Appliquer</button>
+    </div>
+
+    <div class="main-content-gestion">
+        <div class="add-header">
+            <input placeholder="Search..." class="search-input" name="search" type="search"/>
+            <a href="{{ url('pilotes/etudiants/ajouter') }}" class="add-something">Ajouter un nouvel étudiant
+                <div class="plus-icon">+</div>
+            </a>
+        </div>
+
+        <div class="students-list">
+            {% for student in students %}
+                <div class="student-card">
+                    <div class="student-info">
+                        <h3>{{ student.Nom_Utilisateur }} {{ student.Prenom_Utilisateur }}</h3>
+                        <p>{{ student.Nom_Promotion }}</p>
+                    </div>
+                    <div class="student-stats">
+                        <span class="stat">Candidatures: {{ student.application_count }}</span>
+                        <span class="stat">Wishlist: {{ student.wishlist_count }}</span>
+                    </div>
+                    <div class="student-actions">
+                        <a href="{{ url('pilotes/etudiants/' ~ student.Id_Etudiant) }}" class="view-btn">Détails</a>
+                    </div>
+                </div>
+            {% else %}
+                <div class="no-students">
+                    <p>Aucun étudiant trouvé.</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</main>
+
+{% include 'partials/footer.html.twig' %}
+<script src="{{ asset('js/frontend_script.js') }}"></script>
+</body>
+</html>

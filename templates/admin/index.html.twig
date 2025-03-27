@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StageConnect - Espace Admin</title>
+    <link rel="stylesheet" href="{{ asset('css/styles_page_admin.css') }}">
+</head>
+<body>
+<nav>
+    <div class="logo">Stage Connect</div>
+    <div class="nav-right">
+        <a href="{{ url('logout') }}" class="nav-item">Se déconnecter</a>
+    </div>
+    <button class="logout-icon" id="logout-icon">
+        <img src="{{ asset('assets/icons/logout.png') }}" alt="Logout Icon">
+    </button>
+</nav>
+
+<header>
+    <img class="bulle1" src="{{ asset('assets/images/bulle3.png') }}" alt="bulle1" />
+    <img class="arc-en-ciel" src="{{ asset('assets/images/arc en ciel.png') }}" alt="arc en ciel" />
+    <img class="bulle2" src="{{ asset('assets/images/bulle2.png') }}" alt="bulle2" />
+</header>
+
+<img src="{{ asset('assets/images/bulle3.png') }}" alt="bulle3" class="bulle3" />
+<img src="{{ asset('assets/images/arc en ciel2.png') }}" alt="arc-en-ciel2" class="arc-en-ciel2" />
+<img class="bulle4" src="{{ asset('assets/images/bulle2.png') }}" alt="bulle4" />
+
+<div class="titre">Bienvenue dans votre espace administrateur</div>
+
+<main class="main-content">
+    <a class="block" href="{{ url('admin/pilotes') }}">Gestion des pilotes</a>
+    <a class="block" href="{{ url('admin/etudiants') }}">Gestion des élèves</a>
+    <a class="block" href="{{ url('admin/offres') }}">Gestion des offres</a>
+    <a class="block" href="{{ url('admin/entreprises') }}">Gestion des entreprises</a>
+</main>
+
+{% include 'partials/footer.html.twig' %}
+<script src="{{ asset('js/frontend_script.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StageConnect - Détails Étudiant</title>
+    <link rel="stylesheet" href="{{ asset('css/styles_page_pilote.css') }}">
+</head>
+<body>
+{% set pilotePage = true %}
+{% include 'partials/navbar-pilote.html.twig' %}
+
+<main class="content-principal">
+    <div class="card">
+        <div class="card-header">
+            <h1>{{ student.Nom_Utilisateur }} {{ student.Prenom_Utilisateur }}</h1>
+            <span class="tag">{{ student.Nom_Promotion }}</span>
+        </div>
+        <span class="info-com">Informations complémentaires</span>
+        <div class="card-body">
+            <div id="second-content">
+                <div id="mail-eleves">
+                    <p>Adresse mail :</p>
+                    <p id="mm">{{ student.Email_Utilisateur }}</p>
+                </div>
+                <div id="Campus-eleves">
+                    <p>Campus :</p>
+                    <p id="mm">{{ student.Nom_Campus }}</p>
+                </div>
+                <button class="boutton-pwd" type="button">Modifier le Mot de passe</button>
+            </div>
+            <div class="milieu-pages">
+                <h1>Compétences</h1>
+                <ul>
+                    {% for skill in student.skills %}
+                        <div id="{{ loop.index is odd ? 'un' : 'de' }}"><li>{{ skill.Nom_Competence }}</li></div>
+                    {% else %}
+                        <div id="un"><li>Aucune compétence</li></div>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="btoo">
+            <a href="{{ url('pilotes/etudiants/' ~ student.Id_Etudiant ~ '/wishlist') }}" class="boutton-wishlist">Accéder à la Wishlist</a>
+            <a href="{{ url('pilotes/etudiants/' ~ student.Id_Etudiant ~ '/offres') }}" class="boutton-offres">Accéder aux offres postulées</a>
+            <button class="boutton-supp" type="button" onclick="confirmDelete('{{ url('pilotes/etudiants/' ~ student.Id_Etudiant ~ '/supprimer') }}')">Supprimer</button>
+            <a href="{{ url('pilotes/etudiants/' ~ student.Id_Etudiant ~ '/modifier') }}" class="boutton-modif">Modifier</a>
+        </div>
+    </div>
+</main>
+
+{% include 'partials/footer.html.twig' %}
+<script src="{{ asset('js/frontend_script.js') }}"></script>
+<script>
+    function confirmDelete(url) {
+        if (confirm("Êtes-vous sûr de vouloir supprimer cet étudiant ?")) {
+            window.location.href = url;
+        }
+    }
+</script>
+</body>
+</html>
