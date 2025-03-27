@@ -86,7 +86,7 @@ include 'navbar-pilote.php';
                 </div>
             </div>
             <button class="button-entreprise button-edit-entreprise">Modifier</button>
-            <button class="button-entreprise button-delete-entreprise">Supprimer</button>
+            <button class="button-entreprise button-delete-entreprise" onclick="window.location.href='../delete.php'">Supprimer</button>
         </div>
     </div>
 </main>

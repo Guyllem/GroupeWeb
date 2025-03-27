@@ -46,9 +46,11 @@
             </div>
 
             <div class="eleve-actions">
+                <div class="eleve-liens">
+                </div>
                 <div class="eleve-admin-actions">
                     <button class="eleve-btn-modifier">Modifier</button>
-                    <button class="eleve-btn-supprimer">Supprimer</button>
+                    <button class="eleve-btn-supprimer" onclick="window.location.href='../delete.php'">Supprimer</button>
                 </div>
             </div>
         </div>
