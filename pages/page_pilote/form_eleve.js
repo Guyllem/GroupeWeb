@@ -22,13 +22,8 @@ document.addEventListener("DOMContentLoaded", function() {
     const telephoneError = document.getElementById('telephone-error');
 
     // Validation en temps réel pour activer/désactiver le bouton
-    const inputs = [nomInput, prenomInput, emailInput,
+    const inputs = [nomInput, prenomInput, emailInput, passwordInput,
         promotionInput, villeInput, telephoneInput];
-
-    // Ajouter passwordInput à la liste seulement s'il existe
-    if (passwordInput) {
-        inputs.push(passwordInput);
-    }
 
     // Fonction de validation du nom (pas de chiffres)
     function validateName(value, errorElement) {
@@ -103,15 +98,11 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     // Fonction pour vérifier si tous les champs sont valides
-    // Fonction pour vérifier si tous les champs sont valides
     function checkFormValidity() {
         const isNomValid = validateName(nomInput.value, nomError);
         const isPrenomValid = validateName(prenomInput.value, prenomError);
         const isEmailValid = validateEmail(emailInput.value);
-
-        // Vérifier le mot de passe seulement s'il existe
-        const isPasswordValid = passwordInput ? validatePassword(passwordInput.value) : true;
-
+        const isPasswordValid = validatePassword(passwordInput.value);
         const isPromotionValid = validateSelect(promotionInput.value, promotionError);
         const isVilleValid = validateSelect(villeInput.value, villeError);
         const isPhoneValid = validatePhone(telephoneInput.value);

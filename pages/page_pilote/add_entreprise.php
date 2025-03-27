@@ -66,7 +66,7 @@
             </div>
 
             <div class="form-group" style="text-align: center;">
-                <button type="submit" id="submit-btn" class="form-submit" disabled>Ajouter l'entreprise</button>
+                <button type="submit" id="submit-btn" class="form-submit" disabled>Ajouter l'offre</button>
             </div>
         </form>
     </div>
@@ -74,7 +74,7 @@
 
     <div class="confirmation-popup" id="confirmationPopup">
         <div class="popup-content">
-            <p>L'entreprise a bien été ajoutée</p>
+            <p>L'offre a bien été ajoutée</p>
             <button class="close-popup" onclick="history.back()">Fermer</button>
         </div>
     </div>
