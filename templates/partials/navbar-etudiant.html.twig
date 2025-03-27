@@ -1,0 +1,27 @@
+<nav>
+    <div class="nav-left">
+        <a href="{{ url('etudiant/wishlist') }}" class="nav-item">WishList</a>
+        <a href="{{ url('etudiant/mes_offres') }}" class="nav-item">Mes Offres</a>
+    </div>
+    <div class="logo">Stage Connect</div>
+    <div class="nav-right">
+        <a href="{{ url('etudiant/mon_profil') }}" class="nav-item">Mon Profil</a>
+        <a href="{{ url('logout') }}" class="nav-item">Se déconnecter</a>
+    </div>
+
+    {% if responsiveFilter is defined and responsiveFilter %}
+        <button class="filter-menu" id="filter-menu">
+            <img src="{{ asset('assets/icons/entonnoir.png') }}" alt="Filter Icon">
+        </button>
+    {% endif %}
+
+    <button class="burger-menu" id="burger-menu">☰</button>
+</nav>
+<div class="slide-menu" id="slide-menu">
+    <h2><a href="{{ url('etudiant') }}" class="menu-item">Accueil</a></h2>
+    <h2><a href="{{ url('etudiant/wishlist') }}" class="menu-item">Wishlist</a></h2>
+    <h2><a href="{{ url('etudiant/mes_offres') }}" class="menu-item">Mes Offres</a></h2>
+    <h2><a href="{{ url('etudiant/mon_profil') }}" class="menu-item">Mon Profil</a></h2>
+    <h2><a href="{{ url('logout') }}" class="menu-item-logout">Se déconnecter</a></h2>
+    <button class="close-menu" id="close-menu">✖</button>
+</div>

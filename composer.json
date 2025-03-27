@@ -1,0 +1,47 @@
+{
+  "name": "cesi/lebonplan",
+  "description": "description",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Matthieu MICHEL",
+      "email": "matthieu.michel1@viacesi.fr"
+    },
+    {
+      "name": "Guyllem BOYER",
+      "email": "guyllem.boyer@viacesi.fr"
+    },
+    {
+      "name": "Kelian DE MOURA",
+      "email": "kelian.demoura@viacesi.fr"
+    },
+    {
+      "name": "Eliott LAWRNOVICZ",
+      "email": "eliott.lawrynovicz@viacesi.fr"
+    },
+    {
+      "name": "Louis DURENNE",
+      "email": "louis.durenne@viacesi.fr"
+    }
+  ],
+  "require": {
+    "php": "^7.4 || ^8.0",
+    "monolog/monolog": "^2.0",
+    "phpunit/phpunit": "^9.0",
+    "twig/twig": "^3.0",
+    "ext-pdo": "*",
+    "vlucas/phpdotenv": "^5.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/"
+    }
+  },
+  "config": {
+    "platform": {
+      "php": "7.4.3",
+      "ext-json": "1.7.0"
+    }
+  }
+}
