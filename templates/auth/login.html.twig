@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion - StageConnect</title>
+    <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+</head>
+<body>
+<header>
+    <img class="bulle1" src="{{ asset('assets/images/bulle1.png') }}" alt="bulle1" />
+    <img class="arc-en-ciel" src="{{ asset('assets/images/arc en ciel.png') }}" alt="arc en ciel" />
+    <h1 class="titre">StageConnect</h1>
+    <img class="bulle2" src="{{ asset('assets/images/bulle2.png') }}" alt="bulle2" />
+    <p class="slogan">La clé pour décrocher le stage parfait</p>
+</header>
+
+<main>
+    {% if error is defined %}
+        <div class="alert alert-danger">
+            {{ error }}
+        </div>
+    {% endif %}
+
+    <form method="post" action="{{ url('login') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+        <div class="email-form">
+            <label for="email">Email :</label><br />
+            <input type="email" id="email" name="email" required />
+        </div>
+
+        <div class="password-form">
+            <label for="password">Mot de passe :</label><br />
+            <input type="password" id="password" name="password" required />
+        </div>
+
+        <div class="checkbox-form">
+            <label><input type="checkbox" name="remember_me" /> Rester connecté</label>
+        </div>
+
+        <button type="submit" class="submit-btn">Se connecter</button>
+    </form>
+
+    <img src="{{ asset('assets/images/arc en ciel2.png') }}" alt="arc-en-ciel2" class="arc-en-ciel2" />
+    <img src="{{ asset('assets/images/bulle3.png') }}" alt="bulle3" class="bulle3" />
+</main>
+
+<footer>
+    <p id="bottom-text"> © {{ "now"|date("Y") }} - Web4all - Tous droits réservés. |
+        <a href="{{ url('mentions-legales') }}">Mentions légales</a> |
+        <a href="{{ url('politique-confidentialite') }}">Politique de confidentialité</a> |
+        <a href="{{ url('conditions-utilisation') }}">Conditions d'utilisation</a>
+    </p>
+</footer>
+
+<script src="{{ asset('js/script.js') }}"></script>
+</body>
+</html>
