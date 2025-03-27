@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StageConnect - Mon Profil</title>
+    <link rel="stylesheet" href="{{ asset('css/styles_page_etudiant.css') }}">
+</head>
+<body>
+<main>
+    <div class="container">
+        {% include 'partials/navbar-etudiant.html.twig' %}
+        <div class="profile-container">
+            <div class="profile-header">
+                <div class="back-button">
+                    <a href="{{ url('etudiant') }}"><span class="arrow">←</span> Accueil</a>
+                </div>
+                <h1 class="profile-title">Mon Profil</h1>
+            </div>
+
+            <div class="profile-content">
+                <div class="profile-info">
+                    <div class="user-card">
+                        <p class="username">{{ student.Prenom_Utilisateur }}</p>
+                        <p class="lastname">{{ student.Nom_Utilisateur }}</p>
+                        <p class="email">{{ student.Email_Utilisateur }}</p>
+                    </div>
+                </div>
+
+                <div class="skills-section">
+                    <h2 class="skills-title">Compétences :</h2>
+                    <div class="skills-grid">
+                        {% for skill in skills %}
+                            <div class="skill-badge">{{ skill.Nom_Competence }}</div>
+                        {% else %}
+                            <div class="skill-badge">Aucune compétence ajoutée</div>
+                        {% endfor %}
+                    </div>
+                    <button class="add-skill-button">Ajouter une compétence</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% include 'partials/footer.html.twig' %}
+<script src="{{ asset('js/frontend_script.js') }}"></script>
+</body>
+</html>

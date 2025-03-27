@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StageConnect - Ma Wishlist</title>
+    <link rel="stylesheet" href="{{ asset('css/styles_page_etudiant.css') }}">
+</head>
+<body>
+<main>
+    <div class="container">
+        {% include 'partials/navbar-etudiant.html.twig' %}
+        <div class="main-section">
+            <div class="back-button">
+                <a href="{{ url('etudiant') }}"><span class="arrow">←</span> Accueil</a>
+            </div>
+            <div class="search-bar">
+                <div class="tabs">
+                    <button>Entreprises</button>
+                    <button class="active">Offres</button>
+                </div>
+            </div>
+
+            {% if offers|length > 0 %}
+                {% for offer in offers %}
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>{{ offer.Titre_Offre }}</h3>
+                            <div class="tags">
+                                {% for skill in offer.skills %}
+                                    <span class="tag">{{ skill.Nom_Competence }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <p>{{ offer.Description_Offre }}</p>
+                        </div>
+                        <div class="card-footer">
+                            <span class="publish-date">Rémunération: {{ offer.Remuneration_Offre }}€</span>
+                            <div class="actions">
+                                <div class="heart-container" title="Retirer de la wishlist">
+                                    <input type="checkbox" class="checkbox" id="like-{{ offer.Id_Offre }}" checked>
+                                    <div class="svg-container">
+                                        <svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z">
+                                            </path>
+                                        </svg>
+                                        <svg viewBox="0 0 24 24" class="svg-filled" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Z">
+                                            </path>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <a href="{{ url('offres/details/' ~ offer.Id_Offre) }}" class="view-btn">Regarder</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="main-title-wishlist">Votre Wish-List est actuellement vide.</p>
+                <p class="sub-title-wishlist">C'est bien dommage ...</p>
+
+                <div class="back-design">
+                    <img class="bulle2-1" src="{{ asset('assets/images/bulle2.png') }}" alt="bulle2-1" />
+                    <img class="bulle2-2" src="{{ asset('assets/images/bulle2.png') }}" alt="bulle2-2" />
+                    <img class="bulle3-1" src="{{ asset('assets/images/bulle3.png') }}" alt="bulle3-1" />
+                    <img class="bulle3-2" src="{{ asset('assets/images/bulle3.png') }}" alt="bulle3-2" />
+                    <img class="bulle3-3" src="{{ asset('assets/images/bulle3.png') }}" alt="bulle3-3" />
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</main>
+{% include 'partials/footer.html.twig' %}
+<script src="{{ asset('js/frontend_script.js') }}"></script>
+</body>
+</html>

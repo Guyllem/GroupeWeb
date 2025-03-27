@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StageConnect - Gestion des Entreprises</title>
+    <link rel="stylesheet" href="{{ asset('css/styles_page_pilote.css') }}">
+</head>
+<body>
+{% set responsiveFilter = true %}
+{% set pilotePage = true %}
+{% include 'partials/navbar-pilote.html.twig' %}
+
+<div class="slide-filter" id="slide-filter">
+    <div class="slide-filter-content">
+        <h3>Filtres</h3>
+        <div class="slide-filter-section">
+            <h4>Localisation :</h4>
+            <input type="text" placeholder="Ville, Code Postal, Département, Région" class="input-location">
+        </div>
+        <div class="slide-filter-section">
+            <h4>Secteur :</h4>
+            <input type="text" placeholder="Informatique, BTP, Industrie" class="input-skills">
+        </div>
+        <div class="slide-filter-section">
+            <h4>Nombres d'offres :</h4>
+            <div class="slide-radio-group">
+                <label><input type="radio" name="sort"> Croissant</label>
+                <label><input type="radio" name="sort"> Décroissant</label>
+            </div>
+        </div>
+        <div class="slide-filter-section">
+            <h4>Popularité :</h4>
+            <div class="slide-radio-group">
+                <label><input type="radio" name="sort"> Croissant</label>
+                <label><input type="radio" name="sort"> Décroissant</label>
+            </div>
+        </div>
+        <button class="slide-apply-btn">Appliquer</button>
+        <button class="close-filter" id="close-filter">✖</button>
+    </div>
+</div>
+
+<main>
+    <div class="filters">
+        <h3>Filtres</h3>
+        <div class="filter-section">
+            <h4>Localisation :</h4>
+            <input type="text" placeholder="Ville, Code Postal, Département, Région" class="input-location">
+        </div>
+        <div class="filter-section">
+            <h4>Secteur :</h4>
+            <input type="text" placeholder="Informatique, BTP, Industrie" class="input-skills">
+        </div>
+        <div class="filter-section">
+            <h4>Nombres d'offres :</h4>
+            <div class="radio-group">
+                <label><input type="radio" name="sort"> Croissant</label>
+                <label><input type="radio" name="sort"> Décroissant</label>
+            </div>
+        </div>
+        <div class="filter-section">
+            <h4>Popularité :</h4>
+            <div class="radio-group">
+                <label><input type="radio" name="sort"> Croissant</label>
+                <label><input type="radio" name="sort"> Décroissant</label>
+            </div>
+        </div>
+        <button class="apply-btn">Appliquer</button>
+    </div>
+
+    <div class="main-content-gestion">
+        <div class="add-header">
+            <input placeholder="Search..." class="search-input" name="search" type="search"/>
+            <a href="{{ url('pilotes/entreprises/ajouter') }}" class="add-something">Ajouter une nouvelle entreprise
+                <div class="plus-icon">+</div>
+            </a>
+        </div>
+
+        <div class="enterprises-list">
+            {% for enterprise in enterprises %}
+                <div class="enterprise-card">
+                    <div class="enterprise-info">
+                        <h3>{{ enterprise.Nom_Entreprise }}</h3>
+                        <div class="tags">
+                            {% for tag in enterprise.tags %}
+                                <span class="tag">{{ tag.Nom_Secteur }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="enterprise-description">
+                        <p>{{ enterprise.Description_Entreprise|length > 150 ? enterprise.Description_Entreprise|slice(0, 150) ~ '...' : enterprise.Description_Entreprise }}</p>
+                    </div>
+                    <div class="enterprise-actions">
+                        <a href="{{ url('pilotes/entreprises/' ~ enterprise.Id_Entreprise) }}" class="view-btn">Détails</a>
+                    </div>
+                </div>
+            {% else %}
+                <div class="no-enterprises">
+                    <p>Aucune entreprise trouvée.</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</main>
+
+{% include 'partials/footer.html.twig' %}
+<script src="{{ asset('js/frontend_script.js') }}"></script>
+</body>
+</html>
