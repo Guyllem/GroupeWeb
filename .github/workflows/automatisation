@@ -3,28 +3,31 @@ name: Déploiement sur Azure Linux
 on:
   push:
     branches:
-      - main  # Le pipeline s'exécute à chaque push sur main
+      - main  # s'exécute à chaque push sur main uniquement
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest #VM temporaire pour tester le code
 
     steps:
-      - name: 📥 Cloner le dépôt
+      - name: Cloner le dépôt # on le clone si on veut effectuer des tests donc à voir avec matthieu
         uses: actions/checkout@v4
 
-      - name: 🔑 Configurer SSH
+      - name: Configurer SSH
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
 
-      - name: 🚀 Déployer sur Azure Linux
+      - name: Déployer sur Azure Linux
         run: |
           ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
-            cd /chemin/du/projet
+            cd /var/www/kuybi-test/StageConnect
             git pull origin main
-            npm install  # ou pip install -r requirements.txt
-            pm2 restart all  # ou systemctl restart nom-du-service
+
+            composer install --no-dev --optimize-autoloader
+            php artisan migrate --force
+            systemctl restart apache2 
+
           EOF
