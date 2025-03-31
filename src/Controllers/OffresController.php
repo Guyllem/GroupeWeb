@@ -1,151 +1,235 @@
 <?php
 namespace App\Controllers;
 
+use App\Models\OfferModel;
+use App\Models\StudentModel;
 use PDO;
 
 class OffresController extends BaseController {
+    private $offerModel;
+    private $studentModel;
+
     public function __construct($twig, $db) {
         parent::__construct($twig, $db);
+        $this->offerModel = new OfferModel($db);
+        $this->studentModel = new StudentModel($db);
     }
 
+    /**
+     * Affiche la liste des offres
+     */
     public function index() {
         $this->requireAuth();
-        
-        $conn = $this->db->connect();
-        $userId = $_COOKIE['user_id'] ?? null;
+
+        $userId = $_SESSION['user_id'] ?? null;
         $studentId = null;
-        
+
         // Obtenir l'ID de l'étudiant si l'utilisateur est un étudiant
         if ($userId) {
-            $stmt = $conn->prepare('SELECT Id_Etudiant FROM Etudiant WHERE Id_Utilisateur = :userId');
-            $stmt->bindParam(':userId', $userId);
-            $stmt->execute();
-            $student = $stmt->fetch(PDO::FETCH_ASSOC);
-            
-            if ($student) {
-                $studentId = $student['Id_Etudiant'];
-            }
+            $studentId = $this->studentModel->getStudentIdFromUserId($userId);
         }
-        
-        // Obtenir les 10 premières offres classées par date de publication
-        $stmt = $conn->prepare('
-            SELECT o.Id_Offre, o.Titre_Offre, o.Description_Offre, o.Date_Debut_Offre
-            FROM Offre o
-            ORDER BY o.Date_Debut_Offre DESC
-            LIMIT 10
-        ');
-        $stmt->execute();
-        $offers = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
-        // Pour chaque offre, obtenir ses compétences et vérifier si elle est dans la liste de souhaits
+
+        // Obtenir les offres récentes avec pagination
+        $page = $_GET['page'] ?? 1;
+        $limit = 10;
+        $offset = ($page - 1) * $limit;
+
+        $offers = $this->offerModel->getRecentOffers($limit, $offset);
+
+        // Pour chaque offre, vérifier si elle est dans la wishlist de l'étudiant
         foreach ($offers as &$offer) {
-            // Obtenir les compétences
-            $stmt = $conn->prepare('
-                SELECT c.Nom_Competence
-                FROM Competence c
-                JOIN Necessiter n ON c.Id_Competence = n.Id_Competence
-                WHERE n.Id_Offre = :offerId
-            ');
-            $stmt->bindParam(':offerId', $offer['Id_Offre']);
-            $stmt->execute();
-            $skills = $stmt->fetchAll(PDO::FETCH_COLUMN);
-            $offer['skills'] = $skills;
-            
-            // Vérifier si elle est dans la liste de souhaits de l'étudiant actuel
-            $offer['is_wishlisted'] = false;
-            if ($studentId) {
-                $stmt = $conn->prepare('
-                    SELECT COUNT(*) FROM Souhaiter
-                    WHERE Id_Offre = :offerId AND Id_Etudiant = :studentId
-                ');
-                $stmt->bindParam(':offerId', $offer['Id_Offre']);
-                $stmt->bindParam(':studentId', $studentId);
-                $stmt->execute();
-                $offer['is_wishlisted'] = $stmt->fetchColumn() > 0;
-            }
+            $offer['is_wishlisted'] = $studentId ? $this->offerModel->isInWishlist($offer['Id_Offre'], $studentId) : false;
         }
         
         echo $this->twig->render('etudiant/index.html.twig', [
-            'offers' => $offers
+            'offers' => $offers,
+            'current_page' => $page
         ]);
     }
 
+    /**
+     * Affiche les détails d'une offre
+     */
     public function details($params) {
         $this->requireAuth();
-        
+
         $offerId = $params['id'] ?? null;
-        
+
         if (!$offerId) {
             echo $this->twig->render('error.html.twig', [
                 'message' => 'Offre non trouvée'
             ]);
             return;
         }
-        
-        $conn = $this->db->connect();
-        $userId = $_COOKIE['user_id'] ?? null;
+
+        $userId = $_SESSION['user_id'] ?? null;
         $studentId = null;
-        
+
         // Obtenir l'ID de l'étudiant si l'utilisateur est un étudiant
         if ($userId) {
-            $stmt = $conn->prepare('SELECT Id_Etudiant FROM Etudiant WHERE Id_Utilisateur = :userId');
-            $stmt->bindParam(':userId', $userId);
-            $stmt->execute();
-            $student = $stmt->fetch(PDO::FETCH_ASSOC);
-            
-            if ($student) {
-                $studentId = $student['Id_Etudiant'];
-            }
+            $studentId = $this->studentModel->getStudentIdFromUserId($userId);
         }
-        
+
         // Obtenir les détails de l'offre
-        $stmt = $conn->prepare('
-            SELECT o.Id_Offre, o.Titre_Offre, o.Description_Offre, o.Remuneration_Offre,
-                   o.Niveau_Requis_Offre, o.Date_Debut_Offre, o.Duree_Min_Offre, o.Duree_Max_Offre,
-                   e.Nom_Entreprise, l.Ville_Localisation, l.Code_Postal_Localisation, l.Adresse_Localisation
-            FROM Offre o
-            JOIN Entreprise e ON o.Id_Entreprise = e.Id_Entreprise
-            JOIN Localisation l ON e.Id_Localisation = l.Id_Localisation
-            WHERE o.Id_Offre = :offerId
-        ');
-        $stmt->bindParam(':offerId', $offerId);
-        $stmt->execute();
-        $offer = $stmt->fetch(PDO::FETCH_ASSOC);
-        
+        $offer = $this->offerModel->getOfferDetails($offerId);
+
         if (!$offer) {
             echo $this->twig->render('error.html.twig', [
                 'message' => 'Offre non trouvée'
             ]);
             return;
         }
-        
-        // Obtenir les compétences
-        $stmt = $conn->prepare('
-            SELECT c.Nom_Competence
-            FROM Competence c
-            JOIN Necessiter n ON c.Id_Competence = n.Id_Competence
-            WHERE n.Id_Offre = :offerId
-        ');
-        $stmt->bindParam(':offerId', $offerId);
-        $stmt->execute();
-        $skills = $stmt->fetchAll(PDO::FETCH_COLUMN);
-        $offer['skills'] = $skills;
-        
-        // Vérifier si elle est dans la liste de souhaits de l'étudiant actuel
-        $offer['is_wishlisted'] = false;
-        if ($studentId) {
-            $stmt = $conn->prepare('
-                SELECT COUNT(*) FROM Souhaiter
-                WHERE Id_Offre = :offerId AND Id_Etudiant = :studentId
-            ');
-            $stmt->bindParam(':offerId', $offerId);
-            $stmt->bindParam(':studentId', $studentId);
-            $stmt->execute();
-            $offer['is_wishlisted'] = $stmt->fetchColumn() > 0;
-        }
-        
+
+        // Vérifier si l'offre est dans la wishlist de l'étudiant
+        $offer['is_wishlisted'] = $studentId ? $this->offerModel->isInWishlist($offerId, $studentId) : false;
+
         echo $this->twig->render('offres/details.html.twig', [
             'offer' => $offer
         ]);
+    }
+
+    /**
+     * Recherche des offres selon des critères
+     */
+    public function rechercher() {
+        $this->requireAuth();
+
+        $criteria = [];
+
+        // Récupérer les critères de recherche
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (!empty($_POST['titre'])) {
+                $criteria['titre'] = $_POST['titre'];
+            }
+
+            if (!empty($_POST['competence'])) {
+                $criteria['competence'] = $_POST['competence'];
+            }
+
+            if (!empty($_POST['ville'])) {
+                $criteria['ville'] = $_POST['ville'];
+            }
+
+            if (!empty($_POST['entreprise'])) {
+                $criteria['entreprise'] = $_POST['entreprise'];
+            }
+
+            if (!empty($_POST['minRemuneration'])) {
+                $criteria['minRemuneration'] = (int)$_POST['minRemuneration'];
+            }
+
+            if (!empty($_POST['minDuree'])) {
+                $criteria['minDuree'] = (int)$_POST['minDuree'];
+            }
+
+            if (!empty($_POST['maxDuree'])) {
+                $criteria['maxDuree'] = (int)$_POST['maxDuree'];
+            }
+
+            if (!empty($_POST['orderBy'])) {
+                $criteria['orderBy'] = $_POST['orderBy'];
+            }
+        }
+
+        // Valeurs par défaut pour la pagination
+        $page = $_POST['page'] ?? 1;
+        $limit = 10;
+        $offset = ($page - 1) * $limit;
+
+        $criteria['limit'] = $limit;
+        $criteria['offset'] = $offset;
+
+        // Effectuer la recherche
+        $offers = $this->offerModel->searchOffers($criteria);
+
+        // Vérifier si les offres sont dans la wishlist de l'étudiant
+        $userId = $_SESSION['user_id'] ?? null;
+        $studentId = null;
+
+        if ($userId) {
+            $studentId = $this->studentModel->getStudentIdFromUserId($userId);
+
+            foreach ($offers as &$offer) {
+                $offer['is_wishlisted'] = $this->offerModel->isInWishlist($offer['Id_Offre'], $studentId);
+            }
+        }
+
+        echo $this->twig->render('etudiant/index.html.twig', [
+            'offers' => $offers,
+            'current_page' => $page,
+            'criteria' => $criteria
+        ]);
+    }
+
+    /**
+     * Ajoute une offre à la wishlist
+     */
+    public function add_to_wishlist($params) {
+        $this->requireAuth();
+
+        $offerId = $params['id'] ?? null;
+
+        if (!$offerId) {
+            $this->addFlashMessage('error', 'Offre non trouvée');
+            header('Location: /offres');
+            return;
+        }
+
+        $userId = $_SESSION['user_id'] ?? null;
+        $studentId = $this->studentModel->getStudentIdFromUserId($userId);
+
+        if (!$studentId) {
+            $this->addFlashMessage('error', 'Vous devez être connecté en tant qu\'étudiant');
+            header('Location: /offres');
+            return;
+        }
+
+        $result = $this->studentModel->addToWishlist($studentId, $offerId);
+
+        if ($result) {
+            $this->addFlashMessage('success', 'Offre ajoutée à votre wishlist');
+        } else {
+            $this->addFlashMessage('error', 'Erreur lors de l\'ajout à la wishlist');
+        }
+
+        // Rediriger vers la page précédente ou la page des offres
+        $referer = $_SERVER['HTTP_REFERER'] ?? '/offres';
+        header('Location: ' . $referer);
+    }
+
+    /**
+     * Retire une offre de la wishlist
+     */
+    public function remove_from_wishlist($params) {
+        $this->requireAuth();
+
+        $offerId = $params['id'] ?? null;
+
+        if (!$offerId) {
+            $this->addFlashMessage('error', 'Offre non trouvée');
+            header('Location: /offres');
+            return;
+        }
+
+        $userId = $_SESSION['user_id'] ?? null;
+        $studentId = $this->studentModel->getStudentIdFromUserId($userId);
+
+        if (!$studentId) {
+            $this->addFlashMessage('error', 'Vous devez être connecté en tant qu\'étudiant');
+            header('Location: /offres');
+            return;
+        }
+
+        $result = $this->studentModel->removeFromWishlist($studentId, $offerId);
+
+        if ($result) {
+            $this->addFlashMessage('success', 'Offre retirée de votre wishlist');
+        } else {
+            $this->addFlashMessage('error', 'Erreur lors du retrait de la wishlist');
+        }
+
+        // Rediriger vers la page précédente ou la page des offres
+        $referer = $_SERVER['HTTP_REFERER'] ?? '/offres';
+        header('Location: ' . $referer);
     }
 }
