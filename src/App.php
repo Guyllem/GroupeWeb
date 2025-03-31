@@ -34,15 +34,24 @@ class App {
             ->get('/etudiant', 'Etudiant', 'index')
             ->get('/etudiant/mon_profil', 'Etudiant', 'profil')
             ->get('/etudiant/mes_offres', 'Etudiant', 'mesOffres')
+            ->get('/etudiant/mes_candidatures', 'Etudiant', 'my_applications')
             ->get('/etudiant/wishlist', 'Etudiant', 'wishlist')
+            ->post('/etudiant/wishlist/ajouter', 'Etudiant', 'ajouterWishlist')
+            ->post('/etudiant/wishlist/retirer', 'Etudiant', 'retirerWishlist')
 
             // Routes d'offres
             ->get('/offres', 'Offres', 'index')
             ->get('/offres/details/:id', 'Offres', 'details')
+            ->post('/offres/rechercher', 'Offres', 'rechercher')
+            ->get('/offres/wishlist/ajouter/:id', 'Offres', 'add_to_wishlist')
+            ->get('/offres/wishlist/retirer/:id', 'Offres', 'remove_from_wishlist')
+            ->post('/offres/details/:id/postuler', 'Etudiant', 'postuler')
 
             // Routes d'entreprises
             ->get('/entreprises', 'Entreprises', 'index')
             ->get('/entreprises/details/:id', 'Entreprises', 'details')
+            ->post('/entreprises/rechercher', 'Entreprises', 'rechercher')
+            ->post('/entreprises/evaluer/:id', 'Entreprises', 'rate')
 
             // Routes de pilote
             ->get('/pilotes', 'Pilotes', 'index')
