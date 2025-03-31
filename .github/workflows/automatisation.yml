@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main  # s'exécute à chaque push sur main uniquement
+  workflow_dispatch:   # autorise l'éxecution manuelle pour les tests
 
 jobs:
   deploy:
