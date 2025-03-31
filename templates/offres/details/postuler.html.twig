@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StageConnect - Postuler à {{ offer.Titre_Offre }}</title>
+    <link rel="stylesheet" href="{{ asset('css/styles_page_etudiant.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/modal.css') }}">
+</head>
+<body>
+<main>
+    <div class="container">
+        {% include 'partials/navbar-etudiant.html.twig' %}
+
+        <div class="rate-modal">
+            <div class="rate-container">
+                <div class="company-info">
+                    <div class="company-name">{{ offer.Titre_Offre }}</div>
+                </div>
+
+                <div class="postulate-section">
+                    <p>Veuillez télécharger votre CV et votre lettre de motivation :</p>
+
+                    <form action="{{ url('etudiant/postuler/submit') }}" method="post" enctype="multipart/form-data" id="applicationForm">
+                        <input type="hidden" name="offer_id" value="{{ offer.Id_Offre }}">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+                        <div class="file-upload-container">
+                            <label for="cv-upload" class="file-upload-label">
+                                <div class="file-icon">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M14 3v4a1 1 0 0 0 1 1h4" stroke="#3F51B5" stroke-width="2" stroke-linecap="round"/>
+                                        <path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z" stroke="#3F51B5" stroke-width="2" stroke-linecap="round"/>
+                                        <path d="M12 11v6M9 14h6" stroke="#3F51B5" stroke-width="2" stroke-linecap="round"/>
+                                    </svg>
+                                </div>
+                                <div class="file-info">
+                                    <div class="file-title">CV (PDF uniquement)</div>
+                                    <div class="file-subtitle" id="cv-file-name">Aucun fichier sélectionné</div>
+                                </div>
+                            </label>
+                            <input type="file" id="cv-upload" name="cv" accept=".pdf" class="file-input" required />
+                            <div class="file-error" id="cv-error">{{ errors.cv|default('') }}</div>
+                        </div>
+
+                        <div class="file-upload-container">
+                            <label for="motivation-upload" class="file-upload-label">
+                                <div class="file-icon">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M14 3v4a1 1 0 0 0 1 1h4" stroke="#3F51B5" stroke-width="2" stroke-linecap="round"/>
+                                        <path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z" stroke="#3F51B5" stroke-width="2" stroke-linecap="round"/>
+                                        <path d="M9 15h6M9 11h3" stroke="#3F51B5" stroke-width="2" stroke-linecap="round"/>
+                                    </svg>
+                                </div>
+                                <div class="file-info">
+                                    <div class="file-title">Lettre de motivation (PDF uniquement)</div>
+                                    <div class="file-subtitle" id="motivation-file-name">Aucun fichier sélectionné</div>
+                                </div>
+                            </label>
+                            <input type="file" id="motivation-upload" name="motivation" accept=".pdf" class="file-input" required />
+                            <div class="file-error" id="motivation-error">{{ errors.motivation|default('') }}</div>
+                        </div>
+
+                        <div class="buttons-container">
+                            <button type="button" class="back-btn" onclick="history.back()">Retour</button>
+                            <button type="submit" class="validate-btn" id="submitBtn" disabled>Postuler</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="confirmation-popup" id="confirmationPopup" {% if success is defined and success %}style="display: flex;"{% endif %}>
+            <div class="popup-content">
+                <p>Votre candidature a bien été envoyée</p>
+                <div class="submission-date" id="submissionDate">{{ "now"|date("d/m/Y à H:i") }}</div>
+                <button class="close-popup" onclick="window.location.href='{{ url('offres') }}'">Fermer</button>
+            </div>
+        </div>
+    </div>
+</main>
+
+{% include 'partials/footer.html.twig' %}
+<script src="{{ asset('js/postulation.js') }}"></script>
+</body>
+</html>
+
