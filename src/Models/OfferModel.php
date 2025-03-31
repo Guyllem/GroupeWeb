@@ -27,9 +27,12 @@ class OfferModel extends Model {
                 o.Duree_Min_Offre,
                 o.Duree_Max_Offre,
                 e.Id_Entreprise,
-                e.Nom_Entreprise
+                e.Nom_Entreprise,
+                l.Ville_Localisation,
+                l.Code_Postal_Localisation
             FROM Offre o
             JOIN Entreprise e ON o.Id_Entreprise = e.Id_Entreprise
+            JOIN Localisation l ON e.Id_Localisation = l.Id_Localisation
             ORDER BY o.Date_Debut_Offre DESC
             LIMIT :limit OFFSET :offset
         ';
@@ -136,179 +139,6 @@ class OfferModel extends Model {
     }
 
     /**
-     * Crée une nouvelle offre
-     *
-     * @param array $offerData Données de l'offre
-     * @param array $skillIds IDs des compétences requises
-     * @return int|null ID de la nouvelle offre, null si erreur
-     */
-    public function createOffer($offerData, $skillIds = []) {
-        $conn = $this->db->connect();
-
-        try {
-            $conn->beginTransaction();
-
-            // Créer l'offre
-            $stmt = $conn->prepare('
-                INSERT INTO Offre (
-                    Titre_Offre, 
-                    Description_Offre, 
-                    Remuneration_Offre,
-                    Niveau_Requis_Offre, 
-                    Date_Debut_Offre, 
-                    Duree_Min_Offre, 
-                    Duree_Max_Offre,
-                    Id_Entreprise
-                ) VALUES (
-                    :titre, 
-                    :description, 
-                    :remuneration,
-                    :niveauRequis, 
-                    :dateDebut, 
-                    :dureeMin, 
-                    :dureeMax,
-                    :idEntreprise
-                )
-            ');
-
-            $stmt->bindParam(':titre', $offerData['titre']);
-            $stmt->bindParam(':description', $offerData['description']);
-            $stmt->bindParam(':remuneration', $offerData['remuneration']);
-            $stmt->bindParam(':niveauRequis', $offerData['niveauRequis']);
-            $stmt->bindParam(':dateDebut', $offerData['dateDebut']);
-            $stmt->bindParam(':dureeMin', $offerData['dureeMin']);
-            $stmt->bindParam(':dureeMax', $offerData['dureeMax']);
-            $stmt->bindParam(':idEntreprise', $offerData['idEntreprise']);
-
-            $stmt->execute();
-
-            $offerId = $conn->lastInsertId();
-
-            // Ajouter les compétences requises
-            if (!empty($skillIds)) {
-                $insertSkillQuery = 'INSERT INTO Necessiter (Id_Offre, Id_Competence) VALUES ';
-                $values = [];
-
-                foreach ($skillIds as $skillId) {
-                    $values[] = "({$offerId}, {$skillId})";
-                }
-
-                $insertSkillQuery .= implode(', ', $values);
-                $conn->exec($insertSkillQuery);
-            }
-
-            $conn->commit();
-
-            return $offerId;
-        } catch (\Exception $e) {
-            $conn->rollBack();
-            error_log($e->getMessage());
-            return null;
-        }
-    }
-
-    /**
-     * Met à jour une offre existante
-     *
-     * @param int $offerId ID de l'offre
-     * @param array $offerData Données de l'offre
-     * @param array $skillIds IDs des compétences requises
-     * @return bool Succès de l'opération
-     */
-    public function updateOffer($offerId, $offerData, $skillIds = []) {
-        $conn = $this->db->connect();
-
-        try {
-            $conn->beginTransaction();
-
-            // Mettre à jour l'offre
-            $stmt = $conn->prepare('
-                UPDATE Offre SET
-                    Titre_Offre = :titre, 
-                    Description_Offre = :description, 
-                    Remuneration_Offre = :remuneration,
-                    Niveau_Requis_Offre = :niveauRequis, 
-                    Date_Debut_Offre = :dateDebut, 
-                    Duree_Min_Offre = :dureeMin, 
-                    Duree_Max_Offre = :dureeMax,
-                    Id_Entreprise = :idEntreprise
-                WHERE Id_Offre = :offerId
-            ');
-
-            $stmt->bindParam(':titre', $offerData['titre']);
-            $stmt->bindParam(':description', $offerData['description']);
-            $stmt->bindParam(':remuneration', $offerData['remuneration']);
-            $stmt->bindParam(':niveauRequis', $offerData['niveauRequis']);
-            $stmt->bindParam(':dateDebut', $offerData['dateDebut']);
-            $stmt->bindParam(':dureeMin', $offerData['dureeMin']);
-            $stmt->bindParam(':dureeMax', $offerData['dureeMax']);
-            $stmt->bindParam(':idEntreprise', $offerData['idEntreprise']);
-            $stmt->bindParam(':offerId', $offerId);
-
-            $stmt->execute();
-
-            // Mettre à jour les compétences requises
-            // D'abord supprimer les anciennes compétences
-            $stmt = $conn->prepare('DELETE FROM Necessiter WHERE Id_Offre = :offerId');
-            $stmt->bindParam(':offerId', $offerId);
-            $stmt->execute();
-
-            // Ajouter les nouvelles compétences
-            if (!empty($skillIds)) {
-                $insertSkillQuery = 'INSERT INTO Necessiter (Id_Offre, Id_Competence) VALUES ';
-                $values = [];
-
-                foreach ($skillIds as $skillId) {
-                    $values[] = "({$offerId}, {$skillId})";
-                }
-
-                $insertSkillQuery .= implode(', ', $values);
-                $conn->exec($insertSkillQuery);
-            }
-
-            $conn->commit();
-
-            return true;
-        } catch (\Exception $e) {
-            $conn->rollBack();
-            error_log($e->getMessage());
-            return false;
-        }
-    }
-
-    /**
-     * Supprime une offre
-     *
-     * @param int $offerId ID de l'offre
-     * @return bool Succès de l'opération
-     */
-    public function deleteOffer($offerId) {
-        $conn = $this->db->connect();
-
-        try {
-            $conn->beginTransaction();
-
-            // Supprimer les dépendances
-            $conn->exec("DELETE FROM Necessiter WHERE Id_Offre = {$offerId}");
-            $conn->exec("DELETE FROM Souhaiter WHERE Id_Offre = {$offerId}");
-            $conn->exec("DELETE FROM Candidature WHERE Id_Offre = {$offerId}");
-
-            // Supprimer l'offre
-            $stmt = $conn->prepare('DELETE FROM Offre WHERE Id_Offre = :offerId');
-            $stmt->bindParam(':offerId', $offerId);
-            $stmt->execute();
-
-            $conn->commit();
-
-            return true;
-        } catch (\Exception $e) {
-            $conn->rollBack();
-            error_log($e->getMessage());
-            return false;
-        }
-    }
-
-    /**
      * Recherche des offres selon des critères
      *
      * @param array $criteria Critères de recherche
@@ -323,8 +153,12 @@ class OfferModel extends Model {
                 o.Remuneration_Offre,
                 o.Niveau_Requis_Offre,
                 o.Date_Debut_Offre,
+                o.Duree_Min_Offre,
+                o.Duree_Max_Offre,
+                e.Id_Entreprise,
                 e.Nom_Entreprise,
-                l.Ville_Localisation
+                l.Ville_Localisation,
+                l.Code_Postal_Localisation
             FROM Offre o
             JOIN Entreprise e ON o.Id_Entreprise = e.Id_Entreprise
             JOIN Localisation l ON e.Id_Localisation = l.Id_Localisation
@@ -339,6 +173,13 @@ class OfferModel extends Model {
             $params['titre'] = '%' . $criteria['titre'] . '%';
         }
 
+        if (!empty($criteria['competence'])) {
+            $query .= ' JOIN Necessiter n ON o.Id_Offre = n.Id_Offre
+                        JOIN Competence c ON n.Id_Competence = c.Id_Competence';
+            $whereConditions[] = 'c.Nom_Competence LIKE :competence';
+            $params['competence'] = '%' . $criteria['competence'] . '%';
+        }
+
         if (!empty($criteria['ville'])) {
             $whereConditions[] = 'l.Ville_Localisation LIKE :ville';
             $params['ville'] = '%' . $criteria['ville'] . '%';
@@ -347,13 +188,6 @@ class OfferModel extends Model {
         if (!empty($criteria['entreprise'])) {
             $whereConditions[] = 'e.Nom_Entreprise LIKE :entreprise';
             $params['entreprise'] = '%' . $criteria['entreprise'] . '%';
-        }
-
-        if (!empty($criteria['competence'])) {
-            $query .= ' JOIN Necessiter n ON o.Id_Offre = n.Id_Offre
-                        JOIN Competence c ON n.Id_Competence = c.Id_Competence';
-            $whereConditions[] = 'c.Nom_Competence LIKE :competence';
-            $params['competence'] = '%' . $criteria['competence'] . '%';
         }
 
         if (!empty($criteria['minRemuneration'])) {
@@ -376,9 +210,12 @@ class OfferModel extends Model {
             $query .= ' WHERE ' . implode(' AND ', $whereConditions);
         }
 
-        // Ajouter GROUP BY, ORDER BY et LIMIT
-        $query .= ' GROUP BY o.Id_Offre';
+        // Ajouter GROUP BY pour éviter les doublons si JOIN avec compétences
+        if (!empty($criteria['competence'])) {
+            $query .= ' GROUP BY o.Id_Offre';
+        }
 
+        // Ajouter ORDER BY
         if (!empty($criteria['orderBy'])) {
             switch ($criteria['orderBy']) {
                 case 'recent':
@@ -398,24 +235,25 @@ class OfferModel extends Model {
             $query .= ' ORDER BY o.Date_Debut_Offre DESC';
         }
 
-        if (!empty($criteria['limit'])) {
+        // Ajouter LIMIT et OFFSET
+        if (isset($criteria['limit'])) {
             $query .= ' LIMIT :limit';
-            $params['limit'] = (int) $criteria['limit'];
-
-            if (!empty($criteria['offset'])) {
+            if (isset($criteria['offset'])) {
                 $query .= ' OFFSET :offset';
-                $params['offset'] = (int) $criteria['offset'];
             }
         }
 
         $conn = $this->db->connect();
         $stmt = $conn->prepare($query);
 
-        foreach ($params as $key => $value) {
-            if (in_array($key, ['limit', 'offset', 'minRemuneration', 'minDuree', 'maxDuree'])) {
-                $stmt->bindValue(":{$key}", $value, PDO::PARAM_INT);
-            } else {
-                $stmt->bindValue(":{$key}", $value, PDO::PARAM_STR);
+        foreach ($params as $param => $value) {
+            $stmt->bindValue(":{$param}", $value, is_int($value) ? PDO::PARAM_INT : PDO::PARAM_STR);
+        }
+
+        if (isset($criteria['limit'])) {
+            $stmt->bindValue(':limit', $criteria['limit'], PDO::PARAM_INT);
+            if (isset($criteria['offset'])) {
+                $stmt->bindValue(':offset', $criteria['offset'], PDO::PARAM_INT);
             }
         }
 
