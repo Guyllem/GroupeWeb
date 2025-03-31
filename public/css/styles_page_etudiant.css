@@ -153,9 +153,9 @@ nav {
     min-height: calc(100vh - 115px);
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
+
     height: 100%;
-    justify-content: flex-start;
+
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Remplace la propriété 'shadow' incorrecte */
 }
 
@@ -825,6 +825,7 @@ h3 {
     gap: 12px;
     grid-template-columns: repeat(3, 1fr);
     justify-content: end;
+    direction: rtl;
 }
 
 .tag {
