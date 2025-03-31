@@ -14,6 +14,9 @@ class EtudiantController extends BaseController {
         $this->offerModel = new OfferModel($db);
     }
 
+    /**
+     * Affiche la page d'accueil de l'étudiant avec les offres récentes
+     */
     public function index() {
         $this->requireEtudiant();
 
@@ -38,6 +41,9 @@ class EtudiantController extends BaseController {
         ]);
     }
 
+    /**
+     * Affiche le profil de l'étudiant
+     */
     public function profil() {
         $this->requireEtudiant();
 
@@ -53,6 +59,9 @@ class EtudiantController extends BaseController {
         ]);
     }
 
+    /**
+     * Affiche les offres auxquelles l'étudiant a postulé
+     */
     public function mesOffres() {
         $this->requireEtudiant();
 
@@ -66,6 +75,16 @@ class EtudiantController extends BaseController {
         ]);
     }
 
+    /**
+     * Alias de mesOffres pour correspondre à l'URL demandée
+     */
+    public function my_applications() {
+        return $this->mesOffres();
+    }
+
+    /**
+     * Affiche la wishlist de l'étudiant
+     */
     public function wishlist() {
         $this->requireEtudiant();
 
@@ -79,7 +98,9 @@ class EtudiantController extends BaseController {
         ]);
     }
 
-    // Action pour ajouter une offre à la wishlist (AJAX)
+    /**
+     * Ajoute une offre à la wishlist (AJAX)
+     */
     public function ajouterWishlist() {
         $this->requireEtudiant();
 
@@ -98,7 +119,9 @@ class EtudiantController extends BaseController {
         echo json_encode(['success' => $result]);
     }
 
-    // Action pour retirer une offre de la wishlist (AJAX)
+    /**
+     * Retire une offre de la wishlist (AJAX)
+     */
     public function retirerWishlist() {
         $this->requireEtudiant();
 
@@ -117,13 +140,19 @@ class EtudiantController extends BaseController {
         echo json_encode(['success' => $result]);
     }
 
-    // Action pour postuler à une offre
-    public function postuler() {
+    /**
+     * Postuler à une offre
+     */
+    public function postuler($params = null) {
         $this->requireEtudiant();
 
-        $offerId = $_POST['offer_id'] ?? null;
-        $userId = $_SESSION['user_id'];
-        $studentId = $this->studentModel->getStudentIdFromUserId($userId);
+        // Récupérer l'ID de l'offre depuis les paramètres ou le POST
+        $offerId = null;
+        if ($params && isset($params['id'])) {
+            $offerId = $params['id'];
+        } else if (isset($_POST['offer_id'])) {
+            $offerId = $_POST['offer_id'];
+        }
 
         if (!$offerId) {
             $this->addFlashMessage('error', 'ID offre manquant');
@@ -131,14 +160,63 @@ class EtudiantController extends BaseController {
             return;
         }
 
-        $result = $this->studentModel->applyToOffer($studentId, $offerId);
+        $userId = $_SESSION['user_id'];
+        $studentId = $this->studentModel->getStudentIdFromUserId($userId);
 
-        if ($result) {
-            $this->addFlashMessage('success', 'Votre candidature a bien été enregistrée');
-        } else {
-            $this->addFlashMessage('error', 'Vous avez déjà postulé à cette offre ou une erreur est survenue');
+        // Vérifier si l'étudiant a déjà postulé à cette offre
+        $applications = $this->studentModel->getStudentApplications($studentId);
+        $alreadyApplied = false;
+
+        foreach ($applications as $application) {
+            if ($application['Id_Offre'] == $offerId) {
+                $alreadyApplied = true;
+                break;
+            }
         }
 
-        header('Location: ' . $_SERVER['HTTP_REFERER']);
+        if ($alreadyApplied) {
+            $this->addFlashMessage('warning', 'Vous avez déjà postulé à cette offre');
+            header('Location: ' . $_SERVER['HTTP_REFERER']);
+            return;
+        }
+
+        // Traitement des pièces jointes (CV, LM, etc.)
+        $fileIds = [];
+        if (isset($_FILES['cv']) && $_FILES['cv']['error'] === UPLOAD_ERR_OK) {
+            // Traitement du CV
+            // Code pour sauvegarder le fichier et créer une entrée dans la table Fichier
+            // ...
+            // $fileIds[] = $fileId;
+        }
+
+        if (isset($_FILES['lm']) && $_FILES['lm']['error'] === UPLOAD_ERR_OK) {
+            // Traitement de la lettre de motivation
+            // Code pour sauvegarder le fichier et créer une entrée dans la table Fichier
+            // ...
+            // $fileIds[] = $fileId;
+        }
+
+        // Créer la candidature
+        $candidatureId = $this->studentModel->applyToOffer($studentId, $offerId);
+
+        if ($candidatureId) {
+            // Associer les fichiers à la candidature si nécessaire
+            // Code pour insérer des entrées dans la table Contenir
+            // ...
+
+            $this->addFlashMessage('success', 'Votre candidature a bien été enregistrée');
+        } else {
+            $this->addFlashMessage('error', 'Une erreur est survenue lors de l\'enregistrement de votre candidature');
+        }
+
+        // Rediriger vers la page précédente ou la page des offres
+        header('Location: ' . ($_SERVER['HTTP_REFERER'] ?? '/offres'));
+    }
+
+    /**
+     * Méthode pour appliquer à une offre depuis l'URL /offres/details/:id/postuler
+     */
+    public function apply($params) {
+        return $this->postuler($params);
     }
 }
