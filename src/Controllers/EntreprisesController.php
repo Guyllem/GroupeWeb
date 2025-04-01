@@ -160,6 +160,46 @@ class EntreprisesController extends BaseController {
         ]);
     }
 
+    /**
+     * Affiche les offres associées à une entreprise spécifique
+     *
+     * @param array $params Paramètres de la route contenant l'ID de l'entreprise
+     */
+    public function associateOffers($params)
+    {
+        $this->requireAuth();
+
+        $enterpriseId = $params['id'] ?? null;
+
+        if (!$enterpriseId) {
+            echo $this->twig->render('error.html.twig', [
+                'message' => 'Entreprise non trouvée'
+            ]);
+            return;
+        }
+
+        // Récupération des détails de l'entreprise
+        $enterprise = $this->enterpriseModel->getEnterpriseDetails($enterpriseId);
+
+        if (!$enterprise) {
+            echo $this->twig->render('error.html.twig', [
+                'message' => 'Entreprise non trouvée'
+            ]);
+            return;
+        }
+
+        // Récupération des offres associées à cette entreprise
+        // Nous devons créer une instance du modèle d'offres
+        $offerModel = new \App\Models\OfferModel($this->db);
+        $offers = $offerModel->getOffersByEnterprise($enterpriseId);
+
+        // Rendu du template avec les données
+        echo $this->twig->render('entreprises/offres.html.twig', [
+            'enterprise' => $enterprise,
+            'offers' => $offers
+        ]);
+    }
+
     /*
      * Affiche le formulaire d'évaluation d'une entreprise
      *

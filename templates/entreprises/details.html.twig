@@ -46,7 +46,7 @@
         </div>
 
         <div class="offers-button-container">
-            <a href="{{ url('offres') }}?enterprise={{ enterprise.Id_Entreprise }}" class="button-offers-entreprise">Voir les offres publiées par cette entreprise</a>
+            <a href="{{ url('entreprises/details/' ~ enterprise.Id_Entreprise ~ '/offres') }}" class="button-offers-entreprise">Voir les offres publiées par cette entreprise</a>
         </div>
 
         <div class="card-footer">

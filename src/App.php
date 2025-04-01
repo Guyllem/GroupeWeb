@@ -52,6 +52,7 @@ class App {
             ->get('/entreprises', 'Entreprises', 'index')
             ->get('/entreprises/details/:id', 'Entreprises', 'details')
             ->post('/entreprises/rechercher', 'Entreprises', 'rechercher')
+            ->get('/entreprises/details/:id/offres', 'Entreprises', 'associateOffers')
             ->get('/entreprises/details/:id/evaluer', 'Entreprises', 'afficherRate')
             ->post('/entreprises/details/:id/evaluer', 'Entreprises', 'rate')
 

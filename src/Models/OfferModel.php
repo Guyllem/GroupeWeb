@@ -105,6 +105,44 @@ class OfferModel extends Model {
      * @param int $studentId ID de l'étudiant
      * @return bool True si dans la wishlist, false sinon
      */
+
+    /**
+     * Récupère les offres associées à une entreprise spécifique
+     *
+     * @param int $enterpriseId ID de l'entreprise
+     * @return array Liste des offres
+     */
+    public function getOffersByEnterprise($enterpriseId) {
+        $query = '
+        SELECT 
+            o.Id_Offre, 
+            o.Titre_Offre, 
+            o.Description_Offre,
+            o.Remuneration_Offre,
+            o.Niveau_Requis_Offre,
+            o.Date_Debut_Offre,
+            o.Duree_Min_Offre,
+            o.Duree_Max_Offre
+        FROM Offre o
+        WHERE o.Id_Entreprise = :enterpriseId
+        ORDER BY o.Date_Debut_Offre DESC
+    ';
+
+        $conn = $this->db->connect();
+        $stmt = $conn->prepare($query);
+        $stmt->bindParam(':enterpriseId', $enterpriseId);
+        $stmt->execute();
+
+        $offers = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        // Pour chaque offre, récupérer les compétences requises
+        foreach ($offers as &$offer) {
+            $offer['skills'] = $this->getOfferSkills($offer['Id_Offre']);
+        }
+
+        return $offers;
+    }
+
     public function isInWishlist($offerId, $studentId) {
         $conn = $this->db->connect();
         $stmt = $conn->prepare('
