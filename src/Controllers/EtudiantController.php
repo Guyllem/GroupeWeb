@@ -32,7 +32,7 @@ class EtudiantController extends BaseController {
             $offer['is_wishlisted'] = $this->offerModel->isInWishlist($offer['Id_Offre'], $studentId);
         }
 
-        echo $this->twig->render('etudiant/index.html.twig', [
+        $this->render('etudiant/index.html.twig', [
             'offers' => $offers,
             'current_page' => $page
         ]);
@@ -47,7 +47,7 @@ class EtudiantController extends BaseController {
         $student = $this->studentModel->getStudentInfo($studentId);
         $skills = $this->studentModel->getStudentSkills($studentId);
 
-        echo $this->twig->render('etudiant/mon_profil.html.twig', [
+        $this->render('etudiant/mon_profil.html.twig', [
             'student' => $student,
             'skills' => $skills
         ]);
@@ -61,7 +61,7 @@ class EtudiantController extends BaseController {
 
         $offers = $this->studentModel->getStudentApplications($studentId);
 
-        echo $this->twig->render('etudiant/mes_offres.html.twig', [
+        $this->render('etudiant/mes_offres.html.twig', [
             'offers' => $offers
         ]);
     }
@@ -74,7 +74,7 @@ class EtudiantController extends BaseController {
 
         $offers = $this->studentModel->getStudentWishlist($studentId);
 
-        echo $this->twig->render('etudiant/wishlist.html.twig', [
+        $this->render('etudiant/wishlist.html.twig', [
             'offers' => $offers
         ]);
     }

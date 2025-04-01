@@ -34,18 +34,18 @@ class HomeController extends BaseController {
     }
 
     public function about() {
-        echo $this->twig->render('home/about.html.twig');
+        $this->render('home/about.html.twig');
     }
 
     public function mentionsLegales() {
-        echo $this->twig->render('home/mentions_legales.html.twig');
+        $this->render('home/mentions_legales.html.twig');
     }
 
     public function politiqueConfidentialite() {
-        echo $this->twig->render('home/politique_confidentialite.html.twig');
+        $this->render('home/politique_confidentialite.html.twig');
     }
 
     public function conditionsUtilisation() {
-        echo $this->twig->render('home/conditions_utilisation.html.twig');
+        $this->render('home/conditions_utilisation.html.twig');
     }
 }

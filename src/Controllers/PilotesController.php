@@ -22,7 +22,7 @@ class PilotesController extends BaseController {
 
     public function index() {
         $this->requirePilote();
-        echo $this->twig->render('pilotes/index.html.twig');
+        $this->render('pilotes/index.html.twig');
     }
 
     // Gestion des étudiants
@@ -36,7 +36,7 @@ class PilotesController extends BaseController {
         // Récupérer les étudiants supervisés par ce pilote
         $students = $this->pilotModel->getSupervisedStudents($pilotId);
 
-        echo $this->twig->render('pilotes/etudiants/index.html.twig', [
+        $this->render('pilotes/etudiants/index.html.twig', [
             'pilotePage' => true,
             'students' => $students
         ]);
@@ -65,7 +65,7 @@ class PilotesController extends BaseController {
         // Récupérer les compétences de l'étudiant
         $student['skills'] = $this->studentModel->getStudentSkills($etudiantId);
 
-        echo $this->twig->render('pilotes/etudiants/show.html.twig', [
+        $this->render('pilotes/etudiants/show.html.twig', [
             'pilotePage' => true,
             'student' => $student
         ]);
@@ -74,7 +74,7 @@ class PilotesController extends BaseController {
     public function ajouterEtudiant() {
         $this->requirePilote();
         // Afficher le formulaire d'ajout d'étudiant
-        echo $this->twig->render('pilotes/etudiants/ajouter.html.twig', [
+        $this->render('pilotes/etudiants/ajouter.html.twig', [
             'pilotePage' => true
         ]);
     }
@@ -111,7 +111,7 @@ class PilotesController extends BaseController {
         // Récupérer les compétences de l'étudiant
         $student['skills'] = $this->studentModel->getStudentSkills($etudiantId);
 
-        echo $this->twig->render('pilotes/etudiants/modifier.html.twig', [
+        $this->render('pilotes/etudiants/modifier.html.twig', [
             'pilotePage' => true,
             'student' => $student
         ]);
@@ -167,7 +167,7 @@ class PilotesController extends BaseController {
         // Récupérer la wishlist de l'étudiant
         $wishlist = $this->studentModel->getStudentWishlist($etudiantId);
 
-        echo $this->twig->render('pilotes/etudiants/wishlist.html.twig', [
+        $this->render('pilotes/etudiants/wishlist.html.twig', [
             'pilotePage' => true,
             'student' => $student,
             'offers' => $wishlist
@@ -197,7 +197,7 @@ class PilotesController extends BaseController {
         // Récupérer les candidatures de l'étudiant
         $applications = $this->studentModel->getStudentApplications($etudiantId);
 
-        echo $this->twig->render('pilotes/etudiants/offres.html.twig', [
+        $this->render('pilotes/etudiants/offres.html.twig', [
             'pilotePage' => true,
             'student' => $student,
             'offers' => $applications
@@ -211,7 +211,7 @@ class PilotesController extends BaseController {
         // Récupérer les entreprises
         $enterprises = $this->enterpriseModel->getEnterprisesByName();
 
-        echo $this->twig->render('pilotes/entreprises/index.html.twig', [
+        $this->render('pilotes/entreprises/index.html.twig', [
             'pilotePage' => true,
             'enterprises' => $enterprises
         ]);
@@ -237,7 +237,7 @@ class PilotesController extends BaseController {
             return;
         }
 
-        echo $this->twig->render('pilotes/entreprises/show.html.twig', [
+        $this->render('pilotes/entreprises/show.html.twig', [
             'pilotePage' => true,
             'enterprise' => $enterprise
         ]);
@@ -246,7 +246,7 @@ class PilotesController extends BaseController {
     // Méthodes pour ajouter, modifier et supprimer des entreprises
     public function ajouterEntreprise() {
         $this->requirePilote();
-        echo $this->twig->render('pilotes/entreprises/ajouter.html.twig', [
+        $this->render('pilotes/entreprises/ajouter.html.twig', [
             'pilotePage' => true
         ]);
     }
@@ -280,7 +280,7 @@ class PilotesController extends BaseController {
             return;
         }
 
-        echo $this->twig->render('pilotes/entreprises/modifier.html.twig', [
+        $this->render('pilotes/entreprises/modifier.html.twig', [
             'pilotePage' => true,
             'enterprise' => $enterprise
         ]);
@@ -320,7 +320,7 @@ class PilotesController extends BaseController {
         // Récupérer les offres
         $offers = $this->offerModel->getRecentOffers();
 
-        echo $this->twig->render('pilotes/offres/index.html.twig', [
+        $this->render('pilotes/offres/index.html.twig', [
             'pilotePage' => true,
             'offers' => $offers
         ]);
@@ -346,7 +346,7 @@ class PilotesController extends BaseController {
             return;
         }
 
-        echo $this->twig->render('pilotes/offres/show.html.twig', [
+        $this->render('pilotes/offres/show.html.twig', [
             'pilotePage' => true,
             'offer' => $offer
         ]);
@@ -359,7 +359,7 @@ class PilotesController extends BaseController {
         // Récupérer la liste des entreprises pour le formulaire
         $enterprises = $this->enterpriseModel->getAll('Nom_Entreprise');
 
-        echo $this->twig->render('pilotes/offres/ajouter.html.twig', [
+        $this->render('pilotes/offres/ajouter.html.twig', [
             'pilotePage' => true,
             'enterprises' => $enterprises
         ]);
@@ -397,7 +397,7 @@ class PilotesController extends BaseController {
         // Récupérer la liste des entreprises pour le formulaire
         $enterprises = $this->enterpriseModel->getAll('Nom_Entreprise');
 
-        echo $this->twig->render('pilotes/offres/modifier.html.twig', [
+        $this->render('pilotes/offres/modifier.html.twig', [
             'pilotePage' => true,
             'offer' => $offer,
             'enterprises' => $enterprises

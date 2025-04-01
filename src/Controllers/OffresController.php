@@ -79,7 +79,7 @@ class OffresController extends BaseController {
             }
         }
 
-        echo $this->twig->render('etudiant/index.html.twig', [
+        $this->render('etudiant/index.html.twig', [
             'offers' => $offers,
             'currentPage' => $currentPage,
             'totalPages' => $totalPages
@@ -92,7 +92,7 @@ class OffresController extends BaseController {
         $offerId = $params['id'] ?? null;
 
         if (!$offerId) {
-            echo $this->twig->render('error.html.twig', [
+            $this->render('error.html.twig', [
                 'message' => 'Offre non trouvée'
             ]);
             return;
@@ -129,7 +129,7 @@ class OffresController extends BaseController {
         $offer = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$offer) {
-            echo $this->twig->render('error.html.twig', [
+            $this->render('error.html.twig', [
                 'message' => 'Offre non trouvée'
             ]);
             return;
@@ -160,7 +160,7 @@ class OffresController extends BaseController {
             $offer['is_wishlisted'] = $stmt->fetchColumn() > 0;
         }
 
-        echo $this->twig->render('offres/details.html.twig', [
+        $this->render('offres/details.html.twig', [
             'offer' => $offer
         ]);
     }

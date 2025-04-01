@@ -25,7 +25,7 @@ class AdminController extends BaseController {
 
     public function index() {
         $this->requireAdmin();
-        echo $this->twig->render('admin/index.html.twig', [
+        $this->render('admin/index.html.twig', [
             'adminPage' => true
         ]);
     }
@@ -37,7 +37,7 @@ class AdminController extends BaseController {
         // Récupérer les pilotes
         $pilots = $this->pilotModel->getPilotsByName();
 
-        echo $this->twig->render('admin/pilotes/index.html.twig', [
+        $this->render('admin/pilotes/index.html.twig', [
             'adminPage' => true,
             'pilots' => $pilots
         ]);
@@ -63,7 +63,7 @@ class AdminController extends BaseController {
             return;
         }
 
-        echo $this->twig->render('admin/pilotes/show.html.twig', [
+        $this->render('admin/pilotes/show.html.twig', [
             'adminPage' => true,
             'pilot' => $pilot
         ]);
@@ -71,7 +71,7 @@ class AdminController extends BaseController {
 
     public function ajouterPilote() {
         $this->requireAdmin();
-        echo $this->twig->render('admin/pilotes/ajouter.html.twig', [
+        $this->render('admin/pilotes/ajouter.html.twig', [
             'adminPage' => true
         ]);
     }
@@ -120,7 +120,7 @@ class AdminController extends BaseController {
             return;
         }
 
-        echo $this->twig->render('admin/pilotes/modifier.html.twig', [
+        $this->render('admin/pilotes/modifier.html.twig', [
             'adminPage' => true,
             'pilot' => $pilot
         ]);
@@ -161,7 +161,7 @@ class AdminController extends BaseController {
         // Récupérer tous les étudiants
         $students = $this->studentModel->getAllStudents();
 
-        echo $this->twig->render('pilotes/etudiants/index.html.twig', [
+        $this->render('pilotes/etudiants/index.html.twig', [
             'adminPage' => true,
             'students' => $students
         ]);
@@ -176,7 +176,7 @@ class AdminController extends BaseController {
 
         $enterprises = $this->enterpriseModel->getEnterprisesByName();
 
-        echo $this->twig->render('pilotes/entreprises/index.html.twig', [
+        $this->render('pilotes/entreprises/index.html.twig', [
             'adminPage' => true,
             'enterprises' => $enterprises
         ]);
@@ -191,7 +191,7 @@ class AdminController extends BaseController {
 
         $offers = $this->offerModel->getRecentOffers();
 
-        echo $this->twig->render('pilotes/offres/index.html.twig', [
+        $this->render('pilotes/offres/index.html.twig', [
             'adminPage' => true,
             'offers' => $offers
         ]);
