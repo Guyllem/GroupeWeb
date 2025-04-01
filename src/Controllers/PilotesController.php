@@ -150,12 +150,18 @@ class PilotesController extends BaseController {
             return;
         }
 
+        // Générer le token CSRF pour le formulaire
+        if (!isset($_SESSION['csrf_token'])) {
+            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+        }
+
         // Récupérer les compétences de l'étudiant
         $student['skills'] = $this->studentModel->getStudentSkills($etudiantId);
 
-        echo $this->twig->render('pilotes/etudiants/modifier.html.twig', [
+        echo $this->twig->render('pilotes/etudiants/edit.html.twig', [
             'pilotePage' => true,
-            'student' => $student
+            'student' => $student,
+            'csrf_token' => $_SESSION['csrf_token']
         ]);
     }
 
@@ -283,6 +289,38 @@ class PilotesController extends BaseController {
     }
 
     public function etudiantSupprimer($params) {
+        $this->requirePilote();
+
+        $etudiantId = $params['id'] ?? null;
+
+        if (!$etudiantId) {
+            $this->addFlashMessage('error', 'Étudiant non trouvé');
+            header('Location: /pilotes/etudiants');
+            return;
+        }
+
+        // Récupérer les détails de l'étudiant
+        $student = $this->studentModel->getStudentInfo($etudiantId);
+
+        if (!$student) {
+            $this->addFlashMessage('error', 'Étudiant non trouvé');
+            header('Location: /pilotes/etudiants');
+            return;
+        }
+
+        // Générer le token CSRF pour le formulaire
+        if (!isset($_SESSION['csrf_token'])) {
+            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+        }
+
+        echo $this->twig->render('pilotes/delete.html.twig', [
+            'pilotePage' => true,
+            'student' => $student,
+            'csrf_token' => $_SESSION['csrf_token']
+        ]);
+    }
+
+    public function etudiantSupprimerValider($params) {
         $this->requirePilote();
 
         $etudiantId = $params['id'] ?? null;

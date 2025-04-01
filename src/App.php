@@ -70,6 +70,7 @@ class App {
             ->get('/pilotes/etudiants/:id/modifier', 'Pilotes', 'modifierEtudiant')
             ->post('/pilotes/etudiants/:id/modifier', 'Pilotes', 'mettreAJourEtudiant')
             ->get('/pilotes/etudiants/:id/supprimer', 'Pilotes', 'etudiantSupprimer') // Ajout: supprimer étudiant
+            ->post('/pilotes/etudiants/:id/supprimer', 'Pilotes', 'etudiantSupprimerValider')
             ->get('/pilotes/etudiants/:id/wishlist', 'Pilotes', 'etudiantWishlist')
             ->get('/pilotes/etudiants/:id/offres', 'Pilotes', 'etudiantOffres')
             ->get('/pilotes/etudiants/:id/password', 'Pilotes', 'etudiantPassword') // Ajout: page modif mot de passe
