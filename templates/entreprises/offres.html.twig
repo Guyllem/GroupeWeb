@@ -3,25 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StageConnect - Mes Offres</title>
+    <title>StageConnect - Offres de {{ enterprise.Nom_Entreprise }}</title>
     <link rel="stylesheet" href="{{ asset('css/styles_page_etudiant.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
 </head>
 <body>
 <main>
     <div class="container">
         {% include 'partials/navbar-etudiant.html.twig' %}
 
-        {% include 'partials/flash_messages.html.twig' %}
-
         <div class="main-content">
             <div class="main-section">
+                <!-- En-tête avec titre et info sur l'entreprise -->
+                <div class="enterprise-header">
+                    <h1 class="profile-title">Offres de {{ enterprise.Nom_Entreprise }}</h1>
+                </div>
+
                 <div class="search-bar">
                     <div class="back-button">
-                        <a href="{{ url('etudiant') }}"><span class="arrow">←</span> Accueil</a>
-                    </div>
-                    <div class="search-container">
-                        <input placeholder="Search..." class="search-input" name="search" type="search"/>
+                        <a href="{{ url('entreprises/details/' ~ enterprise.Id_Entreprise) }}"><span class="arrow">←</span> Retour à l'entreprise</a>
                     </div>
                 </div>
 
@@ -32,7 +31,7 @@
                                 <h3>{{ offer.Titre_Offre }}</h3>
                                 <div class="tags">
                                     {% for skill in offer.skills %}
-                                        <span class="tag">{{ skill}}</span>
+                                        <span class="tag">{{ skill.Nom_Competence }}</span>
                                     {% endfor %}
                                 </div>
                             </div>
@@ -40,7 +39,7 @@
                                 <p>{{ offer.Description_Offre }}</p>
                             </div>
                             <div class="card-footer">
-                                <span class="publish-date">Candidature du {{ offer.Date_Candidature|date('d/m/Y') }}</span>
+                                <span class="publish-date">Publiée le {{ offer.Date_Debut_Offre|date('d/m/Y') }}</span>
                                 <div class="actions">
                                     <a href="{{ url('offres/details/' ~ offer.Id_Offre) }}" class="view-btn">Regarder</a>
                                 </div>
@@ -49,8 +48,8 @@
                     {% endfor %}
                 {% else %}
                     <div class="no-applications">
-                        <p>Vous n'avez pas encore postulé à des offres.</p>
-                        <a href="{{ url('etudiant') }}" class="view-btn">Découvrir les offres</a>
+                        <p>{{ enterprise.Nom_Entreprise }} n'a pas encore publié d'offres de stage.</p>
+                        <a href="{{ url('entreprises') }}" class="view-btn">Découvrir d'autres entreprises</a>
                     </div>
                 {% endif %}
             </div>
@@ -59,6 +58,5 @@
 </main>
 {% include 'partials/footer.html.twig' %}
 <script src="{{ asset('js/frontend_script.js') }}"></script>
-<script src="{{ asset('js/flash-messages.js') }}"></script>
 </body>
 </html>

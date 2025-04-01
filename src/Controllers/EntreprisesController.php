@@ -55,7 +55,7 @@ class EntreprisesController extends BaseController {
             }
         }
         
-        $this->render('entreprises/index.html.twig', [
+        echo $this->twig->render('entreprises/index.html.twig', [
             'enterprises' => $enterprises
         ]);
     }
@@ -66,7 +66,7 @@ class EntreprisesController extends BaseController {
         $enterpriseId = $params['id'] ?? null;
         
         if (!$enterpriseId) {
-            $this->render('error.html.twig', [
+            echo $this->twig->render('error.html.twig', [
                 'message' => 'Entreprise non trouvée'
             ]);
             return;
@@ -89,7 +89,7 @@ class EntreprisesController extends BaseController {
         $enterprise = $stmt->fetch(PDO::FETCH_ASSOC);
         
         if (!$enterprise) {
-            $this->render('error.html.twig', [
+            echo $this->twig->render('error.html.twig', [
                 'message' => 'Entreprise non trouvée'
             ]);
             return;
@@ -131,7 +131,7 @@ class EntreprisesController extends BaseController {
         $rating = $stmt->fetchColumn();
         $enterprise['rating'] = $rating ?: 0;
         
-        $this->render('entreprises/details.html.twig', [
+        echo $this->twig->render('entreprises/details.html.twig', [
             'enterprise' => $enterprise
         ]);
     }

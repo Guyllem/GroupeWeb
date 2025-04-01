@@ -24,7 +24,7 @@
                 <div class="postulate-section">
                     <p>Veuillez télécharger votre CV et votre lettre de motivation :</p>
 
-                    <form action="{{ url('etudiant/postuler/submit') }}" method="post" enctype="multipart/form-data" id="applicationForm">
+                    <form action="{{ url('/offres/details/' ~ offer.Id_Offre ~ '/postuler') }}" method="post" enctype="multipart/form-data" id="applicationForm">
                         <input type="hidden" name="offer_id" value="{{ offer.Id_Offre }}">
                         <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
 
