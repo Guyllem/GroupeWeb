@@ -160,6 +160,49 @@ class EntreprisesController extends BaseController {
         ]);
     }
 
+    /*
+     * Affiche le formulaire d'évaluation d'une entreprise
+     *
+     * @param array $params Paramètres de la route contenant l'ID de l'entreprise
+     * @return void
+     */
+    public function afficherRate($params)
+    {
+        $this->requireAuth();
+
+        $enterpriseId = $params['id'] ?? null;
+
+        if (!$enterpriseId) {
+            echo $this->twig->render('error.html.twig', [
+                'message' => 'Entreprise non trouvée'
+            ]);
+            return;
+        }
+
+        // Récupérer les détails de l'entreprise
+        $enterprise = $this->enterpriseModel->getEnterpriseDetails($enterpriseId);
+
+        if (!$enterprise) {
+            echo $this->twig->render('error.html.twig', [
+                'message' => 'Entreprise non trouvée'
+            ]);
+            return;
+        }
+
+        // Générer le token CSRF pour le formulaire
+        if (!isset($_SESSION['csrf_token'])) {
+            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+        }
+
+        // Afficher le template d'évaluation
+        echo $this->twig->render('entreprises/evaluer.html.twig', [
+            'enterprise' => $enterprise,
+            'csrf_token' => $_SESSION['csrf_token']
+        ]);
+    }
+
+
+
     /**
      * Évalue une entreprise
      */

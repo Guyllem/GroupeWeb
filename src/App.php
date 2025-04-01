@@ -52,7 +52,8 @@ class App {
             ->get('/entreprises', 'Entreprises', 'index')
             ->get('/entreprises/details/:id', 'Entreprises', 'details')
             ->post('/entreprises/rechercher', 'Entreprises', 'rechercher')
-            ->post('/entreprises/evaluer/:id', 'Entreprises', 'rate')
+            ->get('/entreprises/details/:id/evaluer', 'Entreprises', 'afficherRate')
+            ->post('/entreprises/details/:id/evaluer', 'Entreprises', 'rate')
 
             // Routes de pilote
             ->get('/pilotes', 'Pilotes', 'index')
