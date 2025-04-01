@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StageConnect - Postuler à {{ offer.Titre_Offre }}</title>
-    <link rel="stylesheet" href="{{ asset('css/styles_page_etudiant.css') }}">
     <link rel="stylesheet" href="{{ asset('css/modal.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/styles_page_etudiant.css') }}">
 </head>
 <body>
 <main>
@@ -21,7 +21,7 @@
                 <div class="postulate-section">
                     <p>Veuillez télécharger votre CV et votre lettre de motivation :</p>
 
-                    <form action="{{ url('etudiant/postuler/submit') }}" method="post" enctype="multipart/form-data" id="applicationForm">
+                    <form action="{{ url('/offres/details/' ~ offer.Id_Offre ~ '/postuler') }}" method="post" enctype="multipart/form-data" id="applicationForm">
                         <input type="hidden" name="offer_id" value="{{ offer.Id_Offre }}">
                         <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
 

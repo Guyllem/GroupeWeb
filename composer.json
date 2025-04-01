@@ -31,7 +31,8 @@
     "phpunit/phpunit": "^9.0",
     "twig/twig": "^3.0",
     "ext-pdo": "*",
-    "vlucas/phpdotenv": "^5.5"
+    "vlucas/phpdotenv": "^5.5",
+    "ext-json": "*"
   },
   "autoload": {
     "psr-4": {
