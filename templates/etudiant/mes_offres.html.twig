@@ -5,11 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StageConnect - Mes Offres</title>
     <link rel="stylesheet" href="{{ asset('css/styles_page_etudiant.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
 </head>
 <body>
 <main>
     <div class="container">
         {% include 'partials/navbar-etudiant.html.twig' %}
+
+        {% include 'partials/flash_messages.html.twig' %}
 
         <div class="main-content">
             <div class="main-section">
@@ -56,5 +59,6 @@
 </main>
 {% include 'partials/footer.html.twig' %}
 <script src="{{ asset('js/frontend_script.js') }}"></script>
+<script src="{{ asset('js/flash-messages.js') }}"></script>
 </body>
 </html>

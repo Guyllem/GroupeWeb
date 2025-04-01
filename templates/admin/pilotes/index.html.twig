@@ -5,11 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StageConnect - Gestion des Pilotes</title>
     <link rel="stylesheet" href="{{ asset('css/styles_page_admin.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
 </head>
 <body>
 {% set responsiveFilter = true %}
 {% set adminPage = true %}
 {% include 'partials/navbar-pilote.html.twig' %}
+
+{% include 'partials/flash_messages.html.twig' %}
 
 <div class="slide-filter" id="slide-filter">
     <div class="slide-filter-content">
@@ -102,5 +105,6 @@
 
 {% include 'partials/footer.html.twig' %}
 <script src="{{ asset('js/frontend_script.js') }}"></script>
+<script src="{{ asset('js/flash-messages.js') }}"></script>
 </body>
 </html>

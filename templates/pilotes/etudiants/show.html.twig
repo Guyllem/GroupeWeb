@@ -5,10 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StageConnect - Détails Étudiant</title>
     <link rel="stylesheet" href="{{ asset('css/styles_page_pilote.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
 </head>
 <body>
 {% set pilotePage = true %}
 {% include 'partials/navbar-pilote.html.twig' %}
+
+{% include 'partials/flash_messages.html.twig' %}
 
 <main class="content-principal">
     <div class="card">
@@ -58,5 +61,6 @@
         }
     }
 </script>
+<script src="{{ asset('js/flash-messages.js') }}"></script>
 </body>
 </html>

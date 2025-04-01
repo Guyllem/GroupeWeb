@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StageConnect - Espace Pilote</title>
     <link rel="stylesheet" href="{{ asset('css/styles_page_pilote.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
 </head>
 <body>
+{% include 'partials/flash_messages.html.twig' %}
 <nav>
     <div class="logo">Stage Connect</div>
     <div class="nav-right">
@@ -37,5 +39,6 @@
 
 {% include 'partials/footer.html.twig' %}
 <script src="{{ asset('js/frontend_script.js') }}"></script>
+<script src="{{ asset('js/flash-messages.js') }}"></script>
 </body>
 </html>
