@@ -12,13 +12,7 @@
         {% include 'partials/navbar-etudiant.html.twig' %}
         <div class="main-section">
             <div class="back-button">
-                <a href="{{ url('etudiant') }}"><span class="arrow">←</span> Accueil</a>
-            </div>
-            <div class="search-bar">
-                <div class="tabs">
-                    <button>Entreprises</button>
-                    <button class="active">Offres</button>
-                </div>
+                <a href="{{ url('offres') }}"><span class="arrow">←</span> Accueil</a>
             </div>
 
             {% if offers|length > 0 %}
