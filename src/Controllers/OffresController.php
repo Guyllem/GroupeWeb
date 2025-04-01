@@ -4,39 +4,53 @@ namespace App\Controllers;
 use PDO;
 
 class OffresController extends BaseController {
+    private $offresParPage = 5;
+
     public function __construct($twig, $db) {
         parent::__construct($twig, $db);
     }
 
-    public function index() {
+    public function index($params = []) {
         $this->requireAuth();
-        
+
+        // Récupérer le numéro de page depuis les paramètres
+        $currentPage = isset($params['page']) ? max(1, (int)$params['page']) : 1;
+        $offset = ($currentPage - 1) * $this->offresParPage;
+
         $conn = $this->db->connect();
         $userId = $_COOKIE['user_id'] ?? null;
         $studentId = null;
-        
+
         // Obtenir l'ID de l'étudiant si l'utilisateur est un étudiant
         if ($userId) {
             $stmt = $conn->prepare('SELECT Id_Etudiant FROM Etudiant WHERE Id_Utilisateur = :userId');
             $stmt->bindParam(':userId', $userId);
             $stmt->execute();
             $student = $stmt->fetch(PDO::FETCH_ASSOC);
-            
+
             if ($student) {
                 $studentId = $student['Id_Etudiant'];
             }
         }
-        
-        // Obtenir les 10 premières offres classées par date de publication
+
+        // Compter le nombre total d'offres pour la pagination
+        $stmt = $conn->prepare('SELECT COUNT(*) FROM Offre');
+        $stmt->execute();
+        $totalOffres = $stmt->fetchColumn();
+        $totalPages = ceil($totalOffres / $this->offresParPage);
+
+        // Obtenir les offres pour la page actuelle avec limite et offset
         $stmt = $conn->prepare('
             SELECT o.Id_Offre, o.Titre_Offre, o.Description_Offre, o.Date_Debut_Offre
             FROM Offre o
             ORDER BY o.Date_Debut_Offre DESC
-            LIMIT 10
+            LIMIT :limit OFFSET :offset
         ');
+        $stmt->bindParam(':limit', $this->offresParPage, PDO::PARAM_INT);
+        $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
         $stmt->execute();
         $offers = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
+
         // Pour chaque offre, obtenir ses compétences et vérifier si elle est dans la liste de souhaits
         foreach ($offers as &$offer) {
             // Obtenir les compétences
@@ -50,7 +64,7 @@ class OffresController extends BaseController {
             $stmt->execute();
             $skills = $stmt->fetchAll(PDO::FETCH_COLUMN);
             $offer['skills'] = $skills;
-            
+
             // Vérifier si elle est dans la liste de souhaits de l'étudiant actuel
             $offer['is_wishlisted'] = false;
             if ($studentId) {
@@ -64,40 +78,42 @@ class OffresController extends BaseController {
                 $offer['is_wishlisted'] = $stmt->fetchColumn() > 0;
             }
         }
-        
+
         echo $this->twig->render('etudiant/index.html.twig', [
-            'offers' => $offers
+            'offers' => $offers,
+            'currentPage' => $currentPage,
+            'totalPages' => $totalPages
         ]);
     }
 
     public function details($params) {
         $this->requireAuth();
-        
+
         $offerId = $params['id'] ?? null;
-        
+
         if (!$offerId) {
             echo $this->twig->render('error.html.twig', [
                 'message' => 'Offre non trouvée'
             ]);
             return;
         }
-        
+
         $conn = $this->db->connect();
         $userId = $_COOKIE['user_id'] ?? null;
         $studentId = null;
-        
+
         // Obtenir l'ID de l'étudiant si l'utilisateur est un étudiant
         if ($userId) {
             $stmt = $conn->prepare('SELECT Id_Etudiant FROM Etudiant WHERE Id_Utilisateur = :userId');
             $stmt->bindParam(':userId', $userId);
             $stmt->execute();
             $student = $stmt->fetch(PDO::FETCH_ASSOC);
-            
+
             if ($student) {
                 $studentId = $student['Id_Etudiant'];
             }
         }
-        
+
         // Obtenir les détails de l'offre
         $stmt = $conn->prepare('
             SELECT o.Id_Offre, o.Titre_Offre, o.Description_Offre, o.Remuneration_Offre,
@@ -111,14 +127,14 @@ class OffresController extends BaseController {
         $stmt->bindParam(':offerId', $offerId);
         $stmt->execute();
         $offer = $stmt->fetch(PDO::FETCH_ASSOC);
-        
+
         if (!$offer) {
             echo $this->twig->render('error.html.twig', [
                 'message' => 'Offre non trouvée'
             ]);
             return;
         }
-        
+
         // Obtenir les compétences
         $stmt = $conn->prepare('
             SELECT c.Nom_Competence
@@ -130,7 +146,7 @@ class OffresController extends BaseController {
         $stmt->execute();
         $skills = $stmt->fetchAll(PDO::FETCH_COLUMN);
         $offer['skills'] = $skills;
-        
+
         // Vérifier si elle est dans la liste de souhaits de l'étudiant actuel
         $offer['is_wishlisted'] = false;
         if ($studentId) {
@@ -143,7 +159,7 @@ class OffresController extends BaseController {
             $stmt->execute();
             $offer['is_wishlisted'] = $stmt->fetchColumn() > 0;
         }
-        
+
         echo $this->twig->render('offres/details.html.twig', [
             'offer' => $offer
         ]);

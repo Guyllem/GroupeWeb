@@ -1,0 +1,30 @@
+<link rel="stylesheet" href="{{ asset('css/styles_page-selection.css') }}">
+
+
+<div class="pagination-container">
+    <div class="pagination-controls">
+        {% if currentPage > 1 %}
+            <a href="{{ url('offres/pages/' ~ (currentPage - 1)) }}" class="pagination-btn prev-btn">
+                <i class="fas fa-chevron-left"></i> Page précédente
+            </a>
+        {% else %}
+            <span class="pagination-btn prev-btn disabled">
+                <i class="fas fa-chevron-left"></i> Page précédente
+            </span>
+        {% endif %}
+
+        <span class="pagination-info">
+            Page {{ currentPage }} sur {{ totalPages }}
+        </span>
+
+        {% if currentPage < totalPages %}
+            <a href="{{ url('offres/pages/' ~ (currentPage + 1)) }}" class="pagination-btn next-btn">
+                Page suivante <i class="fas fa-chevron-right"></i>
+            </a>
+        {% else %}
+            <span class="pagination-btn next-btn disabled">
+                Page suivante <i class="fas fa-chevron-right"></i>
+            </span>
+        {% endif %}
+    </div>
+</div>

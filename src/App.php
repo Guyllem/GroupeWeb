@@ -38,7 +38,9 @@ class App {
 
             // Routes d'offres
             ->get('/offres', 'Offres', 'index')
+            ->get('/offres/pages/:page', 'Offres', 'index')
             ->get('/offres/details/:id', 'Offres', 'details')
+
 
             // Routes d'entreprises
             ->get('/entreprises', 'Entreprises', 'index')
