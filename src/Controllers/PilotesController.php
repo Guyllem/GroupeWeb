@@ -94,17 +94,30 @@ class PilotesController extends BaseController {
         // Récupérer les compétences de l'étudiant
         $student['skills'] = $this->studentModel->getStudentSkills($etudiantId);
 
+        // Générer le token CSRF pour le formulaire
+        if (!isset($_SESSION['csrf_token'])) {
+            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+        }
+
         echo $this->twig->render('pilotes/etudiants/show.html.twig', [
             'pilotePage' => true,
-            'student' => $student
+            'student' => $student,
+            'csrf_token' => $_SESSION['csrf_token']
         ]);
     }
 
     public function ajouterEtudiant() {
         $this->requirePilote();
         // Afficher le formulaire d'ajout d'étudiant
-        echo $this->twig->render('pilotes/etudiants/ajouter.html.twig', [
-            'pilotePage' => true
+
+        // Générer le token CSRF pour le formulaire
+        if (!isset($_SESSION['csrf_token'])) {
+            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+        }
+
+        echo $this->twig->render('pilotes/etudiants/add.html.twig', [
+            'pilotePage' => true,
+            'csrf_token' => $_SESSION['csrf_token']
         ]);
     }
 
