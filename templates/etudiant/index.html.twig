@@ -13,6 +13,7 @@
         {% include 'partials/navbar-etudiant.html.twig' %}
 
         <div class="slide-filter" id="slide-filter">
+            <!-- Contenu du filtre déroulant (inchangé) -->
             <div class="slide-filter-content">
                 <h3>Filtres</h3>
                 <div class="slide-filter-section">
@@ -65,6 +66,7 @@
 
         <div class="main-content">
             <div class="filters">
+                <!-- Contenu des filtres (inchangé) -->
                 <h3>Filtres</h3>
                 <div class="filter-section">
                     <h4>Paramètres de tri :</h4>
@@ -119,7 +121,6 @@
                         <input placeholder="Search..." class="search-input" name="search" type="search"/>
                     </div>
                 </div>
-
                 {% for offer in offers %}
                     <div class="card">
                         <div class="card-header">

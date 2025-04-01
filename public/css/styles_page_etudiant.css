@@ -151,11 +151,9 @@ nav {
     border-color: #3F51B5;
     border-right: 2px solid #3F51B5;
     min-height: calc(100vh - 115px);
-    display: flex;
+
     flex-direction: column;
-    overflow-y: auto;
     height: 100%;
-    justify-content: flex-start;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Remplace la propriété 'shadow' incorrecte */
 }
 
@@ -163,10 +161,11 @@ nav {
     display: flex;
     flex-direction: column;
     flex-grow: 1; /* Prend l'espace disponible */
+
 }
 
 .filters h3{
-    margin-bottom: 10px;
+    margin-bottom: 100px;
     text-align: center;
     color: #3F51B5;
     font-size: 30px;
@@ -825,6 +824,7 @@ h3 {
     gap: 12px;
     grid-template-columns: repeat(3, 1fr);
     justify-content: end;
+    direction: rtl;
 }
 
 .tag {
