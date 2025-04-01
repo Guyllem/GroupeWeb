@@ -167,6 +167,8 @@
                         <p>Aucune offre disponible pour le moment.</p>
                     </div>
                 {% endfor %}
+                {% include 'partials/page-selection.html.twig' with {'currentPage': currentPage, 'totalPages': totalPages} %}
+
             </div>
         </div>
     </div>
