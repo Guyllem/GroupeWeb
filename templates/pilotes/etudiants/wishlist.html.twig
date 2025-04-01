@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StageConnect - Wishlist de {{ student.Prenom_Utilisateur }} {{ student.Nom_Utilisateur }}</title>
+    <link rel="stylesheet" href="{{ asset('css/styles_page_etudiant.css') }}">
+</head>
+<body>
+{% set pilotePage = true %}
+{% include 'partials/navbar-pilote.html.twig' %}
+
+<main class="content-principal">
+    <div class="back-button">
+        <a href="{{ url('pilotes/etudiants/' ~ student.Id_Etudiant) }}"><span class="arrow">←</span> Retour au profil de l'étudiant</a>
+    </div>
+
+    <h1 class="profile-title">Wishlist de {{ student.Prenom_Utilisateur }} {{ student.Nom_Utilisateur }}</h1>
+
+    <div class="main-section">
+        {% if offers|length > 0 %}
+            {% for offer in offers %}
+                <div class="card">
+                    <div class="card-header">
+                        <h3>{{ offer.Titre_Offre }}</h3>
+                        <div class="tags">
+                            {% for skill in offer.skills %}
+                                <span class="tag">{{ skill.Nom_Competence }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p>{{ offer.Description_Offre }}</p>
+                    </div>
+                    <div class="card-footer">
+                        <div class="publish-date">
+                            <span>Rémunération: {{ offer.Remuneration_Offre }}€</span>
+                            <span>Durée: {{ offer.Duree_Min_Offre }}-{{ offer.Duree_Max_Offre }} semaines</span>
+                        </div>
+                        <div class="actions">
+                            <a href="{{ url('pilotes/offres/' ~ offer.Id_Offre) }}" class="view-btn">Détails</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="no-applications">
+                <p>Cet étudiant n'a pas encore ajouté d'offres à sa wishlist.</p>
+                <a href="{{ url('pilotes/etudiants/' ~ student.Id_Etudiant) }}" class="view-btn">Retour au profil</a>
+            </div>
+        {% endif %}
+    </div>
+</main>
+
+{% include 'partials/footer.html.twig' %}
+<script src="{{ asset('js/frontend_script.js') }}"></script>
+<script src="{{ asset('js/flash-messages.js') }}"></script>
+</body>
+</html>
