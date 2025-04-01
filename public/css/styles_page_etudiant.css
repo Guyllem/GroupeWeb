@@ -1018,6 +1018,26 @@ h3 {
     margin-bottom: 15px;
 }
 
+.enterprise-name {
+    margin-top: 10px;
+    font-weight: bold;
+    color: #757DE8;
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.publish-date {
+    display: flex;
+    flex-direction: column;
+    font-size: 12px;
+    opacity: 0.8;
+}
+
+
 
 /* Responsive design -> Media Queries */
 @media (max-width: 768px) {
@@ -1158,6 +1178,11 @@ h3 {
 
     .name-and-company {
         text-align: center;
+    }
+
+    .publish-date {
+        flex-direction: row;
+        gap: 5px;
     }
 }
 
