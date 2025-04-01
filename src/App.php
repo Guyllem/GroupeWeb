@@ -34,17 +34,29 @@ class App {
             ->get('/etudiant', 'Etudiant', 'index')
             ->get('/etudiant/mon_profil', 'Etudiant', 'profil')
             ->get('/etudiant/mes_offres', 'Etudiant', 'mesOffres')
+            ->get('/etudiant/mes_candidatures', 'Etudiant', 'my_applications')
             ->get('/etudiant/wishlist', 'Etudiant', 'wishlist')
+            ->post('/etudiant/wishlist/ajouter', 'Etudiant', 'ajouterWishlist')
+            ->post('/etudiant/wishlist/retirer', 'Etudiant', 'retirerWishlist')
 
             // Routes d'offres
             ->get('/offres', 'Offres', 'index')
             ->get('/offres/pages/:page', 'Offres', 'index')
             ->get('/offres/details/:id', 'Offres', 'details')
+            ->post('/offres/rechercher', 'Offres', 'rechercher')
+            ->get('/offres/wishlist/ajouter/:id', 'Offres', 'add_to_wishlist')
+            ->get('/offres/wishlist/retirer/:id', 'Offres', 'remove_from_wishlist')
+            ->get('/offres/details/:id/postuler', 'Etudiant', 'postuler')
+            ->post('/offres/details/:id/postuler', 'Etudiant', 'validate_application')
 
 
             // Routes d'entreprises
             ->get('/entreprises', 'Entreprises', 'index')
             ->get('/entreprises/details/:id', 'Entreprises', 'details')
+            ->post('/entreprises/rechercher', 'Entreprises', 'rechercher')
+            ->get('/entreprises/details/:id/offres', 'Entreprises', 'associateOffers')
+            ->get('/entreprises/details/:id/evaluer', 'Entreprises', 'afficherRate')
+            ->post('/entreprises/details/:id/evaluer', 'Entreprises', 'rate')
 
             // Routes de pilote
             ->get('/pilotes', 'Pilotes', 'index')

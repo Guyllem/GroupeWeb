@@ -86,10 +86,13 @@ class StudentModel extends Model {
                 o.Duree_Min_Offre,
                 o.Duree_Max_Offre,
                 e.Id_Entreprise,
-                e.Nom_Entreprise
+                e.Nom_Entreprise,
+                l.Ville_Localisation,
+                l.Code_Postal_Localisation
             FROM Candidature c
             JOIN Offre o ON c.Id_Offre = o.Id_Offre
             JOIN Entreprise e ON o.Id_Entreprise = e.Id_Entreprise
+            JOIN Localisation l ON e.Id_Localisation = l.Id_Localisation
             WHERE c.Id_Etudiant = :studentId
             ORDER BY c.Date_Candidature DESC
         ';
@@ -112,6 +115,17 @@ class StudentModel extends Model {
             $stmt->bindParam(':offerId', $application['Id_Offre']);
             $stmt->execute();
             $application['skills'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            // Récupérer les fichiers associés à la candidature (CV, LM, etc.)
+            $stmt = $conn->prepare('
+                SELECT f.Id_Fichier, f.Type_Fichier, f.Nom_Affichage_Fichier, f.Chemin_Fichier
+                FROM Fichier f
+                JOIN Contenir c ON f.Id_Fichier = c.Id_Fichier
+                WHERE c.Id_Candidature = :candidatureId
+            ');
+            $stmt->bindParam(':candidatureId', $application['Id_Candidature']);
+            $stmt->execute();
+            $application['fichiers'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
 
         return $applications;
@@ -135,11 +149,15 @@ class StudentModel extends Model {
                 o.Duree_Min_Offre, 
                 o.Duree_Max_Offre,
                 e.Id_Entreprise,
-                e.Nom_Entreprise
+                e.Nom_Entreprise,
+                l.Ville_Localisation,
+                l.Code_Postal_Localisation
             FROM Souhaiter s
             JOIN Offre o ON s.Id_Offre = o.Id_Offre
             JOIN Entreprise e ON o.Id_Entreprise = e.Id_Entreprise
+            JOIN Localisation l ON e.Id_Localisation = l.Id_Localisation
             WHERE s.Id_Etudiant = :studentId
+            ORDER BY o.Date_Debut_Offre DESC
         ';
 
         $conn = $this->db->connect();
@@ -252,6 +270,7 @@ class StudentModel extends Model {
             $stmt->execute();
 
             if ($stmt->fetchColumn() > 0) {
+                $conn->rollBack();
                 return null; // Déjà postulé
             }
 
@@ -279,6 +298,31 @@ class StudentModel extends Model {
     }
 
     /**
+     * Associe un fichier à une candidature
+     *
+     * @param int $candidatureId ID de la candidature
+     * @param int $fileId ID du fichier
+     * @return bool Succès de l'opération
+     */
+    public function attachFileToCandidature($candidatureId, $fileId) {
+        $conn = $this->db->connect();
+
+        try {
+            $stmt = $conn->prepare('
+                INSERT INTO Contenir (Id_Candidature, Id_Fichier)
+                VALUES (:candidatureId, :fileId)
+            ');
+            $stmt->bindParam(':candidatureId', $candidatureId);
+            $stmt->bindParam(':fileId', $fileId);
+
+            return $stmt->execute();
+        } catch (\Exception $e) {
+            error_log($e->getMessage());
+            return false;
+        }
+    }
+
+    /**
      * Obtient l'ID de l'étudiant à partir de l'ID utilisateur
      *
      * @param int $userId ID de l'utilisateur
@@ -293,41 +337,5 @@ class StudentModel extends Model {
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
         return $result ? $result['Id_Etudiant'] : null;
-    }
-
-    /**
-     * Récupère tous les étudiants avec pagination
-     *
-     * @param int $limit Limite de résultats
-     * @param int $offset Offset pour pagination
-     * @return array Liste des étudiants
-     */
-    public function getAllStudents($limit = 10, $offset = 0) {
-        $query = '
-            SELECT 
-                e.Id_Etudiant, 
-                u.Nom_Utilisateur, 
-                u.Prenom_Utilisateur,
-                pr.Nom_Promotion,
-                c.Nom_Campus,
-                (SELECT COUNT(*) FROM Candidature WHERE Id_Etudiant = e.Id_Etudiant) as application_count,
-                (SELECT COUNT(*) FROM Souhaiter WHERE Id_Etudiant = e.Id_Etudiant) as wishlist_count
-            FROM Etudiant e
-            JOIN Utilisateur u ON e.Id_Utilisateur = u.Id_Utilisateur
-            LEFT JOIN Appartenir a ON e.Id_Etudiant = a.Id_Etudiant
-            LEFT JOIN Promotion pr ON a.Id_Promotion = pr.Id_Promotion
-            LEFT JOIN Campus c ON pr.Id_Campus = c.Id_Campus
-            GROUP BY e.Id_Etudiant, u.Nom_Utilisateur, u.Prenom_Utilisateur
-            ORDER BY u.Nom_Utilisateur, u.Prenom_Utilisateur
-            LIMIT :limit OFFSET :offset
-        ';
-
-        $conn = $this->db->connect();
-        $stmt = $conn->prepare($query);
-        $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
-        $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
-        $stmt->execute();
-
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

@@ -21,11 +21,14 @@ class EnterpriseModel extends Model {
                 e.Id_Entreprise, 
                 e.Nom_Entreprise, 
                 e.Description_Entreprise,
+                e.Email_Entreprise,
+                e.Telephone_Entreprise,
+                e.Effectif_Entreprise,
                 AVG(ev.Note_Evaluer) as rating
             FROM Entreprise e
             LEFT JOIN Evaluer ev ON e.Id_Entreprise = ev.Id_Entreprise
-            GROUP BY e.Id_Entreprise
-            ORDER BY rating DESC
+            GROUP BY e.Id_Entreprise, e.Nom_Entreprise
+            ORDER BY rating DESC, e.Nom_Entreprise ASC
             LIMIT :limit OFFSET :offset
         ';
 
@@ -57,7 +60,10 @@ class EnterpriseModel extends Model {
             SELECT 
                 e.Id_Entreprise, 
                 e.Nom_Entreprise, 
-                e.Description_Entreprise
+                e.Description_Entreprise,
+                e.Email_Entreprise,
+                e.Telephone_Entreprise,
+                e.Effectif_Entreprise
             FROM Entreprise e
             ORDER BY e.Nom_Entreprise
             LIMIT :limit OFFSET :offset
@@ -98,7 +104,8 @@ class EnterpriseModel extends Model {
                 l.Ville_Localisation,
                 l.Code_Postal_Localisation,
                 l.Adresse_Localisation,
-                AVG(ev.Note_Evaluer) as rating
+                AVG(ev.Note_Evaluer) as rating,
+                COUNT(ev.Id_Utilisateur) as rating_count
             FROM Entreprise e
             LEFT JOIN Localisation l ON e.Id_Localisation = l.Id_Localisation
             LEFT JOIN Evaluer ev ON e.Id_Entreprise = ev.Id_Entreprise
@@ -119,6 +126,15 @@ class EnterpriseModel extends Model {
 
         // Obtenir les secteurs (comme tags)
         $enterprise['tags'] = $this->getEnterpriseSectors($enterpriseId);
+
+        // Obtenir le nombre d'offres de l'entreprise
+        $stmt = $conn->prepare('
+            SELECT COUNT(*) FROM Offre
+            WHERE Id_Entreprise = :enterpriseId
+        ');
+        $stmt->bindParam(':enterpriseId', $enterpriseId);
+        $stmt->execute();
+        $enterprise['offer_count'] = $stmt->fetchColumn();
 
         return $enterprise;
     }
@@ -211,171 +227,176 @@ class EnterpriseModel extends Model {
     }
 
     /**
-     * Crée une nouvelle entreprise
+     * Recherche des entreprises selon des critères
      *
-     * @param array $enterpriseData Données de l'entreprise
-     * @param array $sectorIds IDs des secteurs
-     * @return int|null ID de la nouvelle entreprise, null si erreur
+     * @param array $criteria Critères de recherche
+     * @return array Liste des entreprises
      */
-    public function createEnterprise($enterpriseData, $sectorIds = []) {
-        $conn = $this->db->connect();
+    public function searchEnterprises($criteria = []) {
+        $query = '
+            SELECT 
+                e.Id_Entreprise, 
+                e.Nom_Entreprise, 
+                e.Description_Entreprise,
+                e.Email_Entreprise,
+                e.Telephone_Entreprise,
+                e.Effectif_Entreprise,
+                l.Ville_Localisation,
+                l.Code_Postal_Localisation,
+                AVG(ev.Note_Evaluer) as rating
+            FROM Entreprise e
+            LEFT JOIN Localisation l ON e.Id_Localisation = l.Id_Localisation
+            LEFT JOIN Evaluer ev ON e.Id_Entreprise = ev.Id_Entreprise
+        ';
 
-        try {
-            $conn->beginTransaction();
-
-            // Créer la localisation
-            $stmt = $conn->prepare('
-                INSERT INTO Localisation (
-                    Ville_Localisation, 
-                    Code_Postal_Localisation, 
-                    Adresse_Localisation
-                ) VALUES (
-                    :ville, 
-                    :codePostal, 
-                    :adresse
-                )
-            ');
-
-            $stmt->bindParam(':ville', $enterpriseData['ville']);
-            $stmt->bindParam(':codePostal', $enterpriseData['codePostal']);
-            $stmt->bindParam(':adresse', $enterpriseData['adresse']);
-            $stmt->execute();
-
-            $localisationId = $conn->lastInsertId();
-
-            // Créer l'entreprise
-            $stmt = $conn->prepare('
-                INSERT INTO Entreprise (
-                    Nom_Entreprise, 
-                    Description_Entreprise, 
-                    Email_Entreprise,
-                    Telephone_Entreprise, 
-                    Effectif_Entreprise,
-                    Id_Localisation
-                ) VALUES (
-                    :nom, 
-                    :description, 
-                    :email,
-                    :telephone, 
-                    :effectif,
-                    :idLocalisation
-                )
-            ');
-
-            $stmt->bindParam(':nom', $enterpriseData['nom']);
-            $stmt->bindParam(':description', $enterpriseData['description']);
-            $stmt->bindParam(':email', $enterpriseData['email']);
-            $stmt->bindParam(':telephone', $enterpriseData['telephone']);
-            $stmt->bindParam(':effectif', $enterpriseData['effectif']);
-            $stmt->bindParam(':idLocalisation', $localisationId);
-
-            $stmt->execute();
-
-            $enterpriseId = $conn->lastInsertId();
-
-            // Ajouter les secteurs
-            if (!empty($sectorIds)) {
-                $insertSectorQuery = 'INSERT INTO Fournir (Id_Entreprise, Id_Secteur) VALUES ';
-                $values = [];
-
-                foreach ($sectorIds as $sectorId) {
-                    $values[] = "({$enterpriseId}, {$sectorId})";
-                }
-
-                $insertSectorQuery .= implode(', ', $values);
-                $conn->exec($insertSectorQuery);
-            }
-
-            $conn->commit();
-
-            return $enterpriseId;
-        } catch (\Exception $e) {
-            $conn->rollBack();
-            error_log($e->getMessage());
-            return null;
+        // Joindre la table Secteur si nécessaire
+        if (!empty($criteria['secteur'])) {
+            $query .= '
+                JOIN Fournir f ON e.Id_Entreprise = f.Id_Entreprise
+                JOIN Secteur s ON f.Id_Secteur = s.Id_Secteur
+            ';
         }
+
+        $whereConditions = [];
+        $params = [];
+
+        // Ajouter les conditions de recherche
+        if (!empty($criteria['nom'])) {
+            $whereConditions[] = 'e.Nom_Entreprise LIKE :nom';
+            $params[':nom'] = '%' . $criteria['nom'] . '%';
+        }
+
+        if (!empty($criteria['description'])) {
+            $whereConditions[] = 'e.Description_Entreprise LIKE :description';
+            $params[':description'] = '%' . $criteria['description'] . '%';
+        }
+
+        if (!empty($criteria['secteur'])) {
+            $whereConditions[] = 's.Nom_Secteur LIKE :secteur';
+            $params[':secteur'] = '%' . $criteria['secteur'] . '%';
+        }
+
+        if (!empty($criteria['ville'])) {
+            $whereConditions[] = 'l.Ville_Localisation LIKE :ville';
+            $params[':ville'] = '%' . $criteria['ville'] . '%';
+        }
+
+        if (!empty($criteria['code_postal'])) {
+            $whereConditions[] = 'l.Code_Postal_Localisation LIKE :code_postal';
+            $params[':code_postal'] = '%' . $criteria['code_postal'] . '%';
+        }
+
+        // Ajouter les conditions WHERE si nécessaire
+        if (!empty($whereConditions)) {
+            $query .= ' WHERE ' . implode(' AND ', $whereConditions);
+        }
+
+        // Grouper par Id_Entreprise pour éviter les doublons
+        $query .= ' GROUP BY e.Id_Entreprise';
+
+        // Ajouter ORDER BY
+        if (!empty($criteria['orderBy'])) {
+            switch ($criteria['orderBy']) {
+                case 'nom_asc':
+                    $query .= ' ORDER BY e.Nom_Entreprise ASC';
+                    break;
+                case 'nom_desc':
+                    $query .= ' ORDER BY e.Nom_Entreprise DESC';
+                    break;
+                case 'rating_desc':
+                    $query .= ' ORDER BY rating DESC';
+                    break;
+                case 'ville':
+                    $query .= ' ORDER BY l.Ville_Localisation ASC';
+                    break;
+                default:
+                    $query .= ' ORDER BY rating DESC, e.Nom_Entreprise ASC';
+                    break;
+            }
+        } else {
+            $query .= ' ORDER BY rating DESC, e.Nom_Entreprise ASC';
+        }
+
+        // Ajouter LIMIT et OFFSET
+        if (!empty($criteria['limit'])) {
+            $query .= ' LIMIT :limit';
+            $params[':limit'] = (int) $criteria['limit'];
+
+            if (!empty($criteria['offset'])) {
+                $query .= ' OFFSET :offset';
+                $params[':offset'] = (int) $criteria['offset'];
+            }
+        }
+
+        $conn = $this->db->connect();
+        $stmt = $conn->prepare($query);
+
+        foreach ($params as $key => $value) {
+            if (in_array($key, [':limit', ':offset'])) {
+                $stmt->bindValue($key, $value, PDO::PARAM_INT);
+            } else {
+                $stmt->bindValue($key, $value, PDO::PARAM_STR);
+            }
+        }
+
+        $stmt->execute();
+        $enterprises = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Pour chaque entreprise, obtenir ses secteurs (comme tags)
+        foreach ($enterprises as &$enterprise) {
+            $enterprise['tags'] = $this->getEnterpriseSectors($enterprise['Id_Entreprise']);
+        }
+
+        return $enterprises;
     }
 
     /**
-     * Met à jour une entreprise existante
+     * Obtient les offres d'une entreprise
      *
      * @param int $enterpriseId ID de l'entreprise
-     * @param array $enterpriseData Données de l'entreprise
-     * @param array $sectorIds IDs des secteurs
-     * @return bool Succès de l'opération
+     * @param int $limit Nombre maximum d'offres à retourner
+     * @param int $offset Position de départ
+     * @return array Liste des offres
      */
-    public function updateEnterprise($enterpriseId, $enterpriseData, $sectorIds = []) {
+    public function getEnterpriseOffers($enterpriseId, $limit = 10, $offset = 0) {
+        $query = '
+            SELECT 
+                o.Id_Offre, 
+                o.Titre_Offre, 
+                o.Description_Offre,
+                o.Remuneration_Offre,
+                o.Niveau_Requis_Offre,
+                o.Date_Debut_Offre,
+                o.Duree_Min_Offre,
+                o.Duree_Max_Offre
+            FROM Offre o
+            WHERE o.Id_Entreprise = :enterpriseId
+            ORDER BY o.Date_Debut_Offre DESC
+            LIMIT :limit OFFSET :offset
+        ';
+
         $conn = $this->db->connect();
+        $stmt = $conn->prepare($query);
+        $stmt->bindParam(':enterpriseId', $enterpriseId);
+        $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+        $stmt->execute();
 
-        try {
-            $conn->beginTransaction();
+        $offers = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            // Récupérer l'ID de localisation de l'entreprise
-            $stmt = $conn->prepare('SELECT Id_Localisation FROM Entreprise WHERE Id_Entreprise = :enterpriseId');
-            $stmt->bindParam(':enterpriseId', $enterpriseId);
-            $stmt->execute();
-            $localisationId = $stmt->fetchColumn();
-
-            // Mettre à jour la localisation
+        // Pour chaque offre, obtenir ses compétences
+        foreach ($offers as &$offer) {
             $stmt = $conn->prepare('
-                UPDATE Localisation SET
-                    Ville_Localisation = :ville,
-                    Code_Postal_Localisation = :codePostal,
-                    Adresse_Localisation = :adresse
-                WHERE Id_Localisation = :localisationId
+                SELECT c.Id_Competence, c.Nom_Competence
+                FROM Competence c
+                JOIN Necessiter n ON c.Id_Competence = n.Id_Competence
+                WHERE n.Id_Offre = :offerId
             ');
-
-            $stmt->bindParam(':ville', $enterpriseData['ville']);
-            $stmt->bindParam(':codePostal', $enterpriseData['codePostal']);
-            $stmt->bindParam(':adresse', $enterpriseData['adresse']);
-            $stmt->bindParam(':localisationId', $localisationId);
+            $stmt->bindParam(':offerId', $offer['Id_Offre']);
             $stmt->execute();
-
-            // Mettre à jour l'entreprise
-            $stmt = $conn->prepare('
-                UPDATE Entreprise SET
-                    Nom_Entreprise = :nom,
-                    Description_Entreprise = :description,
-                    Email_Entreprise = :email,
-                    Telephone_Entreprise = :telephone,
-                    Effectif_Entreprise = :effectif
-                WHERE Id_Entreprise = :enterpriseId
-            ');
-
-            $stmt->bindParam(':nom', $enterpriseData['nom']);
-            $stmt->bindParam(':description', $enterpriseData['description']);
-            $stmt->bindParam(':email', $enterpriseData['email']);
-            $stmt->bindParam(':telephone', $enterpriseData['telephone']);
-            $stmt->bindParam(':effectif', $enterpriseData['effectif']);
-            $stmt->bindParam(':enterpriseId', $enterpriseId);
-            $stmt->execute();
-
-            // Mettre à jour les secteurs
-            // D'abord supprimer les anciens secteurs
-            $stmt = $conn->prepare('DELETE FROM Fournir WHERE Id_Entreprise = :enterpriseId');
-            $stmt->bindParam(':enterpriseId', $enterpriseId);
-            $stmt->execute();
-
-            // Ajouter les nouveaux secteurs
-            if (!empty($sectorIds)) {
-                $insertSectorQuery = 'INSERT INTO Fournir (Id_Entreprise, Id_Secteur) VALUES ';
-                $values = [];
-
-                foreach ($sectorIds as $sectorId) {
-                    $values[] = "({$enterpriseId}, {$sectorId})";
-                }
-
-                $insertSectorQuery .= implode(', ', $values);
-                $conn->exec($insertSectorQuery);
-            }
-
-            $conn->commit();
-
-            return true;
-        } catch (\Exception $e) {
-            $conn->rollBack();
-            error_log($e->getMessage());
-            return false;
+            $offer['skills'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
+
+        return $offers;
     }
 }

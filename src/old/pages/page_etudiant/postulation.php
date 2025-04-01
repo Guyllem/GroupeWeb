@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stage Connect - Postuler</title>
     <link rel="stylesheet" href="styles_page_etudiant.css">
-    <link rel="stylesheet" href="../modal.css">
+    <link rel="stylesheet" href="../../../../public/css/modal.css">
 </head>
 
 <nav>
