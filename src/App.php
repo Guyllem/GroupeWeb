@@ -45,7 +45,8 @@ class App {
             ->post('/offres/rechercher', 'Offres', 'rechercher')
             ->get('/offres/wishlist/ajouter/:id', 'Offres', 'add_to_wishlist')
             ->get('/offres/wishlist/retirer/:id', 'Offres', 'remove_from_wishlist')
-            ->post('/offres/details/:id/postuler', 'Etudiant', 'postuler')
+            ->get('/offres/details/:id/postuler', 'Etudiant', 'postuler')
+            ->post('/offres/details/:id/postuler', 'Etudiant', 'validate_application')
 
             // Routes d'entreprises
             ->get('/entreprises', 'Entreprises', 'index')

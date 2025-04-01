@@ -141,9 +141,52 @@ class EtudiantController extends BaseController {
     }
 
     /**
+     * Affiche la page de postulation
+     */
+
+    public function postuler($params) {
+        $this->requireEtudiant();
+
+        // Vérification du format des paramètres reçus
+        if (!is_array($params) || !isset($params['id'])) {
+            $this->addFlashMessage('error', 'Paramètres invalides');
+            header('Location: /etudiant');
+            return;
+        }
+
+        $offerId = $params['id'];
+
+        // Debug pour vérifier l'ID reçu
+        error_log("ID de l'offre: " . $offerId);
+
+        // Récupération de l'offre avec vérification du résultat
+        $offer = $this->offerModel->getOfferDetails($offerId);
+
+        // Debug pour vérifier la structure
+        error_log("Structure de l'offre: " . print_r($offer, true));
+
+        // Vérification que l'offre existe et a la structure attendue
+        if (!$offer || !isset($offer['Titre_Offre'])) {
+            $this->addFlashMessage('error', 'Offre non trouvée ou format invalide');
+            header('Location: /etudiant');
+            return;
+        }
+
+        // Générer le token CSRF
+        if (!isset($_SESSION['csrf_token'])) {
+            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+        }
+
+        echo $this->twig->render('offres/postuler.html.twig', [
+            'offer' => $offer,
+            'csrf_token' => $_SESSION['csrf_token']
+        ]);
+    }
+
+    /**
      * Postuler à une offre
      */
-    public function postuler($params = null) {
+    public function validate_application($params = null) {
         $this->requireEtudiant();
 
         // Récupérer l'ID de l'offre depuis les paramètres ou le POST
@@ -217,6 +260,6 @@ class EtudiantController extends BaseController {
      * Méthode pour appliquer à une offre depuis l'URL /offres/details/:id/postuler
      */
     public function apply($params) {
-        return $this->postuler($params);
+        return $this->validate_application($params);
     }
 }
