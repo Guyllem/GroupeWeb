@@ -82,45 +82,11 @@
                 <div id="telephone-error" class="form-error"></div>
             </div>
 
-            <div class="form-group">
-                <label class="form-label">Compétences</label>
-                <div class="skills-grid">
-                    {% for skill in student.skills %}
-                        <div class="skill-badge">
-                            {{ skill.Nom_Competence }}
-                            <span class="skill-delete" data-skill-id="{{ skill.Id_Competence }}">×</span>
-                        </div>
-                    {% else %}
-                        <div>Aucune compétence ajoutée</div>
-                    {% endfor %}
-                </div>
-                <button type="button" id="add-skill-button" class="add-skill-button">Ajouter une compétence</button>
-                <div class="skill-dropdown" id="skill-dropdown">
-                    {% if skills is defined %}
-                        {% for skill in skills %}
-                            <div class="skill-dropdown-item" data-skill-id="{{ skill.Id_Competence }}">
-                                {{ skill.Nom_Competence }}
-                            </div>
-                        {% endfor %}
-                    {% else %}
-                        <div class="skill-dropdown-item">Aucune compétence disponible</div>
-                    {% endif %}
-                </div>
-                <input type="hidden" name="skills" id="skills-input" value="{{ student.skills|map(s => s.Id_Competence)|join(',') }}">
-            </div>
-
             <div class="form-actions">
                 <button type="button" class="btn btn-back" onclick="history.back()">Annuler</button>
                 <button type="submit" class="btn btn-submit" id="submit-btn">Modifier</button>
             </div>
         </form>
-    </div>
-
-    <div class="confirmation-popup" id="confirmationPopup" {% if success is defined and success %}style="display: flex;"{% endif %}>
-        <div class="popup-content">
-            <p>L'élève a bien été modifié</p>
-            <button class="close-popup" onclick="window.location.href='{{ url('pilotes/etudiants') }}'">Fermer</button>
-        </div>
     </div>
 </main>
 
