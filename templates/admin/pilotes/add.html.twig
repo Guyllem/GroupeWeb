@@ -51,32 +51,28 @@
             <div class="form-row">
                 <div class="form-column">
                     <div class="form-group">
-                        <label for="promotion" class="form-label">Promotion</label>
-                        <select id="promotion" name="promotion" class="form-input" required>
-                            <option value="" selected disabled>Sélectionner une promotion</option>
-                            <option value="A1">A1</option>
-                            <option value="A2 Info">A2 Info</option>
-                            <option value="A2 Géné">A2 Géné</option>
-                            <option value="A3 Info">A3 Info</option>
-                            <option value="A3 Géné">A3 Géné</option>
-                            <option value="A4 Info">A4 Info</option>
-                            <option value="A4 Géné">A4 Géné</option>
-                            <option value="A5 Info">A5 Info</option>
-                            <option value="A5 Géné">A5 Géné</option>
+                        <label for="campus" class="form-label">Campus</label>
+                        <select id="campus" name="campus" class="form-input" required>
+                            <option value="" selected disabled>Sélectionner un campus</option>
+                            {% for site in campus %}
+                                <option value="{{ site.Id_Campus }}">{{ site.Nom_Campus }}</option>
+                            {% endfor %}
                         </select>
-                        <div id="promotion-error" class="form-error"></div>
+                        <div id="campus-error" class="form-error"></div>
                     </div>
                 </div>
                 <div class="form-column">
                     <div class="form-group">
-                        <label for="campus" class="form-label">Campus</label>
-                        <select id="campus" name="campus" class="form-input" required>
-                            <option value="" selected disabled>Sélectionner un campus</option>
-                            <option value="Nancy">Nancy</option>
-                            <option value="Metz">Metz</option>
-                            <option value="Listembourg">Listembourg</option>
+                        <label for="promotion" class="form-label">Promotion</label>
+                        <select id="promotion" name="promotion" class="form-input" required>
+                            <option value="" selected disabled>Sélectionner une promotion</option>
+                            {% for promotion in promotions %}
+                                <option value="{{ promotion.Id_Promotion }}" data-campus-id="{{ promotion.Id_Campus }}">
+                                    {{ promotion.Nom_Promotion }}{% if promotion.Specialite_Promotion %} - {{ promotion.Specialite_Promotion }}{% endif %}
+                                </option>
+                            {% endfor %}
                         </select>
-                        <div id="campus-error" class="form-error"></div>
+                        <div id="promotion-error" class="form-error"></div>
                     </div>
                 </div>
             </div>
@@ -93,16 +89,10 @@
             </div>
         </form>
     </div>
-
-    <div class="confirmation-popup" id="confirmationPopup" {% if success is defined and success %}style="display: flex;"{% endif %}>
-        <div class="popup-content">
-            <p>Le pilote a bien été ajouté</p>
-            <button class="close-popup" onclick="window.location.href='{{ url('admin/pilotes') }}'">Fermer</button>
-        </div>
-    </div>
 </main>
 {% include 'partials/footer.html.twig' %}
 <script src="{{ asset('js/frontend_script.js') }}"></script>
+<script src="{{ asset('js/filtrage_promotion.js') }}"></script>
 <script src="{{ asset('js/form_pilote.js') }}"></script>
 </body>
 </html>

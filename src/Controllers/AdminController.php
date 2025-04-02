@@ -73,6 +73,10 @@ class AdminController extends BaseController {
     public function ajouterPilote() {
         $this->requireAdmin();
 
+        // Récupérer la liste des campus et des promotions
+        $campus = $this->pilotModel->getAllCampus();
+        $promotions = $this->pilotModel->getAllPromotions();
+
         // Générer le token CSRF pour le formulaire
         if (!isset($_SESSION['csrf_token'])) {
             $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
@@ -80,6 +84,8 @@ class AdminController extends BaseController {
 
         $this->render('admin/pilotes/add.html.twig', [
             'adminPage' => true,
+            'campus' => $campus,
+            'promotions' => $promotions,
             'csrf_token' => $_SESSION['csrf_token']
         ]);
     }
@@ -92,14 +98,32 @@ class AdminController extends BaseController {
         $password = $_POST['password'] ?? '';
         $nom = $_POST['nom'] ?? '';
         $prenom = $_POST['prenom'] ?? '';
+        $campusId = (int)($_POST['campus'] ?? 0);
+        $promotionId = (int)($_POST['promotion'] ?? 0);
+        $telephone = $_POST['telephone'] ?? '';
 
-        // Vérifier si l'email existe déjà
-        // ...
+        // Validation des données
+        if (empty($email) || empty($password) || empty($nom) || empty($prenom) ||
+            $campusId <= 0 || $promotionId <= 0) {
+            $this->addFlashMessage('error', 'Veuillez remplir tous les champs obligatoires');
+            header('Location: /admin/pilotes/ajouter');
+            return;
+        }
 
         // Créer l'utilisateur avec le rôle pilote
         $userId = $this->userModel->createUser($email, $password, $nom, $prenom, 'pilote');
 
         if ($userId) {
+            // Créer le pilote et l'associer à la promotion
+            $pilotId = $this->pilotModel->createPilot($userId);
+
+            if ($pilotId && $promotionId) {
+                // Associer le pilote à la promotion (date de début/fin par défaut)
+                $startDate = date('Y-m-d');
+                $endDate = date('Y-m-d', strtotime('+1 year'));
+                $this->pilotModel->assignPromotion($pilotId, $promotionId, $startDate, $endDate);
+            }
+
             $this->addFlashMessage('success', 'Pilote ajouté avec succès');
         } else {
             $this->addFlashMessage('error', 'Erreur lors de l\'ajout du pilote');

@@ -87,6 +87,51 @@ class PilotModel extends Model {
         return $pilot;
     }
 
+
+    /**
+     * Récupère tous les campus disponibles dans la base de données
+     *
+     * @return array Liste des campus
+     */
+    public function getAllCampus() {
+        $query = '
+        SELECT 
+            Id_Campus,
+            Nom_Campus
+        FROM Campus
+        ORDER BY Nom_Campus ASC
+    ';
+
+        $conn = $this->db->connect();
+        $stmt = $conn->prepare($query);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Récupère toutes les promotions disponibles dans la base de données
+     *
+     * @return array Liste des promotions
+     */
+    public function getAllPromotions() {
+        $query = '
+        SELECT 
+            Id_Promotion,
+            Nom_Promotion,
+            Specialite_Promotion,
+            Id_Campus
+        FROM Promotion
+        ORDER BY Nom_Promotion ASC
+    ';
+
+        $conn = $this->db->connect();
+        $stmt = $conn->prepare($query);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     /**
      * Obtient les promotions supervisées par un pilote
      *
