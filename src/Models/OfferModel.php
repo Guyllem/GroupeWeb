@@ -99,6 +99,28 @@ class OfferModel extends Model {
     }
 
     /**
+     * Récupère toutes les compétences disponibles dans la base de données
+     *
+     * @param string $orderBy Colonne de tri (par défaut: Nom_Competence)
+     * @param string $direction Direction du tri (ASC ou DESC)
+     * @return array Liste des compétences
+     */
+    public function getAllCompetences() {
+        $query = '
+        SELECT 
+            Id_Competence, 
+            Nom_Competence
+        FROM Competence
+        ';
+
+        $conn = $this->db->connect();
+        $stmt = $conn->prepare($query);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
      * Vérifie si une offre est dans la wishlist d'un étudiant
      *
      * @param int $offerId ID de l'offre

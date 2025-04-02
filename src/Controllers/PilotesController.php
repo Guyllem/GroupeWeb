@@ -313,7 +313,7 @@ class PilotesController extends BaseController {
             $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
         }
 
-        echo $this->twig->render('pilotes/delete.html.twig', [
+        echo $this->twig->render('pilotes/etudiants/delete.html.twig', [
             'pilotePage' => true,
             'student' => $student,
             'csrf_token' => $_SESSION['csrf_token']
@@ -844,24 +844,27 @@ class PilotesController extends BaseController {
             return;
         }
 
-        // Récupérer les détails de l'offre
         $offer = $this->offerModel->getOfferDetails($offerId);
-
-        if (!$offer) {
-            $this->addFlashMessage('error', 'Offre non trouvée');
-            header('Location: /pilotes/offres');
-            return;
-        }
-
-        // Récupérer la liste des entreprises pour le formulaire
         $enterprises = $this->enterpriseModel->getAll('Nom_Entreprise');
-        $competences = $this->offerModel->getAllCompetences();
+        $competences = $this->offerModel->getAllCompetences(); // Utilisation de notre nouvelle méthode
+
+        // Préparation des compétences sélectionnées pour faciliter l'affichage
+        $selectedCompetences = array_map(function($skill) {
+            return $skill['Id_Competence'];
+        }, $offer['skills'] ?? []);
+
+        // Générer le token CSRF pour le formulaire
+        if (!isset($_SESSION['csrf_token'])) {
+            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+        }
 
         echo $this->twig->render('pilotes/offres/edit.html.twig', [
             'pilotePage' => true,
             'offer' => $offer,
             'enterprises' => $enterprises,
-            'competences' => $competences
+            'all_competences' => $competences,
+            'selected_competences' => $selectedCompetences,
+            'csrf_token' => $_SESSION['csrf_token']
         ]);
     }
 
