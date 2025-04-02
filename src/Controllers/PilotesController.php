@@ -158,7 +158,7 @@ class PilotesController extends BaseController {
         // Récupérer les compétences de l'étudiant
         $student['skills'] = $this->studentModel->getStudentSkills($etudiantId);
 
-        echo $this->twig->render('pilotes/etudiants/modifier.html.twig', [
+        echo $this->twig->render('pilotes/etudiants/edit.html.twig', [
             'pilotePage' => true,
             'student' => $student,
             'csrf_token' => $_SESSION['csrf_token']
@@ -857,7 +857,7 @@ class PilotesController extends BaseController {
         $enterprises = $this->enterpriseModel->getAll('Nom_Entreprise');
         $competences = $this->offerModel->getAllCompetences();
 
-        echo $this->twig->render('pilotes/offres/modifier.html.twig', [
+        echo $this->twig->render('pilotes/offres/edit.html.twig', [
             'pilotePage' => true,
             'offer' => $offer,
             'enterprises' => $enterprises,
