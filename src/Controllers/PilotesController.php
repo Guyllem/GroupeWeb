@@ -920,6 +920,43 @@ class PilotesController extends BaseController {
         }
     }
 
+    /**
+     * Affiche la page de confirmation de suppression d'une offre
+     *
+     * @param array $params Paramètres de la route
+     */
+    public function afficherSupprimerOffre($params) {
+        $this->requirePilote();
+
+        $offerId = $params['id'] ?? null;
+
+        if (!$offerId) {
+            $this->addFlashMessage('error', 'Offre non trouvée');
+            header('Location: /pilotes/offres');
+            return;
+        }
+
+        // Récupérer les détails de l'offre
+        $offer = $this->offerModel->getOfferDetails($offerId);
+
+        if (!$offer) {
+            $this->addFlashMessage('error', 'Offre non trouvée');
+            header('Location: /pilotes/offres');
+            return;
+        }
+
+        // Générer le token CSRF pour le formulaire
+        if (!isset($_SESSION['csrf_token'])) {
+            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+        }
+
+        echo $this->twig->render('pilotes/offres/delete.html.twig', [
+            'pilotePage' => true,
+            'offer' => $offer,
+            'csrf_token' => $_SESSION['csrf_token']
+        ]);
+    }
+
     public function supprimerOffre($params) {
         $this->requirePilote();
 

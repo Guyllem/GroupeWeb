@@ -94,7 +94,8 @@ class App {
             ->post('/pilotes/offres/ajouter', 'Pilotes', 'enregistrerOffre')
             ->get('/pilotes/offres/:id/modifier', 'Pilotes', 'modifierOffre')
             ->post('/pilotes/offres/:id/modifier', 'Pilotes', 'mettreAJourOffre')
-            ->get('/pilotes/offres/:id/supprimer', 'Pilotes', 'supprimerOffre')
+            ->get('/pilotes/offres/:id/supprimer', 'Pilotes', 'afficherSupprimerOffre')
+            ->post('/pilotes/offres/:id/supprimer', 'Pilotes', 'supprimerOffre')
 
             // Routes d'admin
             ->get('/admin', 'Admin', 'index')
