@@ -79,30 +79,51 @@
             </a>
         </div>
 
-        <div class="enterprises-list">
+        {% if enterprises|length > 0 %}
             {% for enterprise in enterprises %}
-                <div class="enterprise-card">
-                    <div class="enterprise-info">
-                        <h3>{{ enterprise.Nom_Entreprise }}</h3>
-                        <div class="tags">
+                <div class="card-entreprise">
+                    <div class="header-entreprise">
+                        <div class="logo-container-entreprise">
+                            <div class="company-name-entreprise">{{ enterprise.Nom_Entreprise }}</div>
+                        </div>
+                        <div class="tags-entreprise">
                             {% for tag in enterprise.tags %}
-                                <span class="tag">{{ tag.Nom_Secteur }}</span>
+                                <div class="tag-entreprise">{{ tag.Nom_Secteur }}</div>
                             {% endfor %}
                         </div>
                     </div>
-                    <div class="enterprise-description">
-                        <p>{{ enterprise.Description_Entreprise|length > 150 ? enterprise.Description_Entreprise|slice(0, 150) ~ '...' : enterprise.Description_Entreprise }}</p>
+
+                    <div class="description-entreprise">
+                        {{ enterprise.Description_Entreprise|length > 200 ? enterprise.Description_Entreprise|slice(0, 200) ~ '...' : enterprise.Description_Entreprise }}
                     </div>
-                    <div class="enterprise-actions">
-                        <a href="{{ url('pilotes/entreprises/' ~ enterprise.Id_Entreprise) }}" class="view-btn">Détails</a>
+
+                    <div class="info-container-entreprise">
+                        <div class="info-column-entreprise">
+                            <div class="info-label-entreprise">Téléphone :</div>
+                            <div class="info-value-entreprise">{{ enterprise.Telephone_Entreprise|default('Non renseigné') }}</div>
+                        </div>
+
+                        <div class="info-column-entreprise">
+                            <div class="info-label-entreprise">Adresse mail :</div>
+                            <div class="info-value-entreprise email-value-entreprise">{{ enterprise.Email_Entreprise }}</div>
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                        <div class="publication-info">
+                            Évaluation : {{ enterprise.rating|default(0)|number_format(1, '.', ' ') }} étoiles
+                        </div>
+                        <div class="actions">
+                            <a href="{{ url('pilotes/entreprises/' ~ enterprise.Id_Entreprise) }}" class="view-btn">Détails</a>
+                        </div>
                     </div>
                 </div>
             {% else %}
                 <div class="no-enterprises">
-                    <p>Aucune entreprise trouvée.</p>
+                    <p>Aucune entreprise trouvée. Veuillez ajuster vos critères de recherche ou ajouter une nouvelle entreprise.</p>
                 </div>
             {% endfor %}
-        </div>
+        {% endif %}
     </div>
 </main>
 
