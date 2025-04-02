@@ -83,8 +83,10 @@ class App {
             ->post('/pilotes/entreprises/ajouter', 'Pilotes', 'enregistrerEntreprise')
             ->get('/pilotes/entreprises/:id/modifier', 'Pilotes', 'modifierEntreprise')
             ->post('/pilotes/entreprises/:id/modifier', 'Pilotes', 'mettreAJourEntreprise')
-            ->get('/pilotes/entreprises/:id/supprimer', 'Pilotes', 'entrepriseSupprimer') // Ajout: supprimer entreprise
+            ->get('/pilotes/entreprises/:id/supprimer', 'Pilotes', 'afficherEntrepriseSupprimer') // Ajout: supprimer entreprise
+            ->post('/pilotes/entreprises/:id/supprimer', 'Pilotes', 'entrepriseSupprimer') // Ajout: supprimer entreprise
             ->get('/pilotes/entreprises/:id/offres', 'Pilotes', 'entrepriseOffres') // Ajout: offres d'une entreprise
+            ->get('/pilotes/entreprises/:id/evaluer', 'Pilotes', 'afficherRateEntreprise') // Ajout: évaluer entreprise
             ->post('/pilotes/entreprises/:id/evaluer', 'Pilotes', 'rateEntreprise') // Ajout: évaluer entreprise
 
             ->get('/pilotes/offres', 'Pilotes', 'offres')

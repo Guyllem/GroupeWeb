@@ -511,6 +511,43 @@ class PilotesController extends BaseController {
     }
 
     /**
+     * Affiche le formulaire d'évaluation d'une entreprise
+     *
+     * @param array $params Paramètres de la route
+     */
+    public function afficherRateEntreprise($params) {
+        $this->requirePilote();
+
+        $enterpriseId = $params['id'] ?? null;
+
+        if (!$enterpriseId) {
+            $this->addFlashMessage('error', 'Entreprise non trouvée');
+            header('Location: /pilotes/entreprises');
+            return;
+        }
+
+        // Récupérer les détails de l'entreprise
+        $enterprise = $this->enterpriseModel->getEnterpriseDetails($enterpriseId);
+
+        if (!$enterprise) {
+            $this->addFlashMessage('error', 'Entreprise non trouvée');
+            header('Location: /pilotes/entreprises');
+            return;
+        }
+
+        // Générer le token CSRF pour le formulaire
+        if (!isset($_SESSION['csrf_token'])) {
+            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+        }
+
+        echo $this->twig->render('pilotes/entreprises/evaluer.html.twig', [
+            'pilotePage' => true,
+            'enterprise' => $enterprise,
+            'csrf_token' => $_SESSION['csrf_token']
+        ]);
+    }
+
+    /**
      * Traite l'évaluation d'une entreprise
      */
     public function rateEnterprise($params) {
@@ -677,6 +714,44 @@ class PilotesController extends BaseController {
             $this->addFlashMessage('error', 'Erreur lors de la mise à jour de l\'entreprise');
             header('Location: /pilotes/entreprises/' . $enterpriseId . '/modifier');
         }
+    }
+
+    /**
+     * Affiche la page de confirmation de suppression d'une entreprise
+     *
+     * @param array $params Paramètres de la route
+     */
+    public function afficherEntrepriseSupprimer($params) {
+        $this->requirePilote();
+
+        $enterpriseId = $params['id'] ?? null;
+
+        if (!$enterpriseId) {
+            $this->addFlashMessage('error', 'Entreprise non trouvée');
+            header('Location: /pilotes/entreprises');
+            return;
+        }
+
+        // Récupérer les détails de l'entreprise
+        $enterprise = $this->enterpriseModel->getEnterpriseDetails($enterpriseId);
+
+        if (!$enterprise) {
+            $this->addFlashMessage('error', 'Entreprise non trouvée');
+            header('Location: /pilotes/entreprises');
+            return;
+        }
+
+        // Générer le token CSRF pour le formulaire
+        if (!isset($_SESSION['csrf_token'])) {
+            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+        }
+
+        // Rendre la vue de confirmation
+        echo $this->twig->render('pilotes/entreprises/delete.html.twig', [
+            'pilotePage' => true,
+            'enterprise' => $enterprise,
+            'csrf_token' => $_SESSION['csrf_token']
+        ]);
     }
 
     public function entrepriseSupprimer($params) {

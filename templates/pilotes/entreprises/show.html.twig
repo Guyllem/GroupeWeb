@@ -47,9 +47,9 @@
         </div>
 
         <div class="button-container-entreprise">
-            <button class="button-entreprise button-delete-entreprise" onclick="confirmDelete('{{ url('pilotes/entreprises/' ~ enterprise.Id_Entreprise ~ '/supprimer') }}')">Supprimer</button>
+            <button class="button-entreprise button-delete-entreprise" onclick="window.location.href='{{ url('pilotes/entreprises/' ~ enterprise.Id_Entreprise ~ '/supprimer') }}'">Supprimer</button>
             <a href="{{ url('pilotes/entreprises/' ~ enterprise.Id_Entreprise ~ '/modifier') }}" class="button-entreprise button-edit-entreprise">Modifier</a>
-            <button class="button-entreprise button-evaluate-entreprise" onclick="showEvaluationForm()">Évaluer</button>
+            <button class="button-entreprise button-evaluate-entreprise" onclick="window.location.href='{{ url('pilotes/entreprises/' ~ enterprise.Id_Entreprise ~ '/evaluer') }}'">Évaluer</button>
         </div>
 
         <div class="publication-info">
@@ -60,18 +60,6 @@
 
 {% include 'partials/footer.html.twig' %}
 <script src="{{ asset('js/frontend_script.js') }}"></script>
-<script>
-    function confirmDelete(url) {
-        if (confirm("Êtes-vous sûr de vouloir supprimer cette entreprise ?")) {
-            window.location.href = url;
-        }
-    }
-
-    function showEvaluationForm() {
-        // Afficher un formulaire d'évaluation
-        alert("Fonctionnalité d'évaluation à implémenter");
-    }
-</script>
 <script src="{{ asset('js/flash-messages.js') }}"></script>
 </body>
 </html>
