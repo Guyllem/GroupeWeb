@@ -106,7 +106,7 @@ nav {
     transition: all 0.3s ease;
 }
 
-.nav-right .nav-item:last-child:hover{
+.nav-right .nav-item::hover{
     transform: scale(1.05);
     box-shadow: 0.5rem 0.5rem 0.5rem rgba(0, 0, 0, 0.3);
     transition: all 0.3s ease;
@@ -367,9 +367,6 @@ footer a:hover::after {
     width: 100%;
 }
 
-
-
-
 /* Main section with cards styles */
 .main-section {
     display: flex;
@@ -384,8 +381,8 @@ footer a:hover::after {
     background-color: #DEDEFF;
     border-color: #3F51B5;
     border-right: 2px solid #3F51B5;
-    max-height: calc(100vh - 110px); /* Remplace min-height par max-height */
-    min-height: 400px; /* Hauteur minimale pour l'aspect visuel */
+    max-height: 100%; /* Remplace min-height par max-height */
+    min-height: 100%; /* Hauteur minimale pour l'aspect visuel */
     display: flex;
     flex-direction: column;
     overflow-y: auto !important;
@@ -476,8 +473,7 @@ body .filters * {
 .apply-btn {
     width: 100%;
     padding: 10px;
-    margin-top: 20px; /* Espace au-dessus du bouton */
-    margin-bottom: 10px; /* Espace sous le bouton */
+    margin-top: auto;     /* Ceci pousse le bouton vers le bas du conteneur */
     background-color: #ff6b6b;
     color: white;
     border: none;
@@ -485,7 +481,6 @@ body .filters * {
     cursor: pointer;
     transform: scale(1);
     transition: all 0.3s ease;
-    bottom: 0;
 }
 
 .apply-btn:hover {
