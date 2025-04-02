@@ -46,29 +46,31 @@
 <main>
     <div class="filters">
         <h3>Filtres</h3>
-        <div class="filter-section">
-            <h4>Localisation :</h4>
-            <input type="text" placeholder="Ville, Code Postal, Département, Région" class="input-location">
-        </div>
-        <div class="filter-section">
-            <h4>Secteur :</h4>
-            <input type="text" placeholder="Informatique, BTP, Industrie" class="input-skills">
-        </div>
-        <div class="filter-section">
-            <h4>Nombres d'offres :</h4>
-            <div class="radio-group">
-                <label><input type="radio" name="sort"> Croissant</label>
-                <label><input type="radio" name="sort"> Décroissant</label>
+        <div class="filter-sections-container">
+            <div class="filter-section">
+                <h4>Localisation :</h4>
+                <input type="text" placeholder="Ville, Code Postal, Département, Région" class="input-location">
             </div>
-        </div>
-        <div class="filter-section">
-            <h4>Popularité :</h4>
-            <div class="radio-group">
-                <label><input type="radio" name="sort"> Croissant</label>
-                <label><input type="radio" name="sort"> Décroissant</label>
+            <div class="filter-section">
+                <h4>Secteur :</h4>
+                <input type="text" placeholder="Informatique, BTP, Industrie" class="input-skills">
             </div>
+            <div class="filter-section">
+                <h4>Nombres d'offres :</h4>
+                <div class="radio-group">
+                    <label><input type="radio" name="sort"> Croissant</label>
+                    <label><input type="radio" name="sort"> Décroissant</label>
+                </div>
+            </div>
+            <div class="filter-section">
+                <h4>Popularité :</h4>
+                <div class="radio-group">
+                    <label><input type="radio" name="sort"> Croissant</label>
+                    <label><input type="radio" name="sort"> Décroissant</label>
+                </div>
+            </div>
+            <button class="apply-btn">Appliquer</button>
         </div>
-        <button class="apply-btn">Appliquer</button>
     </div>
 
     <div class="main-content-gestion">
@@ -81,48 +83,34 @@
 
         {% if enterprises|length > 0 %}
             {% for enterprise in enterprises %}
-                <div class="card-entreprise">
-                    <div class="header-entreprise">
-                        <div class="logo-container-entreprise">
-                            <div class="company-name-entreprise">{{ enterprise.Nom_Entreprise }}</div>
-                        </div>
-                        <div class="tags-entreprise">
+                <div class="pilote-card-entreprise">
+                    <div class="pilote-card-header">
+                        <div class="pilote-company-name">{{ enterprise.Nom_Entreprise }}</div>
+                        <div class="pilote-tags-container">
                             {% for tag in enterprise.tags %}
-                                <div class="tag-entreprise">{{ tag.Nom_Secteur }}</div>
+                                <div class="pilote-tag">{{ tag.Nom_Secteur }}</div>
                             {% endfor %}
                         </div>
                     </div>
 
-                    <div class="description-entreprise">
+                    <div class="pilote-description">
                         {{ enterprise.Description_Entreprise|length > 200 ? enterprise.Description_Entreprise|slice(0, 200) ~ '...' : enterprise.Description_Entreprise }}
                     </div>
 
-                    <div class="info-container-entreprise">
-                        <div class="info-column-entreprise">
-                            <div class="info-label-entreprise">Téléphone :</div>
-                            <div class="info-value-entreprise">{{ enterprise.Telephone_Entreprise|default('Non renseigné') }}</div>
+                    <div class="pilote-card-footer">
+                        <div class="pilote-offres-count">
+                            Nombre d'offres publiées : {{ enterprise.offer_count|default('0') }}
+                            <br>
+                            Evaluation actuelle : {{ enterprise.rating|default('0')|number_format(1) }} étoiles
                         </div>
-
-                        <div class="info-column-entreprise">
-                            <div class="info-label-entreprise">Adresse mail :</div>
-                            <div class="info-value-entreprise email-value-entreprise">{{ enterprise.Email_Entreprise }}</div>
-                        </div>
+                        <a href="{{ url('pilotes/entreprises/' ~ enterprise.Id_Entreprise) }}" class="pilote-view-btn">Regarder</a>
                     </div>
-
-                    <div class="card-footer">
-                        <div class="publication-info">
-                            Évaluation : {{ enterprise.rating|default(0)|number_format(1, '.', ' ') }} étoiles
-                        </div>
-                        <div class="actions">
-                            <a href="{{ url('pilotes/entreprises/' ~ enterprise.Id_Entreprise) }}" class="view-btn">Détails</a>
-                        </div>
-                    </div>
-                </div>
-            {% else %}
-                <div class="no-enterprises">
-                    <p>Aucune entreprise trouvée. Veuillez ajuster vos critères de recherche ou ajouter une nouvelle entreprise.</p>
                 </div>
             {% endfor %}
+        {% else %}
+            <div class="no-results">
+                <p>Aucune entreprise trouvée. Veuillez modifier vos critères de recherche ou ajouter une nouvelle entreprise.</p>
+            </div>
         {% endif %}
     </div>
 </main>

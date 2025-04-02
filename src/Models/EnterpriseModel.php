@@ -55,19 +55,31 @@ class EnterpriseModel extends Model {
      * @param int $offset Position de départ
      * @return array Liste des entreprises
      */
+    /**
+     * Obtient les entreprises par ordre alphabétique avec informations complètes
+     *
+     * @param int $limit Nombre maximum d'entreprises à retourner
+     * @param int $offset Position de départ
+     * @return array Liste des entreprises
+     */
     public function getEnterprisesByName($limit = 10, $offset = 0) {
         $query = '
-            SELECT 
-                e.Id_Entreprise, 
-                e.Nom_Entreprise, 
-                e.Description_Entreprise,
-                e.Email_Entreprise,
-                e.Telephone_Entreprise,
-                e.Effectif_Entreprise
-            FROM Entreprise e
-            ORDER BY e.Nom_Entreprise
-            LIMIT :limit OFFSET :offset
-        ';
+        SELECT 
+            e.Id_Entreprise, 
+            e.Nom_Entreprise, 
+            e.Description_Entreprise,
+            e.Email_Entreprise,
+            e.Telephone_Entreprise,
+            e.Effectif_Entreprise,
+            AVG(ev.Note_Evaluer) as rating,
+            (SELECT COUNT(*) FROM Offre o WHERE o.Id_Entreprise = e.Id_Entreprise) as offer_count
+        FROM Entreprise e
+        LEFT JOIN Evaluer ev ON e.Id_Entreprise = ev.Id_Entreprise
+        GROUP BY e.Id_Entreprise, e.Nom_Entreprise, e.Description_Entreprise, 
+                 e.Email_Entreprise, e.Telephone_Entreprise, e.Effectif_Entreprise
+        ORDER BY e.Nom_Entreprise
+        LIMIT :limit OFFSET :offset
+    ';
 
         $conn = $this->db->connect();
         $stmt = $conn->prepare($query);
