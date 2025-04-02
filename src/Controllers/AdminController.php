@@ -72,8 +72,15 @@ class AdminController extends BaseController {
 
     public function ajouterPilote() {
         $this->requireAdmin();
-        $this->render('admin/pilotes/ajouter.html.twig', [
-            'adminPage' => true
+
+        // Générer le token CSRF pour le formulaire
+        if (!isset($_SESSION['csrf_token'])) {
+            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+        }
+
+        $this->render('admin/pilotes/add.html.twig', [
+            'adminPage' => true,
+            'csrf_token' => $_SESSION['csrf_token']
         ]);
     }
 
