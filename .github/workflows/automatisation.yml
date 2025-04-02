@@ -1,34 +1,26 @@
-name: Déploiement sur Azure Linux
-
+name: Déploiement automatique sur Azure Linux
 on:
   push:
     branches:
       - main  # s'exécute à chaque push sur main uniquement
-  workflow_dispatch:   # autorise l'éxecution manuelle pour les tests
+  workflow_dispatch:   # autorise l'exécution manuelle
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest #VM temporaire pour tester le code
-
+    runs-on: ubuntu-latest
     steps:
-      - name: Cloner le dépôt # on le clone si on veut effectuer des tests donc à voir avec matthieu
-        uses: actions/checkout@v4
-
       - name: Configurer SSH
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
-
       - name: Déployer sur Azure Linux
         run: |
           ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
             cd /var/www/kuybi-test/StageConnect
             git pull origin main
-
             composer install --no-dev --optimize-autoloader
             php artisan migrate --force
             systemctl restart apache2 
-
           EOF
