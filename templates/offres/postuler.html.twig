@@ -6,14 +6,12 @@
     <title>StageConnect - Postuler à {{ offer.Titre_Offre }}</title>
     <link rel="stylesheet" href="{{ asset('css/styles_page_etudiant.css') }}">
     <link rel="stylesheet" href="{{ asset('css/modal.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/flash-messages.css') }}">
 </head>
 <body>
 <main>
     <div class="container">
         {% include 'partials/navbar-etudiant.html.twig' %}
-
-        {% include 'partials/flash_messages.html.twig' %}
 
         <div class="rate-modal">
             <div class="rate-container">
@@ -85,7 +83,6 @@
 
 {% include 'partials/footer.html.twig' %}
 <script src="{{ asset('js/postulation.js') }}"></script>
-<script src="{{ asset('js/flash-messages.js') }}"></script>
 </body>
 </html>
 

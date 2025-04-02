@@ -6,6 +6,7 @@
     <title>StageConnect - Évaluation {{ enterprise.Nom_Entreprise }}</title>
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
     <link rel="stylesheet" href="{{ asset('css/modal.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/flash-messages.css') }}">
 </head>
 <body>
 <nav>
@@ -15,6 +16,7 @@
     </div>
 </nav>
 <main>
+    {% include 'partials/flash_messages.html.twig' %}
     <div class="rate-modal">
         <div class="rate-container">
             <h2>Évaluer l'entreprise</h2>
