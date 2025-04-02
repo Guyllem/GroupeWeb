@@ -18,23 +18,23 @@ class PilotModel extends Model {
      */
     public function getPilotsByName($limit = 10, $offset = 0) {
         $query = '
-            SELECT 
-                p.Id_Pilote, 
-                u.Id_Utilisateur,
-                u.Nom_Utilisateur, 
-                u.Prenom_Utilisateur,
-                c.Nom_Campus,
-                c.Id_Campus,
-                COUNT(DISTINCT s.Id_Promotion) as promotion_count
-            FROM Pilote p
-            JOIN Utilisateur u ON p.Id_Utilisateur = u.Id_Utilisateur
-            LEFT JOIN Superviser s ON p.Id_Pilote = s.Id_Pilote
-            LEFT JOIN Promotion pr ON s.Id_Promotion = pr.Id_Promotion
-            LEFT JOIN Campus c ON pr.Id_Campus = c.Id_Campus
-            GROUP BY p.Id_Pilote, u.Nom_Utilisateur, u.Prenom_Utilisateur
-            ORDER BY u.Nom_Utilisateur, u.Prenom_Utilisateur
-            LIMIT :limit OFFSET :offset
-        ';
+        SELECT 
+            p.Id_Pilote, 
+            u.Id_Utilisateur,
+            u.Nom_Utilisateur, 
+            u.Prenom_Utilisateur,
+            MAX(c.Nom_Campus) as Nom_Campus,
+            MAX(c.Id_Campus) as Id_Campus,
+            COUNT(DISTINCT s.Id_Promotion) as promotion_count
+        FROM Pilote p
+        JOIN Utilisateur u ON p.Id_Utilisateur = u.Id_Utilisateur
+        LEFT JOIN Superviser s ON p.Id_Pilote = s.Id_Pilote
+        LEFT JOIN Promotion pr ON s.Id_Promotion = pr.Id_Promotion
+        LEFT JOIN Campus c ON pr.Id_Campus = c.Id_Campus
+        GROUP BY p.Id_Pilote, u.Id_Utilisateur, u.Nom_Utilisateur, u.Prenom_Utilisateur
+        ORDER BY u.Nom_Utilisateur, u.Prenom_Utilisateur
+        LIMIT :limit OFFSET :offset
+    ';
 
         $conn = $this->db->connect();
         $stmt = $conn->prepare($query);
