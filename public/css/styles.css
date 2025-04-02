@@ -8,6 +8,7 @@ body {
     padding: 0;
     position: relative;
     overflow: hidden;
+
 }
 
 
@@ -85,6 +86,7 @@ body {
     width: 8%;
     right: 87%;
     top: 22%;
+    z-index: -1;
 }
 
 .bulle3 {
@@ -180,6 +182,7 @@ footer a:hover::after {
 }
 
 
+
 /* Responsive design -> Media Queries */
 @media (max-width: 768px) {
     .arc-en-ciel,
@@ -192,9 +195,15 @@ footer a:hover::after {
 
     html, body {
         height: 100%;
-        margin: 0;
+        margin: 0 ;
         padding: 0;
     }
+
+    header , form{
+        margin:0 auto;
+    }
+
+
 
     body {
         display: flex;
