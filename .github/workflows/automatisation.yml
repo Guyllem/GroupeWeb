@@ -1,26 +1,33 @@
-name: Déploiement automatique sur Azure Linux
+name: Déploiement automatique sur serveur web
 on:
   push:
     branches:
-      - main  # s'exécute à chaque push sur main uniquement
-  workflow_dispatch:   # autorise l'exécution manuelle
+      - main  # ou votre branche principale
+  workflow_dispatch:  # permet le déclenchement manuel
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Configurer SSH
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.8.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          
+      - name: Setup known_hosts
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
-      - name: Déployer sur Azure Linux
+          
+      - name: Déployer sur le serveur
         run: |
           ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
-            cd /var/www/kuybi-test/StageConnect
+            cd ${{ secrets.PROJECT_PATH }}
             git pull origin main
             composer install --no-dev --optimize-autoloader
             php artisan migrate --force
-            systemctl restart apache2 
+            systemctl restart apache2
           EOF
