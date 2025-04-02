@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
-    const form = document.getElementById('add-offre-form');
+    const form = document.getElementById('add-offre-form') || document.getElementById('edit-offre-form');
     const submitBtn = document.getElementById('submit-btn');
     const confirmationPopup = document.getElementById('confirmationPopup');
     const descriptionField = document.getElementById('description');
@@ -188,6 +188,10 @@ document.addEventListener("DOMContentLoaded", function() {
         const dureeMaxValid = validateDureeMax();
         isValid = isValid && dureeMaxValid;
 
+        // Vérifier les compétences
+        const competencesValid = validateCompetences();
+        isValid = isValid && competencesValid;
+
         // Activer/désactiver le bouton de soumission
         submitBtn.disabled = !isValid;
     }
@@ -217,95 +221,125 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     // Gestion de la soumission du formulaire
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
 
-        // Revérifier tout le formulaire au moment de la soumission
-        checkFormValidity();
+            // Revérifier tout le formulaire au moment de la soumission
+            checkFormValidity();
 
-        if (!submitBtn.disabled) {
-            // Simulation d'envoi au serveur (à remplacer par l'appel réel)
-            setTimeout(() => {
-                // Afficher la popup de confirmation
-                confirmationPopup.style.display = 'flex';
-            }, 500);
-        }
-    });
+            if (!submitBtn.disabled) {
+                // Soumettre le formulaire si valide
+                this.submit();
+            }
+        });
+    }
 
-    // Gestion du menu des compétences
-    const competencesSelect = document.getElementById('competences');
+    // Configuration du sélecteur multiple pour les compétences
+    function setupMultiSelectCompetences() {
+        if (!competencesInput) return;
 
-    // Créer un tableau pour stocker les compétences sélectionnées
-    let selectedCompetences = [];
+        // Conteneur pour afficher les compétences sélectionnées sous forme de tags
+        let selectedCompetencesContainer = document.createElement('div');
+        selectedCompetencesContainer.className = 'selected-skills';
+        competencesInput.parentNode.insertBefore(selectedCompetencesContainer, competencesError);
 
-    // Écouter les changements dans le menu déroulant
-    competencesSelect.addEventListener('change', function() {
-        // Récupérer l'option sélectionnée
-        const selectedOption = this.options[this.selectedIndex];
-        const selectedValue = selectedOption.value;
-
-        // Si une compétence valide est sélectionnée
-        if (selectedValue && !selectedCompetences.includes(selectedValue)) {
-            // Ajouter à la liste des compétences sélectionnées
-            selectedCompetences.push(selectedValue);
-
-            // Afficher les compétences sélectionnées
-            updateCompetencesList();
-
-            // Réinitialiser la sélection
-            this.selectedIndex = 0;
-        }
-
-        // Valider le champ
-        validateCompetences();
-    });
-
-    // Fonction pour mettre à jour l'affichage des compétences
-    function updateCompetencesList() {
-        // Créer ou obtenir la liste des compétences sélectionnées
-        let competencesList = document.getElementById('selected-competences');
-
-        if (!competencesList) {
-            competencesList = document.createElement('div');
-            competencesList.id = 'selected-competences';
-            competencesList.className = 'selected-skills';
-            competencesSelect.parentNode.insertBefore(competencesList, competencesError);
-        }
-
-        // Vider et reconstruire la liste
-        competencesList.innerHTML = '';
-
-        selectedCompetences.forEach(competence => {
-            const tag = document.createElement('span');
-            tag.className = 'skill-tag';
-            tag.innerHTML = `${competence} <button type="button" class="remove-skill" data-value="${competence}">×</button>`;
-            competencesList.appendChild(tag);
+        // Initialiser les tags pour les options déjà sélectionnées au chargement
+        let selectedCompetences = Array.from(competencesInput.selectedOptions).map(option => {
+            return {
+                id: option.value,
+                name: option.textContent.trim()
+            };
         });
 
-        // Ajouter les écouteurs d'événements pour la suppression
-        document.querySelectorAll('.remove-skill').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const competence = this.getAttribute('data-value');
-                selectedCompetences = selectedCompetences.filter(item => item !== competence);
-                updateCompetencesList();
-                validateCompetences();
+        // Afficher les compétences déjà sélectionnées
+        updateCompetencesDisplay();
+
+        // Écouter les changements de sélection
+        competencesInput.addEventListener('change', function() {
+            // Récupérer toutes les options sélectionnées actuelles
+            const currentlySelected = Array.from(this.selectedOptions).map(option => ({
+                id: option.value,
+                name: option.textContent.trim()
+            }));
+
+            // Déterminer quelles compétences ont été ajoutées
+            const newlySelected = currentlySelected.filter(item =>
+                !selectedCompetences.some(existing => existing.id === item.id)
+            );
+
+            // Mettre à jour la liste des compétences sélectionnées
+            selectedCompetences = [
+                ...selectedCompetences.filter(item =>
+                    currentlySelected.some(selected => selected.id === item.id)
+                ),
+                ...newlySelected
+            ];
+
+            // Mettre à jour l'affichage
+            updateCompetencesDisplay();
+
+            // Vérifier la validité du formulaire
+            checkFormValidity();
+        });
+
+        // Fonction pour mettre à jour l'affichage des tags de compétences
+        function updateCompetencesDisplay() {
+            // Vider le conteneur
+            selectedCompetencesContainer.innerHTML = '';
+
+            // Recréer les tags pour chaque compétence sélectionnée
+            selectedCompetences.forEach(competence => {
+                const tag = document.createElement('div');
+                tag.className = 'skill-tag';
+                tag.innerHTML = `${competence.name} <button type="button" class="remove-skill" data-id="${competence.id}">×</button>`;
+
+                // Ajouter le gestionnaire d'événement pour supprimer la compétence
+                tag.querySelector('.remove-skill').addEventListener('click', function() {
+                    const compId = this.getAttribute('data-id');
+
+                    // Retirer la compétence de la liste des sélectionnées
+                    selectedCompetences = selectedCompetences.filter(comp => comp.id !== compId);
+
+                    // Désélectionner l'option correspondante dans le select
+                    Array.from(competencesInput.options).forEach(option => {
+                        if (option.value === compId) {
+                            option.selected = false;
+                        }
+                    });
+
+                    // Mettre à jour l'affichage
+                    updateCompetencesDisplay();
+
+                    // Vérifier la validité du formulaire
+                    checkFormValidity();
+                });
+
+                selectedCompetencesContainer.appendChild(tag);
             });
-        });
+        }
     }
 
     // Fonction de validation des compétences
     function validateCompetences() {
-        // Supprimez la validation de présence
+        if (!competencesInput) return true;
+
+        // Vérifier qu'au moins une compétence est sélectionnée
+        const hasSelectedCompetences = competencesInput.selectedOptions.length > 0;
+
+        if (!hasSelectedCompetences) {
+            competencesError.textContent = 'Veuillez sélectionner au moins une compétence';
+            return false;
+        }
+
         competencesError.textContent = '';
-        return true; // Toujours valide car non obligatoire
+        return true;
     }
 
     // Gestion des menus déroulants personnalisés
     function setupCustomDropdowns() {
         const entrepriseToggle = document.getElementById('entreprise-toggle');
         const entrepriseMenu = document.getElementById('entreprise-menu');
-        const entrepriseInput = document.getElementById('entreprise');
-        const entrepriseError = document.getElementById('entreprise-error');
 
         if (entrepriseToggle && entrepriseMenu) {
             // Ouvrir/fermer le menu déroulant
@@ -359,33 +393,17 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
-    // Initialiser les dropdowns personnalisés
-    setupCustomDropdowns();
-
-    // Gestion du menu déroulant des compétences
-    function setupCompetencesDropdown() {
+    function setupCustomCompetencesDropdown() {
         const competencesToggle = document.getElementById('competences-toggle');
         const competencesMenu = document.getElementById('competences-menu');
         const competencesValues = document.getElementById('competences-values');
-        const selectedCompetences = document.getElementById('selected-competences');
+        const selectedCompetencesContainer = document.getElementById('selected-competences');
+        const competencesError = document.getElementById('competences-error');
 
-        // Tableau pour stocker les compétences sélectionnées
-        let selectedItems = [];
+        if (!competencesToggle || !competencesMenu || !competencesValues || !selectedCompetencesContainer) return;
 
-        // Initialiser le tableau avec les compétences déjà sélectionnées
-        document.querySelectorAll('#selected-competences .skill-tag').forEach(tag => {
-            const id = tag.querySelector('.remove-skill').getAttribute('data-id');
-            const name = tag.textContent.trim().replace('×', '').trim();
-            selectedItems.push({ id, name });
-        });
-
-        // Mettre à jour le champ caché avec les valeurs sélectionnées
-        function updateHiddenField() {
-            competencesValues.value = selectedItems.map(item => item.id).join(',');
-        }
-
-        // Initialiser le champ caché
-        updateHiddenField();
+        // Récupérer les compétences déjà sélectionnées (depuis l'input hidden)
+        let selectedCompetences = competencesValues.value ? competencesValues.value.split(',') : [];
 
         // Ouvrir/fermer le menu déroulant
         competencesToggle.addEventListener('click', function(e) {
@@ -405,7 +423,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         });
 
-        // Sélection d'une compétence
+        // Sélection d'une compétence dans le menu
         document.querySelectorAll('#competences-menu .dropdown-item').forEach(item => {
             item.addEventListener('click', function(e) {
                 e.stopPropagation();
@@ -413,30 +431,33 @@ document.addEventListener("DOMContentLoaded", function() {
                 const id = this.getAttribute('data-id');
                 const name = this.getAttribute('data-name');
 
-                // Vérifier si la compétence est déjà sélectionnée
-                if (!selectedItems.some(item => item.id === id)) {
-                    // Ajouter à la liste des compétences sélectionnées
-                    selectedItems.push({ id, name });
+                // Vérifier si cette compétence est déjà sélectionnée
+                if (!selectedCompetences.includes(id)) {
+                    // Ajouter l'ID à la liste des compétences sélectionnées
+                    selectedCompetences.push(id);
 
-                    // Créer et ajouter le tag
-                    const tag = document.createElement('span');
+                    // Mettre à jour l'input hidden
+                    competencesValues.value = selectedCompetences.join(',');
+
+                    // Créer le tag affiché pour cette compétence
+                    const tag = document.createElement('div');
                     tag.className = 'skill-tag';
                     tag.innerHTML = `${name} <button type="button" class="remove-skill" data-id="${id}">×</button>`;
-                    selectedCompetences.appendChild(tag);
 
-                    // Ajouter l'événement de suppression
+                    // Ajouter l'événement pour supprimer cette compétence
                     tag.querySelector('.remove-skill').addEventListener('click', function() {
                         const skillId = this.getAttribute('data-id');
-                        selectedItems = selectedItems.filter(item => item.id !== skillId);
-                        this.parentElement.remove();
-                        updateHiddenField();
+                        removeCompetence(skillId);
                     });
 
-                    // Mettre à jour le champ caché
-                    updateHiddenField();
+                    selectedCompetencesContainer.appendChild(tag);
+
+                    // Mettre à jour la validation
+                    validateCompetences();
+                    checkFormValidity();
                 }
 
-                // Fermer le menu
+                // Fermer le menu déroulant
                 competencesMenu.classList.remove('active');
 
                 // Supprimer le backdrop si présent
@@ -445,15 +466,46 @@ document.addEventListener("DOMContentLoaded", function() {
             });
         });
 
-        // Gérer les boutons de suppression existants
+        // Configurer les boutons de suppression existants
         document.querySelectorAll('#selected-competences .remove-skill').forEach(btn => {
             btn.addEventListener('click', function() {
                 const skillId = this.getAttribute('data-id');
-                selectedItems = selectedItems.filter(item => item.id !== skillId);
-                this.parentElement.remove();
-                updateHiddenField();
+                removeCompetence(skillId);
             });
         });
+
+        // Fonction pour supprimer une compétence
+        function removeCompetence(id) {
+            // Retirer l'ID de la liste
+            selectedCompetences = selectedCompetences.filter(skillId => skillId !== id);
+
+            // Mettre à jour l'input hidden
+            competencesValues.value = selectedCompetences.join(',');
+
+            // Supprimer le tag correspondant
+            const tagToRemove = Array.from(selectedCompetencesContainer.querySelectorAll('.skill-tag')).find(
+                tag => tag.querySelector('.remove-skill').getAttribute('data-id') === id
+            );
+
+            if (tagToRemove) {
+                tagToRemove.remove();
+            }
+
+            // Mettre à jour la validation
+            validateCompetences();
+            checkFormValidity();
+        }
+
+        // Fonction pour valider les compétences sélectionnées
+        function validateCompetences() {
+            if (selectedCompetences.length === 0) {
+                competencesError.textContent = 'Veuillez sélectionner au moins une compétence';
+                return false;
+            } else {
+                competencesError.textContent = '';
+                return true;
+            }
+        }
 
         // Fermer le menu si on clique ailleurs
         document.addEventListener('click', function(e) {
@@ -465,8 +517,16 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (backdrop) backdrop.remove();
             }
         });
+
+        // Validation initiale
+        validateCompetences();
     }
 
-    // Initialiser le dropdown des compétences
-    setupCompetencesDropdown();
+    // Initialiser toutes les fonctionnalités du formulaire
+    setupCustomDropdowns();
+    setupMultiSelectCompetences();
+
+    // Vérifier la validité initiale du formulaire
+    setTimeout(checkFormValidity, 100);
+    setupCustomCompetencesDropdown();
 });

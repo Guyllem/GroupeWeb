@@ -79,17 +79,22 @@
                 </div>
             </div>
 
-            <div class="form-group">
-                <label for="competences">Compétences requises *</label>
-                <select id="competences" name="competences" class="form-control" multiple>
-                    {% for competence in competences %}
-                        <option value="{{ competence.Id_Competence }}"
-                                {% if competence.Id_Competence in selected_competences %}selected{% endif %}>
-                            {{ competence.Nom_Competence }}
-                        </option>
-                    {% endfor %}
-                </select>
-                <div id="competences-error" class="error-message">{{ errors.competences|default('') }}</div>
+
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="entreprise">Competences requises *</label>
+                    <select id="entreprise" name="entreprise" class="form-control" required>
+                        <option value="">Sélectionner une compétences</option>
+                        {% for competence in competences %}
+                            <option value="{{ competence.Id_Competence }}"
+                                    {% if competence.Id_Competence in selected_competences %}selected{% endif %}>
+                                {{ competence.Nom_Competence }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                    <div id="entreprise-error" class="error-message">{{ errors.entreprise|default('') }}</div>
+                </div>
             </div>
 
             <div class="form-row">

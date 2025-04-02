@@ -782,10 +782,16 @@ class PilotesController extends BaseController {
         $enterprises = $this->enterpriseModel->getAll('Nom_Entreprise');
         $competences = $this->offerModel->getAllCompetences();
 
-        echo $this->twig->render('pilotes/offres/ajouter.html.twig', [
+        // Générer le token CSRF pour le formulaire
+        if (!isset($_SESSION['csrf_token'])) {
+            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+        }
+
+        echo $this->twig->render('pilotes/offres/add.html.twig', [
             'pilotePage' => true,
             'enterprises' => $enterprises,
-            'competences' => $competences
+            'competences' => $competences,
+            'csrf_token' => $_SESSION['csrf_token']
         ]);
     }
 
