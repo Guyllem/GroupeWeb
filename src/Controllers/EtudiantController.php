@@ -3,6 +3,8 @@ namespace App\Controllers;
 
 use App\Models\StudentModel;
 use App\Models\OfferModel;
+use App\Models\FileModel;
+use App\Utils\FileUploadUtil;
 
 class EtudiantController extends BaseController {
     private $studentModel;
@@ -142,8 +144,9 @@ class EtudiantController extends BaseController {
 
     /**
      * Affiche la page de postulation
+     *
+     * @param array $params Paramètres de la route
      */
-
     public function postuler($params) {
         $this->requireEtudiant();
 
@@ -156,20 +159,27 @@ class EtudiantController extends BaseController {
 
         $offerId = $params['id'];
 
-        // Debug pour vérifier l'ID reçu
-        error_log("ID de l'offre: " . $offerId);
-
-        // Récupération de l'offre avec vérification du résultat
+        // Récupération de l'offre
         $offer = $this->offerModel->getOfferDetails($offerId);
 
-        // Debug pour vérifier la structure
-        error_log("Structure de l'offre: " . print_r($offer, true));
-
-        // Vérification que l'offre existe et a la structure attendue
-        if (!$offer || !isset($offer['Titre_Offre'])) {
-            $this->addFlashMessage('error', 'Offre non trouvée ou format invalide');
+        // Vérification que l'offre existe
+        if (!$offer) {
+            $this->addFlashMessage('error', 'Offre non trouvée');
             header('Location: /etudiant');
             return;
+        }
+
+        // Vérifier si l'étudiant a déjà postulé à cette offre
+        $userId = $_SESSION['user_id'];
+        $studentId = $this->studentModel->getStudentIdFromUserId($userId);
+        $applications = $this->studentModel->getStudentApplications($studentId);
+
+        foreach ($applications as $application) {
+            if ($application['Id_Offre'] == $offerId) {
+                $this->addFlashMessage('warning', 'Vous avez déjà postulé à cette offre');
+                header('Location: /offres/details/' . $offerId);
+                return;
+            }
         }
 
         // Générer le token CSRF
@@ -177,89 +187,162 @@ class EtudiantController extends BaseController {
             $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
         }
 
-        echo $this->twig->render('offres/postuler.html.twig', [
+        $this->render('offres/postuler.html.twig', [
             'offer' => $offer,
             'csrf_token' => $_SESSION['csrf_token']
         ]);
     }
 
     /**
-     * Postuler à une offre
+     * Gère la candidature à une offre avec upload de fichiers
+     *
+     * @param array $params Paramètres de la route
      */
-    public function validate_application($params = null) {
+    public function validate_application($params) {
         $this->requireEtudiant();
 
-        // Récupérer l'ID de l'offre depuis les paramètres ou le POST
-        $offerId = null;
-        if ($params && isset($params['id'])) {
-            $offerId = $params['id'];
-        } else if (isset($_POST['offer_id'])) {
-            $offerId = $_POST['offer_id'];
-        }
-
-        if (!$offerId) {
-            $this->addFlashMessage('error', 'ID offre manquant');
+        // Vérification CSRF
+        if (!isset($_POST['csrf_token']) || !isset($_SESSION['csrf_token']) ||
+            $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+            $this->addFlashMessage('error', 'Erreur de sécurité. Veuillez réessayer.');
             header('Location: ' . $_SERVER['HTTP_REFERER']);
             return;
         }
 
+        // Récupérer l'ID de l'offre
+        $offerId = $params['id'] ?? null;
+        if (!$offerId) {
+            $this->addFlashMessage('error', 'Offre non trouvée');
+            header('Location: /etudiant');
+            return;
+        }
+
+        // Vérifier que l'offre existe
+        $offer = $this->offerModel->getOfferDetails($offerId);
+        if (!$offer) {
+            $this->addFlashMessage('error', 'Offre non trouvée');
+            header('Location: /etudiant');
+            return;
+        }
+
+        // Récupérer l'ID de l'étudiant
         $userId = $_SESSION['user_id'];
         $studentId = $this->studentModel->getStudentIdFromUserId($userId);
+        if (!$studentId) {
+            $this->addFlashMessage('error', 'Profil étudiant non trouvé');
+            header('Location: /etudiant');
+            return;
+        }
 
         // Vérifier si l'étudiant a déjà postulé à cette offre
         $applications = $this->studentModel->getStudentApplications($studentId);
-        $alreadyApplied = false;
-
         foreach ($applications as $application) {
             if ($application['Id_Offre'] == $offerId) {
-                $alreadyApplied = true;
-                break;
+                $this->addFlashMessage('warning', 'Vous avez déjà postulé à cette offre');
+                header('Location: /offres/details/' . $offerId);
+                return;
             }
         }
 
-        if ($alreadyApplied) {
-            $this->addFlashMessage('warning', 'Vous avez déjà postulé à cette offre');
-            header('Location: ' . $_SERVER['HTTP_REFERER']);
+        // Instancier les utilitaires et modèles nécessaires
+        $fileUploadUtil = new FileUploadUtil();
+        $fileModel = new FileModel($this->db);
+
+        // Vérifier la présence des fichiers requis
+        if (!isset($_FILES['cv']) || $_FILES['cv']['error'] === UPLOAD_ERR_NO_FILE ||
+            !isset($_FILES['motivation']) || $_FILES['motivation']['error'] === UPLOAD_ERR_NO_FILE) {
+
+            if (!isset($_FILES['cv']) || $_FILES['cv']['error'] === UPLOAD_ERR_NO_FILE) {
+                $this->addFlashMessage('error', 'Curriculum Vitae (CV): Ce document est obligatoire.');
+            }
+
+            if (!isset($_FILES['motivation']) || $_FILES['motivation']['error'] === UPLOAD_ERR_NO_FILE) {
+                $this->addFlashMessage('error', 'Lettre de motivation: Ce document est obligatoire.');
+            }
+
+            header('Location: /offres/details/' . $offerId . '/postuler');
             return;
         }
 
-        // Traitement des pièces jointes (CV, LM, etc.)
-        $fileIds = [];
-        if (isset($_FILES['cv']) && $_FILES['cv']['error'] === UPLOAD_ERR_OK) {
-            // Traitement du CV
-            // Code pour sauvegarder le fichier et créer une entrée dans la table Fichier
-            // ...
-            // $fileIds[] = $fileId;
+        // Traiter les uploads
+        $cvFile = $fileUploadUtil->upload($_FILES['cv'], 'CV');
+        $motivationFile = $fileUploadUtil->upload($_FILES['motivation'], 'LM');
+
+        // Vérifier s'il y a des erreurs
+        if (!$cvFile || !$motivationFile) {
+            // Nettoyer les fichiers uploadés en cas d'erreur
+            $fileUploadUtil->cleanUploadedFiles();
+
+            foreach ($fileUploadUtil->getErrors() as $field => $error) {
+                $this->addFlashMessage('error', $error);
+            }
+            header('Location: /offres/details/' . $offerId . '/postuler');
+            return;
         }
 
-        if (isset($_FILES['lm']) && $_FILES['lm']['error'] === UPLOAD_ERR_OK) {
-            // Traitement de la lettre de motivation
-            // Code pour sauvegarder le fichier et créer une entrée dans la table Fichier
-            // ...
-            // $fileIds[] = $fileId;
+        try {
+            // Démarrer une transaction
+            $conn = $this->db->connect();
+            $conn->beginTransaction();
+
+            // 1. Créer la candidature
+            $candidatureId = $this->studentModel->applyToOffer($studentId, $offerId);
+            if (!$candidatureId) {
+                throw new \Exception("Erreur lors de la création de la candidature");
+            }
+
+            // 2. Enregistrer les fichiers en base de données
+            $cvFileId = $fileModel->createFile('CV', $cvFile['original_name'], $cvFile['path']);
+            if (!$cvFileId) {
+                throw new \Exception("Erreur lors de l'enregistrement du CV");
+            }
+
+            $motivationFileId = $fileModel->createFile('LM', $motivationFile['original_name'], $motivationFile['path']);
+            if (!$motivationFileId) {
+                throw new \Exception("Erreur lors de l'enregistrement de la lettre de motivation");
+            }
+
+            // 3. Créer les relations entre la candidature et les fichiers
+            $cvRelationSuccess = $this->studentModel->attachFileToCandidature($candidatureId, $cvFileId);
+            $lmRelationSuccess = $this->studentModel->attachFileToCandidature($candidatureId, $motivationFileId);
+
+            if (!$cvRelationSuccess || !$lmRelationSuccess) {
+                throw new \Exception("Erreur lors de l'association des fichiers à la candidature");
+            }
+
+            // Valider la transaction
+            $conn->commit();
+
+            // Afficher un message de succès
+            $this->addFlashMessage('success', 'Votre candidature a été enregistrée avec succès');
+
+            // Rediriger vers la page de mes offres
+            header('Location: /etudiant/mes_offres');
+
+        } catch (\Exception $e) {
+            // En cas d'erreur, annuler la transaction
+            if (isset($conn) && $conn->inTransaction()) {
+                $conn->rollBack();
+            }
+
+            // Journaliser l'erreur
+            error_log("Erreur lors de la candidature: " . $e->getMessage());
+
+            // Nettoyer les fichiers uploadés
+            $fileUploadUtil->cleanUploadedFiles();
+
+            // Afficher un message d'erreur
+            $this->addFlashMessage('error', 'Une erreur est survenue lors de l\'enregistrement de votre candidature: ' . $e->getMessage());
+
+            // Rediriger vers la page de postulation
+            header('Location: /offres/details/' . $offerId . '/postuler');
         }
-
-        // Créer la candidature
-        $candidatureId = $this->studentModel->applyToOffer($studentId, $offerId);
-
-        if ($candidatureId) {
-            // Associer les fichiers à la candidature si nécessaire
-            // Code pour insérer des entrées dans la table Contenir
-            // ...
-
-            $this->addFlashMessage('success', 'Votre candidature a bien été enregistrée');
-        } else {
-            $this->addFlashMessage('error', 'Une erreur est survenue lors de l\'enregistrement de votre candidature');
-        }
-
-        // Rediriger vers la page précédente ou la page des offres
-        header('Location: ' . ($_SERVER['HTTP_REFERER'] ?? '/offres'));
     }
 
     /**
      * Méthode pour appliquer à une offre depuis l'URL /offres/details/:id/postuler
      */
     public function apply($params) {
-        return $this->validate_application($params);
+        $this->validate_application($params);
     }
 }
