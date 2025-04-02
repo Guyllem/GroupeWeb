@@ -588,9 +588,16 @@ class PilotesController extends BaseController {
 
     // Méthodes pour ajouter, modifier et supprimer des entreprises
     public function ajouterEntreprise() {
+
+        // Générer le token CSRF pour le formulaire
+        if (!isset($_SESSION['csrf_token'])) {
+            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+        }
+
         $this->requirePilote();
-        echo $this->twig->render('pilotes/entreprises/ajouter.html.twig', [
-            'pilotePage' => true
+        echo $this->twig->render('pilotes/entreprises/add.html.twig', [
+            'pilotePage' => true,
+            'csrf_token' => $_SESSION['csrf_token'],
         ]);
     }
 
