@@ -665,9 +665,16 @@ class PilotesController extends BaseController {
             return;
         }
 
-        echo $this->twig->render('pilotes/entreprises/modifier.html.twig', [
+        // Générer le token CSRF pour le formulaire
+        if (!isset($_SESSION['csrf_token'])) {
+            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+        }
+
+
+        echo $this->twig->render('pilotes/entreprises/edit.html.twig', [
             'pilotePage' => true,
-            'enterprise' => $enterprise
+            'enterprise' => $enterprise,
+            'csrf_token' => $_SESSION['csrf_token'],
         ]);
     }
 
