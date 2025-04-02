@@ -62,13 +62,6 @@
             </form>
         </div>
     </div>
-
-    <div class="confirmation-popup" id="confirmationPopup" {% if success is defined and success %}style="display: flex;"{% endif %}>
-        <div class="popup-content">
-            <p>Évaluation bien prise en compte</p>
-            <button class="close-popup" onclick="window.location.href='{{ url('entreprises')}}'">Fermer</button>
-        </div>
-    </div>
 </main>
 
 {% include 'partials/footer.html.twig' %}

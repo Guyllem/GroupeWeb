@@ -70,14 +70,6 @@
                 </div>
             </div>
         </div>
-
-        <div class="confirmation-popup" id="confirmationPopup" {% if success is defined and success %}style="display: flex;"{% endif %}>
-            <div class="popup-content">
-                <p>Votre candidature a bien été envoyée</p>
-                <div class="submission-date" id="submissionDate">{{ "now"|date("d/m/Y à H:i") }}</div>
-                <button class="close-popup" onclick="window.location.href='{{ url('offres') }}'">Fermer</button>
-            </div>
-        </div>
     </div>
 </main>
 
