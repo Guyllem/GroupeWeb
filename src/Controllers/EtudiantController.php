@@ -22,25 +22,7 @@ class EtudiantController extends BaseController {
     public function index() {
         $this->requireEtudiant();
 
-        $userId = $_SESSION['user_id'];
-        $studentId = $this->studentModel->getStudentIdFromUserId($userId);
-
-        // Récupérer les offres récentes avec pagination
-        $page = $_GET['page'] ?? 1;
-        $limit = 10;
-        $offset = ($page - 1) * $limit;
-
-        $offers = $this->offerModel->getRecentOffers($limit, $offset);
-
-        // Pour chaque offre, vérifier si elle est dans la wishlist de l'étudiant
-        foreach ($offers as &$offer) {
-            $offer['is_wishlisted'] = $this->offerModel->isInWishlist($offer['Id_Offre'], $studentId);
-        }
-
-        $this->render('etudiant/index.html.twig', [
-            'offers' => $offers,
-            'current_page' => $page
-        ]);
+        header('Location: /offres');
     }
 
     /**
