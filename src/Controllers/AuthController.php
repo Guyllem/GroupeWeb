@@ -115,7 +115,7 @@ class AuthController extends BaseController {
                 header('Location: /admin');
                 break;
             case 'pilote':
-                header('Location: /pilotes/etudiants');
+                header('Location: /pilotes');
                 break;
             case 'etudiant':
                 header('Location: /offres');
