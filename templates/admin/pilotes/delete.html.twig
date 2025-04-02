@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StageConnect - Confirmation de suppression de pilote</title>
+    <link rel="stylesheet" href="{{ asset('css/modal.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/styles_page_pilote.css') }}">
+</head>
+<body>
+{% set adminPage = true %}
+{% include 'partials/navbar-pilote.html.twig' %}
+
+<main>
+    <div class="logout-modal">
+        <h2>Voulez-vous réellement supprimer ce pilote ?</h2>
+        <p class="confirmation-text">Cette action est irréversible. Toutes les données de <strong>{{ pilot.Prenom_Utilisateur }} {{ pilot.Nom_Utilisateur }}</strong> seront définitivement supprimées.</p>
+        <div class="logout-buttons">
+            <a class="btn-rester" href="{{ url('admin/pilotes/' ~ pilot.Id_Pilote) }}">Non</a>
+            <form action="{{ url('admin/pilotes/' ~ pilot.Id_Pilote ~ '/supprimer') }}" method="post" style="display: inline;">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <button type="submit" class="btn-deconnecter">Oui</button>
+            </form>
+        </div>
+    </div>
+    <div class="back-design">
+        <img class="bulle2-1" src="{{ asset('assets/images/bulle2.png') }}" alt="bulle2-1" />
+        <img class="bulle2-2" src="{{ asset('assets/images/bulle2.png') }}" alt="bulle2-2" />
+        <img class="bulle3-1" src="{{ asset('assets/images/bulle3.png') }}" alt="bulle3-1" />
+        <img class="bulle3-2" src="{{ asset('assets/images/bulle3.png') }}" alt="bulle3-2" />
+        <img class="bulle3-3" src="{{ asset('assets/images/bulle3.png') }}" alt="bulle3-3" />
+    </div>
+</main>
+
+{% include 'partials/footer.html.twig' %}
+<script src="{{ asset('js/frontend_script.js') }}"></script>
+</body>
+</html>

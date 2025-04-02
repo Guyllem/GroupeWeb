@@ -137,6 +137,43 @@ class AdminController extends BaseController {
         header('Location: /admin/pilotes/' . $params['id']);
     }
 
+    /*
+     * Affiche la page de confirmation de suppression d'un pilote
+     *
+     * @param array $params Paramètres de la route
+     */
+    public function afficherSupprimerPilote($params) {
+        $this->requireAdmin();
+
+        $piloteId = $params['id'] ?? null;
+
+        if (!$piloteId) {
+            $this->addFlashMessage('error', 'Pilote non trouvé');
+            header('Location: /admin/pilotes');
+            return;
+        }
+
+        // Récupérer les détails du pilote
+        $pilot = $this->pilotModel->getPilotDetails($piloteId);
+
+        if (!$pilot) {
+            $this->addFlashMessage('error', 'Pilote non trouvé');
+            header('Location: /admin/pilotes');
+            return;
+        }
+
+        // Générer le token CSRF pour le formulaire
+        if (!isset($_SESSION['csrf_token'])) {
+            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+        }
+
+        $this->render('admin/pilotes/delete.html.twig', [
+            'adminPage' => true,
+            'pilot' => $pilot,
+            'csrf_token' => $_SESSION['csrf_token']
+        ]);
+    }
+
     public function supprimerPilote($params) {
         $this->requireAdmin();
 
