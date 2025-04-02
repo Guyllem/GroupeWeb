@@ -107,7 +107,10 @@ class App {
             ->post('/admin/pilotes/ajouter', 'Admin', 'enregistrerPilote')
             ->get('/admin/pilotes/:id/modifier', 'Admin', 'modifierPilote')
             ->post('/admin/pilotes/:id/modifier', 'Admin', 'mettreAJourPilote')
-            ->get('/admin/pilotes/:id/supprimer', 'Admin', 'supprimerPilote')
+            ->get('/admin/pilotes/:id/supprimer', 'Admin', 'afficherSupprimerPilote')
+            ->post('/admin/pilotes/:id/supprimer', 'Admin', 'supprimerPilote')
+
+
 
             ->get('/admin/etudiants', 'Admin', 'etudiants')
             ->get('/admin/etudiants/:id', 'Admin', 'etudiantDetails')

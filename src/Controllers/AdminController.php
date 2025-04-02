@@ -63,6 +63,7 @@ class AdminController extends BaseController {
             return;
         }
 
+
         $this->render('admin/pilotes/show.html.twig', [
             'adminPage' => true,
             'pilot' => $pilot

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StageConnect - Détails Pilote</title>
+    <link rel="stylesheet" href="{{ asset('css/styles_page_pilote.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/styles_page_admin.css') }}">
+</head>
+<body>
+{% set adminPage = true %}
+{% include 'partials/navbar-pilote.html.twig' %}
+
+<main>
+    <div class="main-content-gestion">
+        <div class="back-button">
+            <a href="{{ url('admin/pilotes') }}"><span class="arrow">←</span> Retour</a>
+        </div>
+        <div class="eleve-detail">
+            <div class="eleve-header">
+                <div class="eleve-nom-prenom">{{ pilot.Nom_Utilisateur }} {{ pilot.Prenom_Utilisateur }}</div>
+                <div class="eleve-promotion">{{ pilot.Nom_Campus|default('Non assigné') }}</div>
+            </div>
+
+            <div class="eleve-info-container">
+                <div class="eleve-info-col">
+                    <div class="eleve-info-groupe">
+                        <label>Adresse mail :</label>
+                        <input type="email" value="{{ pilot.Email_Utilisateur }}" readonly class="eleve-input">
+                    </div>
+
+                    <div class="eleve-info-groupe">
+                        <label>Téléphone :</label>
+                        <input type="tel" value="{{ pilot.Telephone_Utilisateur|default('Non renseigné') }}" readonly class="eleve-input">
+                    </div>
+
+                    <a href="{{ url('admin/pilotes/' ~ pilot.Id_Pilote ~ '/reset-password') }}" class="eleve-btn-password">Modifier le mot de passe</a>
+                </div>
+            </div>
+
+            <div class="eleve-actions">
+                <span></span>
+                <div class="eleve-admin-actions">
+                    <a href="{{ url('admin/pilotes/' ~ pilot.Id_Pilote ~ '/modifier') }}" class="eleve-btn-modifier">Modifier</a>
+                    <a href="{{ url('admin/pilotes/' ~ pilot.Id_Pilote ~ '/supprimer') }}" class="eleve-btn-supprimer">Supprimer</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+{% include 'partials/footer.html.twig' %}
+<script src="{{ asset('js/frontend_script.js') }}"></script>
+</body>
+</html>
