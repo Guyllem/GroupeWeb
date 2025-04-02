@@ -31,19 +31,19 @@ class App {
             ->get('/logout', 'Auth', 'logout')
 
             // Routes d'étudiant
-            ->get('/etudiant', 'Etudiant', 'index')
-            ->get('/etudiant/mon_profil', 'Etudiant', 'profil')
-            ->get('/etudiant/mes_offres', 'Etudiant', 'mesOffres')
-            ->get('/etudiant/mes_candidatures', 'Etudiant', 'my_applications')
-            ->get('/etudiant/wishlist', 'Etudiant', 'wishlist')
-            ->post('/etudiant/wishlist/ajouter', 'Etudiant', 'ajouterWishlist')
-            ->post('/etudiant/wishlist/retirer', 'Etudiant', 'retirerWishlist')
+            ->get('/etudiant', 'Etudiant', 'index') // To do problème
+            ->get('/etudiant/mon_profil', 'Etudiant', 'profil') // good
+            ->get('/etudiant/mes_offres', 'Etudiant', 'mesOffres') // good
+            ->get('/etudiant/mes_candidatures', 'Etudiant', 'my_applications') // good
+            ->get('/etudiant/wishlist', 'Etudiant', 'wishlist') // good
+            ->post('/etudiant/wishlist/ajouter', 'Etudiant', 'ajouterWishlist') // A faire
+            ->post('/etudiant/wishlist/retirer', 'Etudiant', 'retirerWishlist') // A faire
 
             // Routes d'offres
-            ->get('/offres', 'Offres', 'index')
-            ->get('/offres/pages/:page', 'Offres', 'index')
-            ->get('/offres/details/:id', 'Offres', 'details')
-            ->post('/offres/rechercher', 'Offres', 'rechercher')
+            ->get('/offres', 'Offres', 'index') // good
+            ->get('/offres/pages/:page', 'Offres', 'index') // good
+            ->get('/offres/details/:id', 'Offres', 'details') // good
+            ->post('/offres/rechercher', 'Offres', 'rechercher') // A faire
             ->get('/offres/wishlist/ajouter/:id', 'Offres', 'add_to_wishlist')
             ->get('/offres/wishlist/retirer/:id', 'Offres', 'remove_from_wishlist')
             ->get('/offres/details/:id/postuler', 'Etudiant', 'postuler')
@@ -58,27 +58,37 @@ class App {
             ->get('/entreprises/details/:id/evaluer', 'Entreprises', 'afficherRate')
             ->post('/entreprises/details/:id/evaluer', 'Entreprises', 'rate')
 
+
+
             // Routes de pilote
-            ->get('/pilotes', 'Pilotes', 'index')
-            ->get('/pilotes/etudiants', 'Pilotes', 'etudiants')
+            ->get('/pilotes', 'Pilotes', 'index') // good
+            ->get('/pilotes/etudiants', 'Pilotes', 'etudiants') //good
+            ->post('/pilotes/etudiants', 'Pilotes', 'rechercheEtudiant') // Ajout: recherche d'étudiant
             ->get('/pilotes/etudiants/:id', 'Pilotes', 'etudiantDetails')
             ->get('/pilotes/etudiants/ajouter', 'Pilotes', 'ajouterEtudiant')
             ->post('/pilotes/etudiants/ajouter', 'Pilotes', 'enregistrerEtudiant')
             ->get('/pilotes/etudiants/:id/modifier', 'Pilotes', 'modifierEtudiant')
             ->post('/pilotes/etudiants/:id/modifier', 'Pilotes', 'mettreAJourEtudiant')
-            ->get('/pilotes/etudiants/:id/supprimer', 'Pilotes', 'supprimerEtudiant')
+            ->get('/pilotes/etudiants/:id/supprimer', 'Pilotes', 'etudiantSupprimer') // Ajout: supprimer étudiant
+            ->post('/pilotes/etudiants/:id/supprimer', 'Pilotes', 'etudiantSupprimerValider')
             ->get('/pilotes/etudiants/:id/wishlist', 'Pilotes', 'etudiantWishlist')
             ->get('/pilotes/etudiants/:id/offres', 'Pilotes', 'etudiantOffres')
+            ->get('/pilotes/etudiants/:id/password', 'Pilotes', 'etudiantPassword') // Ajout: page modif mot de passe
+            ->post('/pilotes/etudiants/:id/password', 'Pilotes', 'etudiantSavePassword') // Ajout: enregistrer mot de passe
 
             ->get('/pilotes/entreprises', 'Pilotes', 'entreprises')
+            ->post('/pilotes/entreprises', 'Pilotes', 'rechercheEntreprise') // Ajout: recherche d'entreprise
             ->get('/pilotes/entreprises/:id', 'Pilotes', 'entrepriseDetails')
             ->get('/pilotes/entreprises/ajouter', 'Pilotes', 'ajouterEntreprise')
             ->post('/pilotes/entreprises/ajouter', 'Pilotes', 'enregistrerEntreprise')
             ->get('/pilotes/entreprises/:id/modifier', 'Pilotes', 'modifierEntreprise')
             ->post('/pilotes/entreprises/:id/modifier', 'Pilotes', 'mettreAJourEntreprise')
-            ->get('/pilotes/entreprises/:id/supprimer', 'Pilotes', 'supprimerEntreprise')
+            ->get('/pilotes/entreprises/:id/supprimer', 'Pilotes', 'entrepriseSupprimer') // Ajout: supprimer entreprise
+            ->get('/pilotes/entreprises/:id/offres', 'Pilotes', 'entrepriseOffres') // Ajout: offres d'une entreprise
+            ->post('/pilotes/entreprises/:id/evaluer', 'Pilotes', 'rateEntreprise') // Ajout: évaluer entreprise
 
             ->get('/pilotes/offres', 'Pilotes', 'offres')
+            ->post('/pilotes/offres', 'Pilotes', 'rechercheOffre') // Ajout: recherche d'offre
             ->get('/pilotes/offres/:id', 'Pilotes', 'offreDetails')
             ->get('/pilotes/offres/ajouter', 'Pilotes', 'ajouterOffre')
             ->post('/pilotes/offres/ajouter', 'Pilotes', 'enregistrerOffre')
