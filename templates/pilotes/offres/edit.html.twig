@@ -80,25 +80,15 @@
             </div>
 
             <div class="form-group">
-                <label for="competences">Compétences requises</label>
-                <div class="skills-dropdown-container">
-                    <select id="competences" name="competences[]" class="form-control" multiple>
-                        {% for competence in all_competences %}
-                            <option value="{{ competence.Id_Competence }}"
-                                    {% if competence.Id_Competence in selected_competences %}selected{% endif %}>
-                                {{ competence.Nom_Competence }}
-                            </option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="selected-skills">
-                    {% for skill in offer.skills %}
-                        <div class="skill-tag">
-                            {{ skill.Nom_Competence }}
-                            <button type="button" class="remove-skill" data-id="{{ skill.Id_Competence }}">×</button>
-                        </div>
+                <label for="competences">Compétences requises *</label>
+                <select id="competences" name="competences" class="form-control" multiple>
+                    {% for competence in competences %}
+                        <option value="{{ competence.Id_Competence }}"
+                                {% if competence.Id_Competence in selected_competences %}selected{% endif %}>
+                            {{ competence.Nom_Competence }}
+                        </option>
                     {% endfor %}
-                </div>
+                </select>
                 <div id="competences-error" class="error-message">{{ errors.competences|default('') }}</div>
             </div>
 
@@ -128,7 +118,7 @@
 
             <div class="form-actions">
                 <a href="{{ url('pilotes/offres/' ~ offer.Id_Offre) }}" class="btn btn-back">Annuler</a>
-                <button type="submit" id="submit-btn" class="btn btn-submit">Enregistrer les modifications</button>
+                <button type="submit" id="submit-btn" class="btn btn-submit" disabled>Enregistrer les modifications</button>
             </div>
         </form>
     </div>
@@ -143,101 +133,8 @@
 
 {% include 'partials/footer.html.twig' %}
 <script src="{{ asset('js/frontend_script.js') }}"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Compteur de caractères pour la description
-        const descriptionTextarea = document.getElementById('description');
-        const charCount = document.getElementById('char-count');
+<script src="{{ asset('js/form_offre.js') }}"></script>
 
-        if (descriptionTextarea && charCount) {
-            descriptionTextarea.addEventListener('input', function() {
-                charCount.textContent = this.value.length;
-            });
-        }
-
-        // Gestion de la sélection des compétences
-        const competencesSelect = document.getElementById('competences');
-        const selectedSkillsContainer = document.querySelector('.selected-skills');
-
-        if (competencesSelect && selectedSkillsContainer) {
-            // Ajouter de nouvelles compétences sélectionnées
-            competencesSelect.addEventListener('change', function() {
-                selectedSkillsContainer.innerHTML = '';
-
-                Array.from(this.selectedOptions).forEach(option => {
-                    const skillTag = document.createElement('div');
-                    skillTag.className = 'skill-tag';
-                    skillTag.innerHTML = `
-                        ${option.text}
-                        <button type="button" class="remove-skill" data-id="${option.value}">×</button>
-                    `;
-                    selectedSkillsContainer.appendChild(skillTag);
-                });
-
-                // Ajouter des événements aux boutons de suppression
-                document.querySelectorAll('.remove-skill').forEach(button => {
-                    button.addEventListener('click', function() {
-                        const skillId = this.getAttribute('data-id');
-                        const option = competencesSelect.querySelector(`option[value="${skillId}"]`);
-                        if (option) {
-                            option.selected = false;
-                        }
-                        this.parentElement.remove();
-                    });
-                });
-            });
-
-            // Initialiser les événements pour les boutons de suppression existants
-            document.querySelectorAll('.remove-skill').forEach(button => {
-                button.addEventListener('click', function() {
-                    const skillId = this.getAttribute('data-id');
-                    const option = competencesSelect.querySelector(`option[value="${skillId}"]`);
-                    if (option) {
-                        option.selected = false;
-                    }
-                    this.parentElement.remove();
-                });
-            });
-        }
-
-        // Validation du formulaire
-        const form = document.getElementById('edit-offre-form');
-
-        if (form) {
-            form.addEventListener('submit', function(e) {
-                let isValid = true;
-
-                // Valider les champs requis
-                const requiredFields = form.querySelectorAll('[required]');
-                requiredFields.forEach(field => {
-                    if (!field.value.trim()) {
-                        isValid = false;
-                        const errorDiv = document.getElementById(`${field.id}-error`);
-                        if (errorDiv) {
-                            errorDiv.textContent = 'Ce champ est requis';
-                        }
-                    }
-                });
-
-                // Valider la durée maximale vs minimale
-                const dureeMin = document.getElementById('duree_min');
-                const dureeMax = document.getElementById('duree_max');
-
-                if (dureeMin && dureeMax && dureeMax.value && parseInt(dureeMax.value) < parseInt(dureeMin.value)) {
-                    isValid = false;
-                    const errorDiv = document.getElementById('duree_max-error');
-                    if (errorDiv) {
-                        errorDiv.textContent = 'La durée maximale doit être supérieure à la durée minimale';
-                    }
-                }
-
-                if (!isValid) {
-                    e.preventDefault();
-                }
-            });
-        }
-    });
-</script>
 <script src="{{ asset('js/flash-messages.js') }}"></script>
 </body>
 </html>

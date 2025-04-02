@@ -235,10 +235,10 @@ document.addEventListener("DOMContentLoaded", function() {
     // Gestion du menu des compétences
     const competencesSelect = document.getElementById('competences');
 
-// Créer un tableau pour stocker les compétences sélectionnées
+    // Créer un tableau pour stocker les compétences sélectionnées
     let selectedCompetences = [];
 
-// Écouter les changements dans le menu déroulant
+    // Écouter les changements dans le menu déroulant
     competencesSelect.addEventListener('change', function() {
         // Récupérer l'option sélectionnée
         const selectedOption = this.options[this.selectedIndex];
@@ -260,7 +260,7 @@ document.addEventListener("DOMContentLoaded", function() {
         validateCompetences();
     });
 
-// Fonction pour mettre à jour l'affichage des compétences
+    // Fonction pour mettre à jour l'affichage des compétences
     function updateCompetencesList() {
         // Créer ou obtenir la liste des compétences sélectionnées
         let competencesList = document.getElementById('selected-competences');
@@ -293,7 +293,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-// Fonction de validation des compétences
+    // Fonction de validation des compétences
     function validateCompetences() {
         // Supprimez la validation de présence
         competencesError.textContent = '';
@@ -359,7 +359,114 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
-// Initialiser les dropdowns personnalisés
+    // Initialiser les dropdowns personnalisés
     setupCustomDropdowns();
-});
 
+    // Gestion du menu déroulant des compétences
+    function setupCompetencesDropdown() {
+        const competencesToggle = document.getElementById('competences-toggle');
+        const competencesMenu = document.getElementById('competences-menu');
+        const competencesValues = document.getElementById('competences-values');
+        const selectedCompetences = document.getElementById('selected-competences');
+
+        // Tableau pour stocker les compétences sélectionnées
+        let selectedItems = [];
+
+        // Initialiser le tableau avec les compétences déjà sélectionnées
+        document.querySelectorAll('#selected-competences .skill-tag').forEach(tag => {
+            const id = tag.querySelector('.remove-skill').getAttribute('data-id');
+            const name = tag.textContent.trim().replace('×', '').trim();
+            selectedItems.push({ id, name });
+        });
+
+        // Mettre à jour le champ caché avec les valeurs sélectionnées
+        function updateHiddenField() {
+            competencesValues.value = selectedItems.map(item => item.id).join(',');
+        }
+
+        // Initialiser le champ caché
+        updateHiddenField();
+
+        // Ouvrir/fermer le menu déroulant
+        competencesToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            competencesMenu.classList.toggle('active');
+
+            // Ajouter un backdrop sur mobile
+            if (competencesMenu.classList.contains('active') && window.innerWidth <= 768) {
+                const backdrop = document.createElement('div');
+                backdrop.className = 'dropdown-backdrop';
+                document.body.appendChild(backdrop);
+
+                backdrop.addEventListener('click', function() {
+                    competencesMenu.classList.remove('active');
+                    this.remove();
+                });
+            }
+        });
+
+        // Sélection d'une compétence
+        document.querySelectorAll('#competences-menu .dropdown-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.stopPropagation();
+
+                const id = this.getAttribute('data-id');
+                const name = this.getAttribute('data-name');
+
+                // Vérifier si la compétence est déjà sélectionnée
+                if (!selectedItems.some(item => item.id === id)) {
+                    // Ajouter à la liste des compétences sélectionnées
+                    selectedItems.push({ id, name });
+
+                    // Créer et ajouter le tag
+                    const tag = document.createElement('span');
+                    tag.className = 'skill-tag';
+                    tag.innerHTML = `${name} <button type="button" class="remove-skill" data-id="${id}">×</button>`;
+                    selectedCompetences.appendChild(tag);
+
+                    // Ajouter l'événement de suppression
+                    tag.querySelector('.remove-skill').addEventListener('click', function() {
+                        const skillId = this.getAttribute('data-id');
+                        selectedItems = selectedItems.filter(item => item.id !== skillId);
+                        this.parentElement.remove();
+                        updateHiddenField();
+                    });
+
+                    // Mettre à jour le champ caché
+                    updateHiddenField();
+                }
+
+                // Fermer le menu
+                competencesMenu.classList.remove('active');
+
+                // Supprimer le backdrop si présent
+                const backdrop = document.querySelector('.dropdown-backdrop');
+                if (backdrop) backdrop.remove();
+            });
+        });
+
+        // Gérer les boutons de suppression existants
+        document.querySelectorAll('#selected-competences .remove-skill').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const skillId = this.getAttribute('data-id');
+                selectedItems = selectedItems.filter(item => item.id !== skillId);
+                this.parentElement.remove();
+                updateHiddenField();
+            });
+        });
+
+        // Fermer le menu si on clique ailleurs
+        document.addEventListener('click', function(e) {
+            if (!competencesToggle.contains(e.target) && !competencesMenu.contains(e.target)) {
+                competencesMenu.classList.remove('active');
+
+                // Supprimer le backdrop si présent
+                const backdrop = document.querySelector('.dropdown-backdrop');
+                if (backdrop) backdrop.remove();
+            }
+        });
+    }
+
+    // Initialiser le dropdown des compétences
+    setupCompetencesDropdown();
+});

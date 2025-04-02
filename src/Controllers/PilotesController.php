@@ -862,7 +862,7 @@ class PilotesController extends BaseController {
             'pilotePage' => true,
             'offer' => $offer,
             'enterprises' => $enterprises,
-            'all_competences' => $competences,
+            'competences' => $competences,
             'selected_competences' => $selectedCompetences,
             'csrf_token' => $_SESSION['csrf_token']
         ]);
