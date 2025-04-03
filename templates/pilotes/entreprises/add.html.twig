@@ -6,12 +6,11 @@
     <title>StageConnect - Ajouter une entreprise</title>
     <link rel="stylesheet" href="{{ asset('css/modal.css') }}">
     <link rel="stylesheet" href="{{ asset('css/styles_page_pilote.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/flash-messages.css') }}">
 </head>
 <body>
 {% set pilotePage = true %}
 {% include 'partials/navbar-pilote.html.twig' %}
-
-{% include 'partials/flash_messages.html.twig' %}
 
 <main>
     <div class="form-container">
@@ -62,12 +61,6 @@
                         <div id="code_postal-error" class="form-error"></div>
                     </div>
                 </div>
-            </div>
-
-            <div class="form-group">
-                <label for="adresse" class="form-label">Adresse</label>
-                <input type="text" id="adresse" name="adresse" class="form-input" placeholder="Ex: 6 rue Bois du Chêne le Loup">
-                <div id="adresse-error" class="form-error"></div>
             </div>
 
             <div class="form-group">
