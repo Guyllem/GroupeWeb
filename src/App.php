@@ -75,8 +75,8 @@ class App {
             ->post('/pilotes/etudiants/:id/reset', 'Pilotes', 'resetPassword')
             ->get('/pilotes/etudiants/:id/wishlist', 'Pilotes', 'etudiantWishlist')
             ->get('/pilotes/etudiants/:id/offres', 'Pilotes', 'etudiantOffres')
-            ->get('/pilotes/etudiants/:id/password', 'Pilotes', 'etudiantPassword') // Ajout: page modif mot de passe
-            ->post('/pilotes/etudiants/:id/password', 'Pilotes', 'etudiantSavePassword') // Ajout: enregistrer mot de passe
+            ->get('/pilotes/etudiants/:id/password', 'Pilotes', 'afficherReset') // Ajout: page modif mot de passe
+            ->post('/pilotes/etudiants/:id/password', 'Pilotes', 'resetPassword') // Ajout: enregistrer mot de passe
 
             ->get('/pilotes/entreprises', 'Pilotes', 'entreprises')
             ->post('/pilotes/entreprises', 'Pilotes', 'rechercheEntreprise') // Ajout: recherche d'entreprise
