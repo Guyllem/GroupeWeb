@@ -1,0 +1,16 @@
+/* Point d'entrée principal qui importe tous les modules CSS */
+
+/* Base et structure */
+@import 'style/base.css';
+@import 'style/layout.css';
+
+/* Composants */
+@import 'style/composants/navbar.css';
+@import 'style/composants/filters.css';
+@import 'style/composants/cards.css';
+@import 'style/composants/profile.css';
+@import 'style/composants/wishlist.css';
+@import 'style/composants/forms.css';
+
+/* Responsivité */
+@import 'style/responsive.css';

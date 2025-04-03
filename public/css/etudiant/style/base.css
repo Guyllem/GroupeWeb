@@ -1,0 +1,76 @@
+/* Reset et styles globaux */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+a {
+    text-decoration: none;
+}
+
+main {
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.container {
+    width: 100%;
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.content-principal {
+    padding: 20px;
+}
+
+footer {
+    flex-shrink: 0;
+    background-color: #3F51B5;
+    color: white;
+    font-size: 0.9em;
+    padding: 0.625rem;
+    width: 100%;
+    text-align: center;
+}
+
+footer a {
+    color: white;
+    text-decoration: none;
+    position: relative;
+}
+
+footer a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 0;
+    height: 1px;
+    background-color: white;
+    transition: width 0.3s ease-out;
+}
+
+footer a:hover::after {
+    width: 100%;
+}

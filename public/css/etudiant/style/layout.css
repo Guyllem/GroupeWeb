@@ -1,0 +1,67 @@
+/* Structure principale */
+.main-content {
+    display: flex;
+    flex-grow: 1;
+    border-radius: 5px;
+    border-color: #3F51B5;
+    width: 100%;
+}
+
+.main-section {
+    flex-grow: 1;
+    padding: 20px;
+}
+
+/* Images de fond pour la wishlist et autres pages */
+.bulle2-1 {
+    position: fixed;
+    width: 4%;
+    top: 15%;
+    right: 20%;
+}
+
+.bulle2-2 {
+    position: fixed;
+    width: 10%;
+    top: 55%;
+    left: 8%;
+}
+
+.bulle3-1 {
+    position: fixed;
+    width: 8%;
+    right: 6%;
+    top: 75%;
+}
+
+.bulle3-2 {
+    position: fixed;
+    width: 4%;
+    left: 18%;
+    top: 68%;
+}
+
+.bulle3-3 {
+    position: fixed;
+    width: 8%;
+    right: 12%;
+    top: 15%;
+}
+
+/* Styles communs */
+.back-button {
+    margin-bottom: 20px;
+    margin-left: 5px;
+}
+
+.back-button a {
+    color: #4056b4;
+    text-decoration: none;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}
+
+.arrow {
+    margin-right: 5px;
+}

@@ -1,0 +1,184 @@
+/* Style pour les cartes d'affichage */
+.card {
+    background-color: #3F51B5;
+    border-radius: 8px;
+    color: white;
+    padding: 16px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    margin: 50px auto;
+}
+
+.card h3 {
+    margin-right: 10px;
+    font-size: 25px;
+}
+
+.card h4 {
+    font-size: 16px;
+    opacity: 0.7;
+}
+
+/* Header de la carte */
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.name-and-company {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.logo-placeholder {
+    background-color: #ffffff;
+    height: 40px;
+    width: 40px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    margin-right: 16px;
+    margin-bottom: 20px;
+}
+
+/* Tags des compétences */
+.tags {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: repeat(3, 1fr);
+    justify-content: end;
+    direction: rtl;
+}
+
+.tag {
+    background-color: white;
+    text-align: center;
+    justify-content: center;
+    color: #000000;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 4px;
+    box-shadow: 0.2rem 0.2rem 0.2rem rgba(0, 0, 0, 0.3);
+}
+
+/* Corps de la carte */
+.card-body {
+    margin: 16px 0;
+    font-size: 14px;
+    text-align: justify;
+    line-height: 1.5;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Footer de la carte */
+.card-footer {
+    display: flex;
+    margin-top: 20px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.publish-date {
+    font-size: 12px;
+    opacity: 0.8;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Actions (boutons) */
+.actions {
+    display: flex;
+    gap: 8px;
+}
+
+.view-btn {
+    border: none;
+    font-size: 14px;
+    padding: 10px 15px;
+    margin-left: 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    background-color: #757DE8;
+    color: white;
+}
+
+.view-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0.5rem 0.5rem 0.5rem rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+/* Animation du cœur (wishlist) */
+.heart-container {
+    --heart-color: rgb(255, 91, 137);
+    position: relative;
+    display: flex;
+    padding-top: 10px;
+    width: 25px;
+    height: 25px;
+    transition: .3s;
+}
+
+.heart-container .checkbox {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    z-index: 20;
+    cursor: pointer;
+}
+
+.heart-container .svg-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.heart-container .svg-outline,
+.heart-container .svg-filled {
+    fill: var(--heart-color);
+    position: absolute;
+}
+
+.heart-container .svg-filled {
+    animation: keyframes-svg-filled 1s;
+    display: none;
+}
+
+.heart-container .svg-celebrate {
+    position: absolute;
+    animation: keyframes-svg-celebrate .5s;
+    animation-fill-mode: forwards;
+    display: none;
+    stroke: var(--heart-color);
+    fill: var(--heart-color);
+    stroke-width: 2px;
+}
+
+.heart-container .checkbox:checked~.svg-container .svg-filled {
+    display: block;
+}
+
+.heart-container .checkbox:checked~.svg-container .svg-celebrate {
+    display: block;
+}
+
+@keyframes keyframes-svg-filled {
+    0% { transform: scale(0); }
+    25% { transform: scale(1.2); }
+    50% { transform: scale(1); filter: brightness(1.5); }
+}
+
+@keyframes keyframes-svg-celebrate {
+    0% { transform: scale(0); }
+    50% { opacity: 1; filter: brightness(1.5); }
+    100% { transform: scale(1.4); opacity: 0; display: none; }
+}
