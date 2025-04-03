@@ -176,8 +176,35 @@ class App {
         // Protection contre les attaques CSRF pour les requêtes POST, PUT, DELETE
         $this->checkCsrfProtection();
 
-        // Extract the path from REQUEST_URI
+        // Vérifier si un token de persistance existe
+        $authController = new \App\Controllers\AuthController($this->twig, $this->db);
+        $authController->checkPersistentLogin();
+
+        // Extraction du chemin de l'URL
         $uri = $_SERVER['REQUEST_URI'];
+        $path = parse_url($uri, PHP_URL_PATH);
+
+        // Protection des routes publiques pour utilisateurs déjà authentifiés
+        if ($path === '/login' && isset($_SESSION['user_id'])) {
+            // Rediriger en fonction du type d'utilisateur
+            $userType = $_SESSION['user_type'];
+            switch ($userType) {
+                case 'admin':
+                    header('Location: /admin');
+                    break;
+                case 'pilote':
+                    header('Location: /pilotes');
+                    break;
+                case 'etudiant':
+                    header('Location: /offres');
+                    break;
+                default:
+                    // Aucun type reconnu, supprimer la session et continuer normalement
+                    session_destroy();
+                    break;
+            }
+            exit;
+        }
 
         // Suppression des paramètres de requête
         $uri = parse_url($uri, PHP_URL_PATH);
