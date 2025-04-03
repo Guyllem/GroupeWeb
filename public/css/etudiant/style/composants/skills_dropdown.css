@@ -1,0 +1,148 @@
+/* Styles améliorés pour le menu déroulant des compétences */
+
+/* Conteneur du bouton et du dropdown */
+.skill-dropdown-container {
+    position: relative;
+    width: 100%;
+    margin-top: 15px;
+}
+
+/* Bouton d'ajout */
+.add-skill-button {
+    width: 100%;
+    padding: 12px 20px;
+    background-color: #f4f4f4;
+    color: #333;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-bottom: 15px;
+    transition: all 0.2s ease;
+    text-align: center;
+    font-weight: 500;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.add-skill-button:hover {
+    background-color: #e8e8e8;
+    transform: scale(1.01);
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.15);
+}
+
+.add-skill-button:active {
+    transform: scale(0.99);
+}
+
+/* Menu déroulant */
+.skill-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 0;
+    width: 100%;
+    max-height: 250px;
+    overflow-y: auto;
+    background-color: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 100;
+    padding: 8px 0;
+    animation: fadeInDown 0.3s ease;
+    scrollbar-width: thin;
+    scrollbar-color: #757DE8 #f4f4f4;
+}
+
+/* Animation d'apparition */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Stylisation de la scrollbar pour Webkit */
+.skill-dropdown::-webkit-scrollbar {
+    width: 6px;
+}
+
+.skill-dropdown::-webkit-scrollbar-track {
+    background: #f4f4f4;
+    border-radius: 3px;
+}
+
+.skill-dropdown::-webkit-scrollbar-thumb {
+    background-color: #757DE8;
+    border-radius: 3px;
+}
+
+/* Affichage du menu quand il est actif */
+.skill-dropdown.active {
+    display: block;
+}
+
+/* Éléments du menu déroulant */
+.skill-dropdown-item {
+    display: block;
+    padding: 10px 16px;
+    color: #333;
+    text-decoration: none;
+    transition: background-color 0.2s, color 0.2s;
+    font-size: 14px;
+    cursor: pointer;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.skill-dropdown-item:last-child {
+    border-bottom: none;
+}
+
+.skill-dropdown-item:hover {
+    background-color: #f0f4ff;
+    color: #3F51B5;
+}
+
+/* Style des badges de compétence */
+.skill-badge {
+    background-color: #757DE8;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.skill-badge:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Bouton de suppression */
+.skill-delete {
+    display: inline-flex;
+    margin-left: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    transition: background-color 0.2s;
+    text-decoration: none;
+}
+
+.skill-delete:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+}

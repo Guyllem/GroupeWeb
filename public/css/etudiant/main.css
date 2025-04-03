@@ -13,3 +13,5 @@
 
 /* Responsivité */
 @import 'style/responsive.css';
+
+@import 'style/composants/skills_dropdown.css';

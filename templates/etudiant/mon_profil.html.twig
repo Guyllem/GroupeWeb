@@ -3,8 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="student-id" content="{{ student.Id_Etudiant }}">
     <title>StageConnect - Mon Profil</title>
     <link rel="stylesheet" href="{{ asset('css/etudiant/main.css') }}">
+    <!-- Ajoutez le script JavaScript en bas de la balise head -->
+    <script>
+        // Stockage de l'ID étudiant et du token CSRF dans la session
+        window.sessionStudentId = "{{ student.Id_Etudiant }}";
+    </script>
+
 </head>
 <body>
 <main>
@@ -29,21 +36,39 @@
 
                 <div class="skills-section">
                     <h2 class="skills-title">Compétences :</h2>
-                    <div class="skills-grid">
+                    <div class="skills-grid" id="skills-grid">
                         {% for skill in skills %}
-                            <div class="skill-badge">{{ skill.Nom_Competence }}</div>
+                            <div class="skill-badge">
+                                {{ skill.Nom_Competence }}
+                                <a href="/etudiant/skills/delete/{{ skill.Id_Competence }}" class="skill-delete" data-id="{{ skill.Id_Competence }}" title="Supprimer cette compétence">×</a>
+                            </div>
                         {% else %}
                             <div class="skill-badge">Aucune compétence ajoutée</div>
                         {% endfor %}
                     </div>
-                    <button class="add-skill-button">Ajouter une compétence</button>
+                    <div class="skill-dropdown-container">
+                        <button class="add-skill-button" id="add-skill-button">
+                            <i class="skill-add-icon">+</i> Ajouter une compétence
+                        </button>
+                        <div class="skill-dropdown" id="skill-dropdown">
+                            {% if available_skills|length > 0 %}
+                                {% for available_skill in available_skills %}
+                                    <a href="/etudiant/skills/add/{{ available_skill.Id_Competence }}" class="skill-dropdown-item">
+                                        {{ available_skill.Nom_Competence }}
+                                    </a>
+                                {% endfor %}
+                            {% else %}
+                                <span class="skill-dropdown-item">Aucune compétence disponible</span>
+                            {% endif %}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </main>
 {% include 'partials/footer.html.twig' %}
-<script src="{{ asset('js/skills') }}"></script>
+<script src="{{ asset('js/skills.js') }}"></script>
 <script src="{{ asset('js/navigation.js') }}"></script>
 </body>
 </html>
