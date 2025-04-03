@@ -49,15 +49,14 @@
                         <label for="promotion" class="form-label">Promotion</label>
                         <select id="promotion" name="promotion" class="form-input" required>
                             <option value="" disabled>Sélectionner une promotion</option>
-                            <option value="A1" {% if student.Nom_Promotion == 'A1' %}selected{% endif %}>A1</option>
-                            <option value="A2 Info" {% if student.Nom_Promotion == 'A2 Info' %}selected{% endif %}>A2 Info</option>
-                            <option value="A2 Géné" {% if student.Nom_Promotion == 'A2 Géné' %}selected{% endif %}>A2 Géné</option>
-                            <option value="A3 Info" {% if student.Nom_Promotion == 'A3 Info' %}selected{% endif %}>A3 Info</option>
-                            <option value="A3 Géné" {% if student.Nom_Promotion == 'A3 Géné' %}selected{% endif %}>A3 Géné</option>
-                            <option value="A4 Info" {% if student.Nom_Promotion == 'A4 Info' %}selected{% endif %}>A4 Info</option>
-                            <option value="A4 Géné" {% if student.Nom_Promotion == 'A4 Géné' %}selected{% endif %}>A4 Géné</option>
-                            <option value="A5 Info" {% if student.Nom_Promotion == 'A5 Info' %}selected{% endif %}>A5 Info</option>
-                            <option value="A5 Géné" {% if student.Nom_Promotion == 'A5 Géné' %}selected{% endif %}>A5 Géné</option>
+                            {% for promotion in promotions %}
+                                <option value="{{ promotion.Id_Promotion }}"
+                                        {% if student.Id_Promotion is defined and student.Id_Promotion == promotion.Id_Promotion %}selected{% endif %}>
+                                    {{ promotion.Nom_Promotion }}
+                                    {% if promotion.Specialite_Promotion %} - {{ promotion.Specialite_Promotion }}{% endif %}
+                                    {% if promotion.Niveau_Promotion %} ({{ promotion.Niveau_Promotion }}){% endif %}
+                                </option>
+                            {% endfor %}
                         </select>
                         <div id="promotion-error" class="form-error"></div>
                     </div>
@@ -67,9 +66,12 @@
                         <label for="campus" class="form-label">Campus</label>
                         <select id="campus" name="campus" class="form-input" required>
                             <option value="" disabled>Sélectionner un campus</option>
-                            <option value="Nancy" {% if student.Nom_Campus == 'Nancy' %}selected{% endif %}>Nancy</option>
-                            <option value="Metz" {% if student.Nom_Campus == 'Metz' %}selected{% endif %}>Metz</option>
-                            <option value="Listembourg" {% if student.Nom_Campus == 'Listembourg' %}selected{% endif %}>Listembourg</option>
+                            {% for site in campus %}
+                                <option value="{{ site.Id_Campus }}"
+                                        {% if student.Id_Campus is defined and student.Id_Campus == site.Id_Campus %}selected{% endif %}>
+                                    {{ site.Nom_Campus }}
+                                </option>
+                            {% endfor %}
                         </select>
                         <div id="campus-error" class="form-error"></div>
                     </div>
