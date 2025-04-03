@@ -234,4 +234,108 @@ class UserModel extends Model {
             return false;
         }
     }
+
+    /**
+     * Crée un utilisateur et un étudiant associé dans une transaction atomique garantie
+     *
+     * @param string $email Email de l'utilisateur
+     * @param string $password Mot de passe en clair (sera haché)
+     * @param string $nom Nom de l'utilisateur
+     * @param string $prenom Prénom de l'utilisateur
+     * @return array|null Tableau avec les IDs ou null en cas d'erreur
+     */
+    public function createStudentWithUser($email, $password, $nom, $prenom) {
+        $conn = $this->db->connect();
+
+        try {
+            // Isolation explicite pour garantir la cohérence
+            $conn->beginTransaction();
+
+            // Hachage sécurisé du mot de passe
+            $hashedPassword = \App\Utils\SecurityUtil::hashPassword($password);
+
+            // 1. Insertion de l'utilisateur
+            $stmt = $conn->prepare('
+            INSERT INTO Utilisateur (
+                Email_Utilisateur, 
+                Password_Utilisateur, 
+                Nom_Utilisateur, 
+                Prenom_Utilisateur
+            ) VALUES (
+                :email, 
+                :password, 
+                :nom, 
+                :prenom
+            )
+        ');
+            $stmt->bindParam(':email', $email);
+            $stmt->bindParam(':password', $hashedPassword);
+            $stmt->bindParam(':nom', $nom);
+            $stmt->bindParam(':prenom', $prenom);
+            $stmt->execute();
+
+            $userId = $conn->lastInsertId();
+
+            if (!$userId) {
+                throw new \Exception("Échec de l'insertion de l'utilisateur");
+            }
+
+            // 2. Insertion de l'étudiant associé
+            $stmt = $conn->prepare('INSERT INTO Etudiant (Id_Utilisateur) VALUES (:userId)');
+            $stmt->bindParam(':userId', $userId);
+            $stmt->execute();
+
+            $studentId = $conn->lastInsertId();
+
+            if (!$studentId) {
+                throw new \Exception("Échec de l'insertion de l'étudiant");
+            }
+
+            // Validation de la transaction atomique
+            $conn->commit();
+
+            // Retour des identifiants générés
+            return [
+                'userId' => $userId,
+                'studentId' => $studentId
+            ];
+
+        } catch (\Exception $e) {
+            // Annulation de toutes les modifications en cas d'erreur
+            if ($conn->inTransaction()) {
+                $conn->rollBack();
+            }
+
+            error_log("Transaction createStudentWithUser échouée: " . $e->getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * Met à jour le numéro de téléphone d'un utilisateur
+     *
+     * @param int $userId ID de l'utilisateur
+     * @param string $telephone Numéro de téléphone
+     * @return bool Succès de l'opération
+     */
+    public function updateUserPhone($userId, $telephone) {
+        if (empty($telephone)) {
+            return true; // Rien à mettre à jour
+        }
+
+        try {
+            $conn = $this->db->connect();
+            $stmt = $conn->prepare('
+            UPDATE Utilisateur 
+            SET Telephone_Utilisateur = :telephone 
+            WHERE Id_Utilisateur = :userId
+        ');
+            $stmt->bindParam(':telephone', $telephone);
+            $stmt->bindParam(':userId', $userId);
+            return $stmt->execute();
+        } catch (\Exception $e) {
+            error_log('Erreur lors de la mise à jour du téléphone: ' . $e->getMessage());
+            return false;
+        }
+    }
 }

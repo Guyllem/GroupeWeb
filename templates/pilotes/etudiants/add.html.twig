@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StageConnect - Ajouter un Étudiant</title>
+    <link rel="stylesheet" href="{{ asset('css/flash-messages.css') }}">
     <link rel="stylesheet" href="{{ asset('css/styles_page_pilote.css') }}">
     <link rel="stylesheet" href="{{ asset('css/modal.css') }}">
 </head>
@@ -17,7 +18,7 @@
             <span class="arrow">←</span> Retour
         </a>
         <h2 class="form-title">Ajouter un nouvel élève</h2>
-        <form id="add-student-form" action="{{ url('pilotes/etudiants/ajouter') }}" method="post" novalidate>
+        <form id="add-student-form" action="{{ url('pilotes/etudiants/ajouter') }}" method="post">
             <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
 
             <div class="form-row">
@@ -49,36 +50,30 @@
                 <div id="password-error" class="form-error"></div>
             </div>
 
-            <div class="form-row">
-                <div class="form-column">
-                    <div class="form-group">
-                        <label for="promotion" class="form-label">Promotion</label>
-                        <select id="promotion" name="promotion" class="form-input" required>
-                            <option value="" selected disabled>Sélectionner une promotion</option>
-                            <option value="A1">A1</option>
-                            <option value="A2 Info">A2 Info</option>
-                            <option value="A2 Géné">A2 Géné</option>
-                            <option value="A3 Info">A3 Info</option>
-                            <option value="A3 Géné">A3 Géné</option>
-                            <option value="A4 Info">A4 Info</option>
-                            <option value="A4 Géné">A4 Géné</option>
-                            <option value="A5 Info">A5 Info</option>
-                            <option value="A5 Géné">A5 Géné</option>
-                        </select>
-                        <div id="promotion-error" class="form-error"></div>
-                    </div>
+            <div class="form-column">
+                <div class="form-group">
+                    <label for="promotion" class="form-label">Promotion</label>
+                    <select id="promotion" name="promotion" class="form-input" required>
+                        <option value="" selected disabled>Sélectionner une promotion</option>
+                        {% for promotion in promotions %}
+                            <option value="{{ promotion.Id_Promotion }}">
+                                {{ promotion.Nom_Promotion }}{% if promotion.Specialite_Promotion %} - {{ promotion.Specialite_Promotion }}{% endif %}{% if promotion.Niveau_Promotion %} ({{ promotion.Niveau_Promotion }}){% endif %}
+                            </option>
+                        {% endfor %}
+                    </select>
+                    <div id="promotion-error" class="form-error"></div>
                 </div>
-                <div class="form-column">
-                    <div class="form-group">
-                        <label for="campus" class="form-label">Campus</label>
-                        <select id="campus" name="campus" class="form-input" required>
-                            <option value="" selected disabled>Sélectionner un campus</option>
-                            <option value="Nancy">Nancy</option>
-                            <option value="Metz">Metz</option>
-                            <option value="Listembourg">Listembourg</option>
-                        </select>
-                        <div id="campus-error" class="form-error"></div>
-                    </div>
+            </div>
+            <div class="form-column">
+                <div class="form-group">
+                    <label for="campus" class="form-label">Campus</label>
+                    <select id="campus" name="campus" class="form-input" required>
+                        <option value="" selected disabled>Sélectionner un campus</option>
+                        {% for site in campus %}
+                            <option value="{{ site.Id_Campus }}">{{ site.Nom_Campus }}</option>
+                        {% endfor %}
+                    </select>
+                    <div id="campus-error" class="form-error"></div>
                 </div>
             </div>
 

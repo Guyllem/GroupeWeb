@@ -1,7 +1,9 @@
 <?php
 namespace App\Controllers;
 
+use App\Models\CampusModel;
 use App\Models\PilotModel;
+use App\Models\PromotionModel;
 use App\Models\StudentModel;
 use App\Models\EnterpriseModel;
 use App\Models\OfferModel;
@@ -25,7 +27,7 @@ class PilotesController extends BaseController {
 
     public function index() {
         $this->requirePilote();
-        echo $this->twig->render('pilotes/index.html.twig');
+        $this->render('pilotes/index.html.twig');
     }
 
     // Gestion des étudiants
@@ -39,7 +41,7 @@ class PilotesController extends BaseController {
         // Récupérer les étudiants supervisés par ce pilote
         $students = $this->pilotModel->getSupervisedStudents($pilotId);
 
-        echo $this->twig->render('pilotes/etudiants/index.html.twig', [
+        $this->render('pilotes/etudiants/index.html.twig', [
             'pilotePage' => true,
             'students' => $students
         ]);
@@ -64,7 +66,7 @@ class PilotesController extends BaseController {
         // Effectuer la recherche
         $students = $this->pilotModel->searchStudents($searchTerm, $pilotId);
 
-        echo $this->twig->render('pilotes/etudiants/index.html.twig', [
+        $this->render('pilotes/etudiants/index.html.twig', [
             'pilotePage' => true,
             'students' => $students,
             'searchTerm' => $searchTerm
@@ -99,7 +101,7 @@ class PilotesController extends BaseController {
             $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
         }
 
-        echo $this->twig->render('pilotes/etudiants/show.html.twig', [
+        $this->render('pilotes/etudiants/show.html.twig', [
             'pilotePage' => true,
             'student' => $student,
             'csrf_token' => $_SESSION['csrf_token']
@@ -108,30 +110,193 @@ class PilotesController extends BaseController {
 
     public function ajouterEtudiant() {
         $this->requirePilote();
-        // Afficher le formulaire d'ajout d'étudiant
+
+        // Récupérer le pilote actuel
+        $userId = $_SESSION['user_id'];
+        $pilotId = $this->pilotModel->getPilotIdFromUserId($userId);
+
+        if (!$pilotId) {
+            $this->addFlashMessage('error', 'Erreur d\'identification du pilote');
+            header('Location: /pilotes');
+            exit;
+        }
+
+        // Instancier les modèles de données
+        $campusModel = new CampusModel($this->db);
+
+        // Récupérer uniquement les promotions supervisées par ce pilote
+        $promotions = $this->pilotModel->getSupervisedPromotions($pilotId);
+
+        // Récupérer tous les campus (ou filtrer également selon les campus des promotions)
+        $campus = $campusModel->getAllCampus();
 
         // Générer le token CSRF pour le formulaire
         if (!isset($_SESSION['csrf_token'])) {
             $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
         }
 
-        echo $this->twig->render('pilotes/etudiants/add.html.twig', [
+        $this->render('pilotes/etudiants/add.html.twig', [
             'pilotePage' => true,
-            'csrf_token' => $_SESSION['csrf_token']
+            'csrf_token' => $_SESSION['csrf_token'],
+            'promotions' => $promotions,
+            'campus' => $campus
         ]);
     }
 
+    /**
+     * Traite les données du formulaire d'ajout d'étudiant et crée les entrées nécessaires
+     * dans la base de données via une transaction atomique unifiée.
+     *
+     * @return void
+     */
     public function enregistrerEtudiant() {
         $this->requirePilote();
-        // Traiter le formulaire d'ajout d'étudiant
-        // Code pour ajouter un étudiant...
 
-        $this->addFlashMessage('success', 'Étudiant ajouté avec succès');
-        header('Location: /pilotes/etudiants');
+        // Récupération de l'ID du pilote
+        $userId = $_SESSION['user_id'];
+        $pilotId = $this->pilotModel->getPilotIdFromUserId($userId);
+
+        if (!$pilotId) {
+            $this->addFlashMessage('error', 'Identification du pilote impossible');
+            header('Location: /pilotes/etudiants/');
+            exit;
+        }
+
+        // Vérification du token CSRF
+        if (!isset($_POST['csrf_token']) || !isset($_SESSION['csrf_token']) ||
+            $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+            $this->addFlashMessage('error', 'Erreur de sécurité. Veuillez réessayer.');
+            header('Location: /pilotes/etudiants/');
+            exit;
+        }
+
+        // Récupération et assainissement des données du formulaire
+        $nom = trim($_POST['nom'] ?? '');
+        $prenom = trim($_POST['prenom'] ?? '');
+        $email = filter_var($_POST['email'] ?? '', FILTER_SANITIZE_EMAIL);
+        $password = $_POST['password'] ?? '';
+        $promotionId = (int)($_POST['promotion'] ?? 0);
+        $campusId = (int)($_POST['campus'] ?? 0);
+        $telephone = trim($_POST['telephone'] ?? '');
+
+        // Validation des données
+        if (empty($nom) || empty($prenom) || empty($email) || empty($password) ||
+            empty($promotionId) || empty($campusId)) {
+            $this->addFlashMessage('error', 'Veuillez remplir tous les champs obligatoires');
+            header('Location: /pilotes/etudiants/ajouter');
+            exit;
+        }
+
+        try {
+            $conn = $this->db->connect();
+
+            // NOUVELLE VÉRIFICATION: S'assurer que le pilote supervise bien cette promotion
+            $stmt = $conn->prepare('
+            SELECT COUNT(*) FROM Superviser 
+            WHERE Id_Pilote = :pilotId AND Id_Promotion = :promotionId
+        ');
+            $stmt->bindParam(':pilotId', $pilotId);
+            $stmt->bindParam(':promotionId', $promotionId);
+            $stmt->execute();
+
+            if ($stmt->fetchColumn() == 0) {
+                $this->addFlashMessage('error', 'Vous n\'êtes pas autorisé à ajouter un étudiant à cette promotion');
+                header('Location: /pilotes/etudiants/ajouter');
+                exit;
+            }
+
+            // Vérification préalable de l'unicité de l'email
+            $stmt = $conn->prepare('SELECT COUNT(*) FROM Utilisateur WHERE Email_Utilisateur = :email');
+            $stmt->bindParam(':email', $email);
+            $stmt->execute();
+
+            if ($stmt->fetchColumn() > 0) {
+                $this->addFlashMessage('error', 'Cet email est déjà utilisé');
+                header('Location: /pilotes/etudiants/ajouter');
+                exit;
+            }
+
+            // Création de l'étudiant via la méthode transactionnelle unifiée
+            $result = $this->userModel->createStudentWithUser($email, $password, $nom, $prenom);
+
+            if (!$result || !isset($result['userId']) || !isset($result['studentId'])) {
+                throw new \Exception("Erreur lors de la création de l'utilisateur et de l'étudiant");
+            }
+
+            $userId = $result['userId'];
+            $studentId = $result['studentId'];
+
+            $this->userModel->updateUserPhone($userId, $telephone);
+
+            // Journal de débogage
+            error_log("Utilisateur/Étudiant créé avec succès - ID Utilisateur: $userId, ID Étudiant: $studentId");
+
+            // Débuter une nouvelle transaction pour les opérations complémentaires
+            $conn->beginTransaction();
+
+            try {
+                // Association de l'étudiant à la promotion
+                $dateDebut = date('Y-m-d');
+                $dateFin = date('Y-m-d', strtotime('+2 years'));
+
+                $stmt = $conn->prepare('
+                INSERT INTO Appartenir (
+                    Id_Etudiant, 
+                    Id_Promotion, 
+                    Date_Debut_Appartenir, 
+                    Date_Fin_Appartenir
+                ) VALUES (
+                    :studentId, 
+                    :promotionId, 
+                    :dateDebut, 
+                    :dateFin
+                )
+            ');
+                $stmt->bindParam(':studentId', $studentId);
+                $stmt->bindParam(':promotionId', $promotionId);
+                $stmt->bindParam(':dateDebut', $dateDebut);
+                $stmt->bindParam(':dateFin', $dateFin);
+                $stmt->execute();
+
+                // Validation des opérations complémentaires
+                $conn->commit();
+
+                // Ajout du message de succès et redirection
+                $this->addFlashMessage('success', 'Étudiant ajouté avec succès');
+
+                // Garantir que la session est écrite avant redirection
+                session_write_close();
+
+                header('Location: /pilotes/etudiants');
+                exit;
+
+            } catch (\Exception $e) {
+                // Annulation des opérations complémentaires en cas d'erreur
+                $conn->rollBack();
+                throw $e; // Propager l'exception pour la gestion globale
+            }
+
+        } catch (\Exception $e) {
+            error_log("Erreur lors de l'enregistrement de l'étudiant: " . $e->getMessage());
+
+            $this->addFlashMessage('error', 'Erreur lors de l\'ajout de l\'étudiant: ' . $e->getMessage());
+            header('Location: /pilotes/etudiants/ajouter');
+            exit;
+        }
     }
 
     public function modifierEtudiant($params) {
         $this->requirePilote();
+
+        // Récupérer le pilote actuel
+        $userId = $_SESSION['user_id'];
+        $pilotId = $this->pilotModel->getPilotIdFromUserId($userId);
+
+        if (!$pilotId) {
+            $this->addFlashMessage('error', 'Erreur d\'identification du pilote');
+            header('Location: /pilotes');
+            exit;
+        }
 
         $etudiantId = $params['id'] ?? null;
 
@@ -141,14 +306,23 @@ class PilotesController extends BaseController {
             return;
         }
 
-        // Récupérer les détails de l'étudiant
-        $student = $this->studentModel->getStudentInfo($etudiantId);
+        // Récupérer les données complètes de l'étudiant via le modèle
+        $student = $this->studentModel->getStudentAcademicInfo($etudiantId);
 
         if (!$student) {
             $this->addFlashMessage('error', 'Étudiant non trouvé');
             header('Location: /pilotes/etudiants');
             return;
         }
+
+        // Instancier les modèles de données
+        $campusModel = new CampusModel($this->db);
+
+        // Récupérer uniquement les promotions supervisées par ce pilote
+        $promotions = $this->pilotModel->getSupervisedPromotions($pilotId);
+
+        // Récupérer tous les campus (ou filtrer également selon les campus des promotions)
+        $campus = $campusModel->getAllCampus();
 
         // Générer le token CSRF pour le formulaire
         if (!isset($_SESSION['csrf_token'])) {
@@ -158,10 +332,12 @@ class PilotesController extends BaseController {
         // Récupérer les compétences de l'étudiant
         $student['skills'] = $this->studentModel->getStudentSkills($etudiantId);
 
-        echo $this->twig->render('pilotes/etudiants/edit.html.twig', [
+        $this->render('pilotes/etudiants/edit.html.twig', [
             'pilotePage' => true,
             'student' => $student,
-            'csrf_token' => $_SESSION['csrf_token']
+            'csrf_token' => $_SESSION['csrf_token'],
+            'promotions' => $promotions,
+            'campus' => $campus
         ]);
     }
 
@@ -180,10 +356,18 @@ class PilotesController extends BaseController {
         $nom = $_POST['nom'] ?? '';
         $prenom = $_POST['prenom'] ?? '';
         $email = $_POST['email'] ?? '';
-        $promotionId = $_POST['promotion'] ?? '';
+        $promotionId = $_POST['promotion'] ?? null;
         $telephone = $_POST['telephone'] ?? '';
+        $skills = isset($_POST['skills']) ? explode(',', $_POST['skills']) : [];
 
-        // Récupérer l'ID utilisateur de l'étudiant
+        // Validation des données
+        if (empty($nom) || empty($prenom) || empty($email)) {
+            $this->addFlashMessage('error', 'Veuillez remplir tous les champs obligatoires');
+            header('Location: /pilotes/etudiants/' . $etudiantId . '/modifier');
+            return;
+        }
+
+        // Récupérer l'étudiant actuel
         $student = $this->studentModel->getStudentInfo($etudiantId);
 
         if (!$student) {
@@ -192,7 +376,10 @@ class PilotesController extends BaseController {
             return;
         }
 
-        // Mettre à jour les informations dans la table utilisateur
+        // Création d'un tableau pour suivre les opérations
+        $operations = [];
+
+        // 1. Mettre à jour les informations de base via le modèle utilisateur
         $updateUser = $this->userModel->updateUser(
             $student['Id_Utilisateur'],
             $email,
@@ -200,18 +387,35 @@ class PilotesController extends BaseController {
             $nom,
             $prenom
         );
+        $operations[] = $updateUser ? 'Informations de base mises à jour' : 'Échec de la mise à jour des informations de base';
 
-        // Mettre à jour la promotion de l'étudiant si nécessaire
-        // Code pour mettre à jour la promotion...
+        // 2. Mettre à jour le téléphone via le modèle utilisateur
+        $updatePhone = $this->userModel->updateUserPhone($student['Id_Utilisateur'], $telephone);
+        $operations[] = $updatePhone ? 'Téléphone mis à jour' : 'Échec de la mise à jour du téléphone';
 
-        if ($updateUser) {
-            $this->addFlashMessage('success', 'Étudiant mis à jour avec succès');
-        } else {
-            $this->addFlashMessage('error', 'Erreur lors de la mise à jour de l\'étudiant');
+        // 3. Mettre à jour la promotion via le modèle étudiant
+        if (!empty($promotionId)) {
+            $updatePromotion = $this->studentModel->updateStudentPromotion($etudiantId, $promotionId);
+            $operations[] = $updatePromotion ? 'Promotion mise à jour' : 'Échec de la mise à jour de la promotion';
         }
 
-        header('Location: /pilotes/etudiants/' . $etudiantId);
+        // 4. Mettre à jour les compétences via le modèle étudiant
+        $updateSkills = $this->studentModel->updateStudentSkills($etudiantId, $skills);
+        $operations[] = $updateSkills ? 'Compétences mises à jour' : 'Échec de la mise à jour des compétences';
+
+        // Déterminer si toutes les opérations ont réussi
+        $success = !in_array(false, [$updateUser, $updatePhone, $updatePromotion ?? true, $updateSkills]);
+
+        if ($success) {
+            $this->addFlashMessage('success', 'Étudiant mis à jour avec succès');
+        } else {
+            // Log des opérations pour le débogage
+            error_log('Mises à jour étudiant, résultats: ' . implode(', ', $operations));
+            $this->addFlashMessage('error', 'Erreur lors de la mise à jour de l\'étudiant');
     }
+
+    header('Location: /pilotes/etudiants/' . $etudiantId);
+}
 
     /**
      * Affiche le formulaire de modification du mot de passe d'un étudiant
@@ -236,7 +440,7 @@ class PilotesController extends BaseController {
             return;
         }
 
-        echo $this->twig->render('pilotes/etudiants/password.html.twig', [
+        $this->render('pilotes/etudiants/password.html.twig', [
             'pilotePage' => true,
             'student' => $student
         ]);
@@ -313,7 +517,7 @@ class PilotesController extends BaseController {
             $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
         }
 
-        echo $this->twig->render('pilotes/etudiants/delete.html.twig', [
+        $this->render('pilotes/etudiants/delete.html.twig', [
             'pilotePage' => true,
             'student' => $student,
             'csrf_token' => $_SESSION['csrf_token']
@@ -377,7 +581,7 @@ class PilotesController extends BaseController {
         // Récupérer la wishlist de l'étudiant
         $wishlist = $this->studentModel->getStudentWishlist($etudiantId);
 
-        echo $this->twig->render('pilotes/etudiants/wishlist.html.twig', [
+        $this->render('pilotes/etudiants/wishlist.html.twig', [
             'pilotePage' => true,
             'student' => $student,
             'offers' => $wishlist
@@ -407,7 +611,7 @@ class PilotesController extends BaseController {
         // Récupérer les candidatures de l'étudiant
         $applications = $this->studentModel->getStudentApplications($etudiantId);
 
-        echo $this->twig->render('pilotes/etudiants/offres.html.twig', [
+        $this->render('pilotes/etudiants/offres.html.twig', [
             'pilotePage' => true,
             'student' => $student,
             'offers' => $applications
@@ -421,7 +625,7 @@ class PilotesController extends BaseController {
         // Récupérer les entreprises
         $enterprises = $this->enterpriseModel->getEnterprisesByName();
 
-        echo $this->twig->render('pilotes/entreprises/index.html.twig', [
+        $this->render('pilotes/entreprises/index.html.twig', [
             'pilotePage' => true,
             'enterprises' => $enterprises
         ]);
@@ -444,7 +648,7 @@ class PilotesController extends BaseController {
         // Effectuer la recherche
         $enterprises = $this->pilotModel->searchEnterprises($searchTerm);
 
-        echo $this->twig->render('pilotes/entreprises/index.html.twig', [
+        $this->render('pilotes/entreprises/index.html.twig', [
             'pilotePage' => true,
             'enterprises' => $enterprises,
             'searchTerm' => $searchTerm
@@ -471,7 +675,7 @@ class PilotesController extends BaseController {
             return;
         }
 
-        echo $this->twig->render('pilotes/entreprises/show.html.twig', [
+        $this->render('pilotes/entreprises/show.html.twig', [
             'pilotePage' => true,
             'enterprise' => $enterprise
         ]);
@@ -503,7 +707,7 @@ class PilotesController extends BaseController {
         // Récupérer les offres de l'entreprise
         $offers = $this->pilotModel->getEnterpriseOffers($enterpriseId);
 
-        echo $this->twig->render('pilotes/entreprises/offres.html.twig', [
+        $this->render('pilotes/entreprises/offres.html.twig', [
             'pilotePage' => true,
             'enterprise' => $enterprise,
             'offers' => $offers
@@ -540,7 +744,7 @@ class PilotesController extends BaseController {
             $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
         }
 
-        echo $this->twig->render('pilotes/entreprises/evaluer.html.twig', [
+        $this->render('pilotes/entreprises/evaluer.html.twig', [
             'pilotePage' => true,
             'enterprise' => $enterprise,
             'csrf_token' => $_SESSION['csrf_token']
@@ -595,7 +799,7 @@ class PilotesController extends BaseController {
         }
 
         $this->requirePilote();
-        echo $this->twig->render('pilotes/entreprises/add.html.twig', [
+        $this->render('pilotes/entreprises/add.html.twig', [
             'pilotePage' => true,
             'csrf_token' => $_SESSION['csrf_token'],
         ]);
@@ -671,7 +875,7 @@ class PilotesController extends BaseController {
         }
 
 
-        echo $this->twig->render('pilotes/entreprises/edit.html.twig', [
+        $this->render('pilotes/entreprises/edit.html.twig', [
             'pilotePage' => true,
             'enterprise' => $enterprise,
             'csrf_token' => $_SESSION['csrf_token'],
@@ -761,7 +965,7 @@ class PilotesController extends BaseController {
         }
 
         // Rendre la vue de confirmation
-        echo $this->twig->render('pilotes/entreprises/delete.html.twig', [
+        $this->render('pilotes/entreprises/delete.html.twig', [
             'pilotePage' => true,
             'enterprise' => $enterprise,
             'csrf_token' => $_SESSION['csrf_token']
@@ -807,7 +1011,7 @@ class PilotesController extends BaseController {
         // Récupérer les offres
         $offers = $this->offerModel->getRecentOffers();
 
-        echo $this->twig->render('pilotes/offres/index.html.twig', [
+        $this->render('pilotes/offres/index.html.twig', [
             'pilotePage' => true,
             'offers' => $offers
         ]);
@@ -830,7 +1034,7 @@ class PilotesController extends BaseController {
         // Effectuer la recherche
         $offers = $this->pilotModel->searchOffers($searchTerm);
 
-        echo $this->twig->render('pilotes/offres/index.html.twig', [
+        $this->render('pilotes/offres/index.html.twig', [
             'pilotePage' => true,
             'offers' => $offers,
             'searchTerm' => $searchTerm
@@ -857,7 +1061,7 @@ class PilotesController extends BaseController {
             return;
         }
 
-        echo $this->twig->render('pilotes/offres/show.html.twig', [
+        $this->render('pilotes/offres/show.html.twig', [
             'pilotePage' => true,
             'offer' => $offer
         ]);
@@ -876,7 +1080,7 @@ class PilotesController extends BaseController {
             $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
         }
 
-        echo $this->twig->render('pilotes/offres/add.html.twig', [
+        $this->render('pilotes/offres/add.html.twig', [
             'pilotePage' => true,
             'enterprises' => $enterprises,
             'competences' => $competences,
@@ -953,7 +1157,7 @@ class PilotesController extends BaseController {
             $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
         }
 
-        echo $this->twig->render('pilotes/offres/edit.html.twig', [
+        $this->render('pilotes/offres/edit.html.twig', [
             'pilotePage' => true,
             'offer' => $offer,
             'enterprises' => $enterprises,
@@ -1045,7 +1249,7 @@ class PilotesController extends BaseController {
             $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
         }
 
-        echo $this->twig->render('pilotes/offres/delete.html.twig', [
+        $this->render('pilotes/offres/delete.html.twig', [
             'pilotePage' => true,
             'offer' => $offer,
             'csrf_token' => $_SESSION['csrf_token']
