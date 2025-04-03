@@ -152,9 +152,21 @@ class AdminController extends BaseController {
             return;
         }
 
-        $this->render('admin/pilotes/modifier.html.twig', [
+        // Utiliser les méthodes existantes du pilotModel comme dans ajouterPilote()
+        $campus = $this->pilotModel->getAllCampus();
+        $promotions = $this->pilotModel->getAllPromotions();
+
+        // Générer le token CSRF pour le formulaire
+        if (!isset($_SESSION['csrf_token'])) {
+            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+        }
+
+        $this->render('admin/pilotes/edit.html.twig', [
             'adminPage' => true,
-            'pilot' => $pilot
+            'pilot' => $pilot,
+            'campus' => $campus,
+            'promotions' => $promotions,
+            'csrf_token' => $_SESSION['csrf_token']
         ]);
     }
 
