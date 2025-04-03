@@ -253,4 +253,44 @@ class EntreprisesController extends BaseController {
             exit;
         }
     }
+
+    /**
+     * Affiche les offres associées à une entreprise spécifique
+     *
+     * @param array $params Paramètres de la route (id de l'entreprise)
+     * @return void
+     */
+    public function associateOffers($params) {
+        // Vérifier que l'utilisateur est authentifié
+        $this->requireAuth();
+
+        $enterpriseId = $params['id'] ?? null;
+
+        if (!$enterpriseId) {
+            $this->addFlashMessage('error', 'Entreprise non trouvée');
+            header('Location: /entreprises');
+            exit;
+        }
+
+        // Créer une instance du modèle Enterprise
+        $enterpriseModel = new \App\Models\EnterpriseModel($this->db);
+
+        // Récupérer les détails de l'entreprise
+        $enterprise = $enterpriseModel->getEnterpriseDetails($enterpriseId);
+
+        if (!$enterprise) {
+            $this->addFlashMessage('error', 'Entreprise non trouvée');
+            header('Location: /entreprises');
+            exit;
+        }
+
+        // Récupérer les offres de l'entreprise
+        $offers = $enterpriseModel->getEnterpriseOffers($enterpriseId);
+
+        // Rendre le template avec les données
+        $this->render('entreprises/offres.html.twig', [
+            'enterprise' => $enterprise,
+            'offers' => $offers
+        ]);
+    }
 }
