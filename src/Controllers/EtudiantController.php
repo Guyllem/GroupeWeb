@@ -5,6 +5,8 @@ use App\Models\StudentModel;
 use App\Models\OfferModel;
 use App\Models\FileModel;
 use App\Utils\FileUploadUtil;
+use App\Utils\SecurityUtil;
+use PDO;
 
 class EtudiantController extends BaseController {
     private $studentModel;
@@ -37,9 +39,24 @@ class EtudiantController extends BaseController {
         $student = $this->studentModel->getStudentInfo($studentId);
         $skills = $this->studentModel->getStudentSkills($studentId);
 
+        // Récupération de toutes les compétences disponibles
+        $conn = $this->db->connect();
+        $stmt = $conn->prepare('
+        SELECT c.Id_Competence, c.Nom_Competence
+        FROM Competence c
+        WHERE c.Id_Competence NOT IN (
+            SELECT p.Id_Competence FROM Posseder p WHERE p.Id_Etudiant = :studentId
+        )
+        ORDER BY c.Nom_Competence
+    ');
+        $stmt->bindParam(':studentId', $studentId);
+        $stmt->execute();
+        $available_skills = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
         $this->render('etudiant/mon_profil.html.twig', [
             'student' => $student,
-            'skills' => $skills
+            'skills' => $skills,
+            'available_skills' => $available_skills
         ]);
     }
 
@@ -326,5 +343,63 @@ class EtudiantController extends BaseController {
      */
     public function apply($params) {
         $this->validate_application($params);
+    }
+
+    public function getAllSkills() {
+        $conn = $this->db->connect();
+        $stmt = $conn->prepare('SELECT Id_Competence, Nom_Competence FROM Competence ORDER BY Nom_Competence');
+        $stmt->execute();
+
+        header('Content-Type: application/json');
+        echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
+    }
+
+    public function addSkill() {
+        $data = json_decode(file_get_contents('php://input'), true);
+        $studentId = $data['student_id'] ?? null;
+        $skillId = $data['skill_id'] ?? null;
+
+        if (!$studentId || !$skillId) {
+            http_response_code(400);
+            echo json_encode(['success' => false, 'message' => 'Données invalides']);
+            return;
+        }
+
+        $studentModel = new StudentModel($this->db);
+        $result = $studentModel->updateStudentSkills($studentId, [$skillId]);
+
+        header('Content-Type: application/json');
+        echo json_encode(['success' => $result]);
+    }
+
+    public function removeSkill() {
+        $data = json_decode(file_get_contents('php://input'), true);
+        $studentId = $data['student_id'] ?? null;
+        $skillId = $data['skill_id'] ?? null;
+
+        if (!$studentId || !$skillId) {
+            http_response_code(400);
+            echo json_encode(['success' => false, 'message' => 'Données invalides']);
+            return;
+        }
+
+        // Récupérer les compétences actuelles de l'étudiant, sauf celle à supprimer
+        $conn = $this->db->connect();
+        $stmt = $conn->prepare('
+        SELECT Id_Competence 
+        FROM Posseder 
+        WHERE Id_Etudiant = :studentId AND Id_Competence != :skillId
+    ');
+        $stmt->bindParam(':studentId', $studentId);
+        $stmt->bindParam(':skillId', $skillId);
+        $stmt->execute();
+
+        $remainingSkills = array_column($stmt->fetchAll(PDO::FETCH_ASSOC), 'Id_Competence');
+
+        $studentModel = new StudentModel($this->db);
+        $result = $studentModel->updateStudentSkills($studentId, $remainingSkills);
+
+        header('Content-Type: application/json');
+        echo json_encode(['success' => $result]);
     }
 }
