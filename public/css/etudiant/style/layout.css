@@ -12,7 +12,7 @@
     padding: 20px;
 }
 
-/* Images de fond pour la wishlist et autres pages */
+/* Images pour les fonds de pages */
 .bulle2-1 {
     position: fixed;
     width: 4%;
@@ -48,7 +48,8 @@
     top: 15%;
 }
 
-/* Styles communs */
+
+/* Styles communs (back button) */
 .back-button {
     margin-bottom: 20px;
     margin-left: 5px;

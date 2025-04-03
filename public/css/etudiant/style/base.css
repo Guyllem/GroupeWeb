@@ -44,6 +44,8 @@ main {
     padding: 20px;
 }
 
+/* Footer style */
+
 footer {
     flex-shrink: 0;
     background-color: #3F51B5;
