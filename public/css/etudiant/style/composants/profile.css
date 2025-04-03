@@ -1,0 +1,160 @@
+/* Container du profil */
+.profile-container {
+    min-width: 65%;
+    margin: 2% auto;
+    background-color: white;
+    border-radius: 15px;
+    border-width: 1px;
+    padding: 20px;
+    box-shadow: 0 0px 30px rgba(0, 0, 0, 0.1);
+}
+
+.profile-header {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 30px;
+}
+
+.profile-title {
+    color: #4056b4;
+    text-align: center;
+    font-size: 40px;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+.profile-content {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+}
+
+.profile-info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.user-card {
+    background-color: #4056b4;
+    color: white;
+    border-radius: 10px;
+    padding: 30px 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.username, .lastname {
+    font-size: 30px;
+    margin-bottom: 5px;
+}
+
+.email, .campus {
+    font-size: 20px;
+    margin-top: 5px;
+    word-break: break-all;
+}
+
+/* Section des compétences */
+.skills-section {
+    flex: 2;
+    text-align: center;
+}
+
+.skills-title {
+    color: #757DE8;
+    margin-bottom: 15px;
+    font-size: 22px;
+}
+
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.skill-badge {
+    background-color: #757DE8;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.skill-delete {
+    display: inline-block;
+    margin-left: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    text-align: center;
+    border-radius: 50%;
+    transition: background-color 0.2s;
+}
+
+.skill-delete:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Dropdown pour les compétences */
+.skill-dropdown-container {
+    position: relative;
+    width: 100%;
+}
+
+.skill-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    z-index: 100;
+    margin-top: 5px;
+}
+
+.skill-dropdown.active {
+    display: block;
+}
+
+.skill-dropdown-item {
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-size: 14px;
+    color: #333;
+}
+
+.skill-dropdown-item:hover {
+    background-color: #f4f4f4;
+}
+
+.add-skill-button {
+    background-color: #f4f4f4;
+    color: #333;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    padding: 12px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom: 15px;
+    transition: all 0.2s ease;
+}
+
+.add-skill-button:hover {
+    background-color: #e8e8e8;
+    transform: scale(1.01);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}

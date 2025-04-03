@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StageConnect - Ajouter une offre</title>
-    <link rel="stylesheet" href="{{ asset('css/styles_page_pilote.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/modal.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/pilote/main.css') }}">
 </head>
 <body>
 {% set pilotePage = true %}
@@ -87,7 +86,6 @@
                     {% endfor %}
                 </select>
                 <div class="selected-skills" id="selected-skills">
-                    <!-- Les compétences sélectionnées s'afficheront ici via JavaScript -->
                 </div>
                 <div id="competences-error" class="error-message">{{ errors.competences|default('') }}</div>
             </div>
@@ -114,8 +112,8 @@
 </main>
 
 {% include 'partials/footer.html.twig' %}
-<script src="{{ asset('js/frontend_script.js') }}"></script>
-<script src="{{ asset('js/form_offre.js') }}"></script>
+<script src="{{ asset('js/navigation.js') }}"></script>
+<script src="{{ asset('js/forms/form_offre.js') }}"></script>
 <script src="{{ asset('js/flash-messages.js') }}"></script>
 </body>
 </html>

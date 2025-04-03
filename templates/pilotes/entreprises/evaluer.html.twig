@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StageConnect - Évaluation {{ enterprise.Nom_Entreprise }}</title>
-    <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/modal.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/etudiant/main.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/utils/modal.css') }}">
 </head>
 
 {% set pilotePage = true %}
@@ -67,7 +67,8 @@
 
 {% include 'partials/footer.html.twig' %}
 
-<script src="{{ asset('js/frontend_script.js') }}"></script>
+<script src="{{ asset('js/navigation.js') }}"></script>
+<script src="{{ asset('js/rating.js') }}"></script>
 </body>
 </html>
 

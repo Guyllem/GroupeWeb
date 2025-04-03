@@ -1,0 +1,356 @@
+/* ====== MODALES ET CONTENEURS ====== */
+.rate-modal {
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 12rem);
+}
+
+.rate-container {
+    background-color: white;
+    border-radius: 10px;
+    padding: 2rem;
+    width: 80%;
+    max-width: 600px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Logout modal */
+.logout-modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #e8eaf6;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    width: 80%;
+    max-width: 1000px;
+    max-height: 80%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ====== INFORMATIONS ENTREPRISE ====== */
+.company-info {
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.company-name {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #3F51B5;
+}
+
+.company-sector {
+    color: #666;
+    font-size: 1rem;
+}
+
+/* ====== SYSTÈME DE NOTATION ====== */
+.rating-section {
+    margin: 2rem 0;
+    text-align: center;
+}
+
+.rating-section p {
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+.star-rating {
+    display: inline-flex;
+    flex-direction: row-reverse;
+    font-size: 0;
+    justify-content: center;
+    margin: 1.5rem 0;
+}
+
+.star-rating input {
+    display: none;
+}
+
+.star-rating label {
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    background: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" fill="%23D3D3D3"/></svg>') no-repeat;
+    background-size: 100%;
+    transition: transform 0.2s;
+}
+
+.star-rating label:hover,
+.star-rating label:hover ~ label,
+.star-rating input:checked ~ label {
+    background: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" fill="%233F51B5"/></svg>') no-repeat;
+    background-size: 100%;
+    transform: scale(1.1);
+}
+
+.rating-value {
+    margin-top: 0.5rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #3F51B5;
+}
+
+/* ====== BOUTONS ET CONTRÔLES ====== */
+.buttons-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2rem;
+}
+
+.back-btn, .validate-btn {
+    padding: 0.75rem 2rem;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.back-btn {
+    background-color: #f1f1f1;
+    color: #333;
+    border: 1px solid #ddd;
+}
+
+.back-btn:hover {
+    background-color: #e4e4e4;
+}
+
+.validate-btn {
+    background-color: #3F51B5;
+    color: white;
+    border: none;
+}
+
+.validate-btn:hover:not([disabled]) {
+    background-color: #303f9f;
+    transform: scale(1.05);
+}
+
+.validate-btn[disabled] {
+    background-color: #b3b3b3;
+    cursor: not-allowed;
+}
+
+.logout-buttons {
+    display: flex;
+    margin: 30px 0;
+    width: 75%;
+    font-size: 1.5rem;
+    gap: 30px;
+}
+
+.btn-rester, .btn-deconnecter {
+    padding: 12px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: 500;
+    flex: 1;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.btn-rester {
+    background-color: #3F51B5;
+    color: white;
+}
+
+.btn-deconnecter {
+    background-color: #ff5252;
+    color: white;
+}
+
+.btn-rester:hover, .btn-deconnecter:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.submit-btn {
+    display: inline-block;
+    margin-top: 2%;
+    padding: 0.4rem 9.63rem;
+    background-color: #3F51B5;
+    color: white;
+    text-decoration: none;
+    border-radius: 1.5rem;
+    border: 0.063rem solid #000;
+    box-shadow: 0.313rem 0.313rem 0.313rem rgba(0, 0, 0, 0.2);
+    font-size: 1.25em;
+    text-shadow: 0.313rem 0.313rem 0.313rem rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.submit-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0.5rem 0.5rem 0.5rem rgba(0, 0, 0, 0.3);
+}
+
+/* ====== ÉLÉMENTS D'INTERFACE ====== */
+.logout-modal h2 {
+    margin-top: 0;
+    margin-bottom: 30px;
+    font-size: 2rem;
+    color: #000;
+}
+
+.checkbox-form {
+    accent-color: #3F51B5;
+}
+
+/* ====== ÉLÉMENTS DE FORMULAIRE ====== */
+.email-form input,
+.password-form input {
+    margin-bottom: 1rem;
+    width: 30%;
+    padding: 12px;
+    border: 2px solid #3F51B5;
+    border-radius: 8px;
+    font-size: 1rem;
+    color: #2d3748;
+    background-color: #ffffff;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.email-form input:focus,
+.password-form input:focus {
+    border-color: #667eea;
+    outline: none;
+    box-shadow: 0 0 0 1px #3F51B5;
+}
+
+/* ====== ÉLÉMENTS DÉCORATIFS ====== */
+.arc-en-ciel, .arc-en-ciel2,
+.bulle1, .bulle2, .bulle3,
+.bulle2-1, .bulle2-2, .bulle3-1,
+.bulle3-2, .bulle3-3 {
+    position: absolute;
+    margin: 0;
+    padding: 0;
+}
+
+.arc-en-ciel {
+    right: -0.1%;
+    top: 0;
+    width: 18%;
+    height: auto;
+}
+
+.arc-en-ciel2 {
+    width: 10%;
+    height: auto;
+    left: 0;
+    top: 55%;
+}
+
+.bulle1 {
+    width: 13%;
+    height: auto;
+    top: 0;
+    left: 20%;
+}
+
+.bulle2 {
+    width: 8%;
+    right: 87%;
+    top: 22%;
+}
+
+.bulle3 {
+    width: 10%;
+    height: auto;
+    right: 10%;
+    top: 60%;
+}
+
+.bulle2-1 {
+    width: 4%;
+    top: 15%;
+    right: 20%;
+}
+
+.bulle2-2 {
+    width: 10%;
+    top: 55%;
+    left: 8%;
+}
+
+.bulle3-1 {
+    width: 8%;
+    right: 6%;
+    top: 75%;
+}
+
+.bulle3-2 {
+    width: 4%;
+    left: 18%;
+    top: 68%;
+}
+
+.bulle3-3 {
+    width: 8%;
+    right: 12%;
+    top: 15%;
+}
+
+/* ====== RESPONSIVE DESIGN ====== */
+@media (max-width: 768px) {
+    .submit-btn {
+        width: 80%;
+        padding: 0.75rem;
+        font-size: 1rem;
+    }
+
+    .btn-connexion {
+        padding: 0.75rem 4rem;
+        font-size: 1em;
+    }
+
+    .email-form input,
+    .password-form input {
+        width: 80%;
+    }
+
+    .logout-modal {
+        width: 90%;
+        padding: 20px;
+    }
+
+    .logout-buttons {
+        flex-direction: column;
+    }
+
+    .btn-rester, .btn-deconnecter {
+        margin-bottom: 10px;
+    }
+
+    .rate-container {
+        width: 90%;
+        padding: 1.5rem;
+    }
+
+    .star-rating label {
+        width: 32px;
+        height: 32px;
+    }
+
+    .buttons-container {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .back-btn, .validate-btn {
+        width: 100%;
+    }
+}

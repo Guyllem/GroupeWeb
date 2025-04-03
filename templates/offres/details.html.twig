@@ -4,9 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StageConnect - {{ offer.Titre_Offre }}</title>
-    <link rel="stylesheet" href="{{ asset('css/styles_page_pilote.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/styles_page_etudiant.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/flash-messages.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/pilote/style/composants/cards.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/etudiant/main.css') }}">
 </head>
 <body>
 <main>
@@ -25,7 +24,7 @@
                     </div>
                     <div class="tags-entreprise">
                         {% for skill in offer.skills %}
-                            <div class="tag-entreprise">{{ skill }}</div>
+                            <div class="tag-entreprise">{{ skill.Nom_Competence }}</div>
                         {% endfor %}
                     </div>
                 </div>
@@ -102,6 +101,6 @@
     </div>
 </main>
 {% include 'partials/footer.html.twig' %}
-<script src="{{ asset('js/frontend_script.js') }}"></script>
+<script src="{{ asset('js/navigation.js') }}"></script>
 </body>
 </html>

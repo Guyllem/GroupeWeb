@@ -1,0 +1,156 @@
+/* Responsivité pour tablettes et mobiles */
+@media (max-width: 768px) {
+    .profile-container {
+        max-width: 90%;
+    }
+
+    .profile-content {
+        flex-direction: column;
+    }
+
+    .nav-item {
+        display: none;
+    }
+
+    .email {
+        font-size: 16px;
+    }
+
+    .logo {
+        font-size: 1.5rem;
+        display: inline-block;
+        position: absolute;
+    }
+
+    .filters {
+        display: none;
+    }
+
+    .slide-filter-container {
+        display: flex;
+    }
+
+    .search-bar {
+        width: 100%;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .search-container {
+        width: 100%;
+        margin: 10px 0;
+    }
+
+    .search-input {
+        width: 100%;
+    }
+
+    .search-input:focus {
+        width: 100%;
+    }
+
+    .switch-button {
+        width: 80%;
+        margin-bottom: 10px;
+        justify-content: center;
+    }
+
+    .back-design {
+        display: none;
+    }
+
+    .main-title-wishlist {
+        margin-top: 100px;
+        font-size: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    .sub-title-wishlist {
+        font-size: 18px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    .burger-menu {
+        display: block;
+    }
+
+    .slide-menu {
+        display: flex;
+    }
+
+    .filter-menu {
+        display: block;
+    }
+
+    .slide-filter {
+        display: flex;
+    }
+
+    .card-header {
+        flex-direction: column;
+    }
+
+    .card {
+        margin-top: 10px;
+        margin-bottom: 30px;
+        width: 100%;
+    }
+
+    .tags {
+        margin-top: 15px;
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .skills-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .skill-dropdown {
+        top: auto;
+        bottom: 100%;
+        margin-top: 0;
+        margin-bottom: 5px;
+        max-height: 180px;
+        border-radius: 4px 4px 0 0;
+    }
+
+    .file-upload-label {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .file-icon {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+
+    .file-info {
+        text-align: center;
+    }
+
+    .name-and-company {
+        text-align: center;
+    }
+
+    .publish-date {
+        flex-direction: row;
+        gap: 5px;
+    }
+}
+
+/* Ajustements spécifiques pour petits mobiles */
+@media (max-width: 480px) {
+    .slide-filter {
+        width: 75%;
+    }
+
+    .skills-grid {
+        grid-template-columns: 1fr;
+    }
+}
