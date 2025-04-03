@@ -460,7 +460,7 @@ class UserModel extends Model {
         $expiry = time() + $duration;
 
         // Mettre à jour le token en base de données
-        $this->userModel->storePersistentToken($userId, $tokenHash, $expiry);
+        $this->storePersistentToken($userId, $tokenHash, $expiry);
 
         // Mettre à jour le cookie avec le nouveau token
         setcookie(

@@ -263,7 +263,7 @@ class AuthController extends BaseController {
                 $_SESSION['last_activity'] = time();
 
                 // Régénérer le token pour augmenter la sécurité (rotation des tokens)
-                $this->refreshPersistentToken($user['Id_Utilisateur']);
+                $this->userModel->refreshPersistentToken($user['Id_Utilisateur']);
             }
         }
     }
