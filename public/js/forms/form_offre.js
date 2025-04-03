@@ -18,6 +18,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const competencesInput = document.getElementById('competences');
     const entrepriseInput = document.getElementById('id_entreprise');
     const selectedSkillsContainer = document.getElementById('selected-skills');
+    const localisationInput = document.getElementById('localisation');
 
     // Messages d'erreur (avec vérifications de null)
     const titreError = document.getElementById('titre-error');
@@ -29,6 +30,8 @@ document.addEventListener("DOMContentLoaded", function() {
     const dureeMaxError = document.getElementById('duree_max-error');
     const competencesError = document.getElementById('competences-error');
     const entrepriseError = document.getElementById('id_entreprise-error');
+    const localisationError = document.getElementById('localisation-error');
+
 
     // Initialisation du compteur de caractères pour la description
     if (descriptionField && charCount) {
@@ -255,6 +258,26 @@ document.addEventListener("DOMContentLoaded", function() {
         return true;
     }
 
+    // Validation de la localisation (champ texte obligatoire)
+    function validateLocalisation() {
+        if (!localisationInput || !localisationError) return true;
+
+        const value = localisationInput.value.trim();
+
+        if (!value) {
+            localisationError.textContent = 'La localisation est obligatoire';
+            return false;
+        }
+
+        if (value.length < 3) {
+            localisationError.textContent = 'La localisation doit contenir au moins 3 caractères';
+            return false;
+        }
+
+        localisationError.textContent = '';
+        return true;
+    }
+
     // Configuration du multi-select des compétences avec tags visuels
     function setupCompetencesSelect() {
         if (!competencesInput || !selectedSkillsContainer) return;
@@ -344,7 +367,9 @@ document.addEventListener("DOMContentLoaded", function() {
             validateDureeMin() &&
             validateDureeMax() &&
             validateCompetences() &&
-            validateEntreprise();
+            validateEntreprise() &&
+            validateLocalisation(); // Ajout de cette ligne
+
 
         // Activer/désactiver le bouton de soumission
         if (submitBtn) {
@@ -428,6 +453,15 @@ document.addEventListener("DOMContentLoaded", function() {
                 validateEntreprise();
                 checkFormValidity();
             });
+        }
+
+        if (localisationInput) {
+            localisationInput.addEventListener('input', function() {
+                validateLocalisation();
+                checkFormValidity();
+            });
+
+            localisationInput.addEventListener('blur', validateLocalisation);
         }
 
         // Pour les compétences, cela est géré dans setupCompetencesSelect()
