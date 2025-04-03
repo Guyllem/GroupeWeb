@@ -71,10 +71,12 @@ class App {
             ->post('/pilotes/etudiants/:id/modifier', 'Pilotes', 'mettreAJourEtudiant')
             ->get('/pilotes/etudiants/:id/supprimer', 'Pilotes', 'etudiantSupprimer') // Ajout: supprimer étudiant
             ->post('/pilotes/etudiants/:id/supprimer', 'Pilotes', 'etudiantSupprimerValider')
+            ->get('/pilotes/etudiants/:id/reset', 'Pilotes', 'afficherReset')
+            ->post('/pilotes/etudiants/:id/reset', 'Pilotes', 'resetPassword')
             ->get('/pilotes/etudiants/:id/wishlist', 'Pilotes', 'etudiantWishlist')
             ->get('/pilotes/etudiants/:id/offres', 'Pilotes', 'etudiantOffres')
-            ->get('/pilotes/etudiants/:id/password', 'Pilotes', 'etudiantPassword') // Ajout: page modif mot de passe
-            ->post('/pilotes/etudiants/:id/password', 'Pilotes', 'etudiantSavePassword') // Ajout: enregistrer mot de passe
+            ->get('/pilotes/etudiants/:id/password', 'Pilotes', 'afficherReset') // Ajout: page modif mot de passe
+            ->post('/pilotes/etudiants/:id/password', 'Pilotes', 'resetPassword') // Ajout: enregistrer mot de passe
 
             ->get('/pilotes/entreprises', 'Pilotes', 'entreprises')
             ->post('/pilotes/entreprises', 'Pilotes', 'rechercheEntreprise') // Ajout: recherche d'entreprise
@@ -109,6 +111,8 @@ class App {
             ->post('/admin/pilotes/:id/modifier', 'Admin', 'mettreAJourPilote')
             ->get('/admin/pilotes/:id/supprimer', 'Admin', 'afficherSupprimerPilote')
             ->post('/admin/pilotes/:id/supprimer', 'Admin', 'supprimerPilote')
+            ->get('/admin/pilotes/:id/reset', 'Admin', 'afficherReset')
+            ->post('/admin/pilotes/:id/reset', 'Admin', 'resetPassword')
 
 
 
