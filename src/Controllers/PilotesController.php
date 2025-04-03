@@ -559,6 +559,114 @@ class PilotesController extends BaseController {
         header('Location: /pilotes/etudiants');
     }
 
+    /**
+     * Affiche le formulaire de réinitialisation de mot de passe pour un étudiant
+     *
+     * @param array $params Paramètres de la route contenant l'ID de l'étudiant
+     * @return void
+     */
+    public function afficherReset($params) {
+        // Vérification des permissions
+        $this->requirePilote();
+
+        // Récupération et validation de l'ID étudiant
+        $etudiantId = $params['id'] ?? null;
+        if (!$etudiantId) {
+            $this->addFlashMessage('error', 'Étudiant non trouvé');
+            header('Location: /pilotes/etudiants');
+            return;
+        }
+
+        // Récupération des données de l'étudiant
+        $student = $this->studentModel->getStudentInfo($etudiantId);
+        if (!$student) {
+            $this->addFlashMessage('error', 'Données de l\'étudiant introuvables');
+            header('Location: /pilotes/etudiants');
+            return;
+        }
+
+        // Génération du token CSRF
+        if (!isset($_SESSION['csrf_token'])) {
+            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+        }
+
+        // Rendu du template avec les données nécessaires
+        $this->render('pilotes/etudiants/reset.html.twig', [
+            'pilotePage' => true,
+            'student' => $student,
+            'csrf_token' => $_SESSION['csrf_token']
+        ]);
+    }
+
+    /**
+     * Traite la soumission du formulaire de réinitialisation de mot de passe
+     *
+     * @param array $params Paramètres de la route contenant l'ID de l'étudiant
+     * @return void
+     */
+    public function resetPassword($params) {
+        // Vérification des permissions
+        $this->requirePilote();
+
+        // Récupération et validation de l'ID étudiant
+        $etudiantId = $params['id'] ?? null;
+        if (!$etudiantId) {
+            $this->addFlashMessage('error', 'Étudiant non trouvé');
+            header('Location: /pilotes/etudiants');
+            return;
+        }
+
+        // Vérification du token CSRF
+        if (!isset($_POST['csrf_token']) || !isset($_SESSION['csrf_token']) ||
+            $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+            $this->addFlashMessage('error', 'Session expirée ou requête invalide. Veuillez réessayer.');
+            header('Location: /pilotes/etudiants/' . $etudiantId . '/reset');
+            return;
+        }
+
+        // Récupération et validation des données du formulaire
+        $password = $_POST['password'] ?? '';
+        $confirmPassword = $_POST['confirm_password'] ?? '';
+
+        // Validation des entrées
+        if (empty($password)) {
+            $this->addFlashMessage('error', 'Le mot de passe ne peut pas être vide');
+            header('Location: /pilotes/etudiants/' . $etudiantId . '/reset');
+            return;
+        }
+
+        if ($password !== $confirmPassword) {
+            $this->addFlashMessage('error', 'Les mots de passe ne correspondent pas');
+            header('Location: /pilotes/etudiants/' . $etudiantId . '/reset');
+            return;
+        }
+
+        if (strlen($password) < 8) {
+            $this->addFlashMessage('error', 'Le mot de passe doit contenir au moins 8 caractères');
+            header('Location: /pilotes/etudiants/' . $etudiantId . '/reset');
+            return;
+        }
+
+        // Récupération des informations de l'étudiant
+        $student = $this->studentModel->getStudentInfo($etudiantId);
+        if (!$student) {
+            $this->addFlashMessage('error', 'Étudiant introuvable');
+            header('Location: /pilotes/etudiants');
+            return;
+        }
+
+        // Mise à jour du mot de passe
+        $success = $this->pilotModel->updateStudentPassword($student['Id_Utilisateur'], $password);
+
+        if ($success) {
+            $this->addFlashMessage('success', 'Le mot de passe a été réinitialisé avec succès');
+            header('Location: /pilotes/etudiants/' . $etudiantId);
+        } else {
+            $this->addFlashMessage('error', 'Une erreur s\'est produite lors de la réinitialisation du mot de passe');
+            header('Location: /pilotes/etudiants/' . $etudiantId . '/reset');
+        }
+    }
+
     public function etudiantWishlist($params) {
         $this->requirePilote();
 
