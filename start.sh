@@ -1,4 +1,4 @@
 composer install
 composer update
-php -S localhost:8080 -t public
+php -S 0.0.0.0:8080 -t public
 sleep 5
