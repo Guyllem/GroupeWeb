@@ -4,13 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StageConnect - Détails Offre</title>
-    <link rel="stylesheet" href="{{ asset('css/pilote/main.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/styles_page_pilote.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/flash-messages.css') }}">
 </head>
 <body>
 {% set pilotePage = true %}
 {% include 'partials/navbar-pilote.html.twig' %}
-
-{% include 'partials/flash_messages.html.twig' %}
 
 <main class="content-principal">
     <div class="card-entreprise">
@@ -79,7 +78,7 @@
 </main>
 
 {% include 'partials/footer.html.twig' %}
-<script src="{{ asset('js/navigation.js') }}"></script>
+<script src="{{ asset('js/frontend_script.js') }}"></script>
 <script src="{{ asset('js/flash-messages.js') }}"></script>
 </body>
 </html>

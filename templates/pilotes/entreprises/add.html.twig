@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StageConnect - Ajouter une entreprise</title>
-    <link rel="stylesheet" href="{{ asset('css/pilote/main.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/modal.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/styles_page_pilote.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/flash-messages.css') }}">
 </head>
 <body>
 {% set pilotePage = true %}
 {% include 'partials/navbar-pilote.html.twig' %}
-
-{% include 'partials/flash_messages.html.twig' %}
 
 <main>
     <div class="form-container">
@@ -70,12 +70,6 @@
             </div>
 
             <div class="form-group">
-                <label for="adresse" class="form-label">Adresse</label>
-                <input type="text" id="adresse" name="adresse" class="form-input" placeholder="Ex: 6 rue Bois du Chêne le Loup">
-                <div id="adresse-error" class="form-error"></div>
-            </div>
-
-            <div class="form-group">
                 <label for="secteurs" class="form-label">Secteurs d'activité</label>
                 <input type="text" id="secteurs" name="secteurs" class="form-input" placeholder="Ex: Informatique, BTP, Services (séparés par des virgules)">
                 <div id="secteurs-error" class="form-error"></div>
@@ -100,7 +94,7 @@
 </main>
 
 {% include 'partials/footer.html.twig' %}
-<script src="{{ asset('js/navigation.js') }}"></script>
-<script src="{{ asset('js/forms/form_entreprise.js') }}"></script>
+<script src="{{ asset('js/frontend_script.js') }}"></script>
+<script src="{{ asset('js/form_entreprise.js') }}"></script>
 </body>
 </html>

@@ -8,6 +8,7 @@ use App\Models\StudentModel;
 use App\Models\EnterpriseModel;
 use App\Models\OfferModel;
 use App\Models\UserModel;
+use App\Utils\SecurityUtil;
 
 class PilotesController extends BaseController {
     private $pilotModel;
@@ -805,28 +806,68 @@ class PilotesController extends BaseController {
         ]);
     }
 
+    /**
+     * Traite le formulaire d'ajout d'entreprise
+     */
     public function enregistrerEntreprise() {
         $this->requirePilote();
 
-        // Récupérer les données du formulaire
-        $nom = $_POST['nom'] ?? '';
-        $description = $_POST['description'] ?? '';
-        $email = $_POST['email'] ?? '';
-        $telephone = $_POST['telephone'] ?? '';
-        $effectif = (int)($_POST['effectif'] ?? 0);
-        $ville = $_POST['ville'] ?? '';
-        $codePostal = (int)($_POST['code_postal'] ?? 0);
-        $adresse = $_POST['adresse'] ?? '';
-        $secteurs = $_POST['secteurs'] ?? [];
-
-        // Validation des données
-        if (empty($nom) || empty($email) || empty($ville) || empty($codePostal)) {
-            $this->addFlashMessage('error', 'Veuillez remplir tous les champs obligatoires');
+        // Vérification CSRF
+        if (!isset($_POST['csrf_token']) || !isset($_SESSION['csrf_token']) ||
+            $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+            $this->addFlashMessage('error', 'Erreur de sécurité. Veuillez réessayer.');
             header('Location: /pilotes/entreprises/ajouter');
             return;
         }
 
-        // Créer l'entreprise
+        // Récupérer et nettoyer les données du formulaire
+        $nom = SecurityUtil::sanitizeInput($_POST['nom'] ?? '');
+        $description = SecurityUtil::sanitizeInput($_POST['description'] ?? '');
+        $email = SecurityUtil::sanitizeInput($_POST['email'] ?? '');
+        $telephone = SecurityUtil::sanitizeInput($_POST['telephone'] ?? '');
+        $effectif = (int)($_POST['effectif'] ?? 0);
+        $ville = SecurityUtil::sanitizeInput($_POST['ville'] ?? '');
+        $codePostal = (int)($_POST['code_postal'] ?? 0);
+        $adresse = SecurityUtil::sanitizeInput($_POST['adresse'] ?? '');
+        $secteursCsv = SecurityUtil::sanitizeInput($_POST['secteurs'] ?? '');
+
+        // Validation des données
+        $errors = [];
+        if (empty($nom)) {
+            $errors['nom'] = 'Le nom de l\'entreprise est obligatoire';
+        }
+        if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $errors['email'] = 'L\'adresse email est invalide ou manquante';
+        }
+        if (empty($ville)) {
+            $errors['ville'] = 'La ville est obligatoire';
+        }
+        if (empty($codePostal) || $codePostal <= 0) {
+            $errors['code_postal'] = 'Le code postal est obligatoire et doit être un nombre positif';
+        }
+
+        // S'il y a des erreurs, retourner au formulaire avec les erreurs
+        if (!empty($errors)) {
+            $this->addFlashMessage('error', 'Veuillez corriger les erreurs dans le formulaire');
+
+            // Stockage temporaire des données saisies pour repopulation du formulaire
+            $_SESSION['form_data'] = [
+                'nom' => $nom,
+                'description' => $description,
+                'email' => $email,
+                'telephone' => $telephone,
+                'effectif' => $effectif,
+                'ville' => $ville,
+                'code_postal' => $codePostal,
+                'adresse' => $adresse,
+                'secteurs' => $secteursCsv
+            ];
+
+            header('Location: /pilotes/entreprises/ajouter');
+            return;
+        }
+
+        // Préparer les données pour la création de l'entreprise
         $enterpriseData = [
             'nom' => $nom,
             'description' => $description,
@@ -838,13 +879,14 @@ class PilotesController extends BaseController {
             'adresse' => $adresse
         ];
 
-        $enterpriseId = $this->enterpriseModel->createEnterprise($enterpriseData, $secteurs);
+        // Appel à la nouvelle méthode du modèle avec la chaîne CSV des secteurs
+        $enterpriseId = $this->enterpriseModel->createEnterprise($enterpriseData, SecurityUtil::normalizeSectors($secteursCsv));
 
         if ($enterpriseId) {
             $this->addFlashMessage('success', 'Entreprise ajoutée avec succès');
             header('Location: /pilotes/entreprises/' . $enterpriseId);
         } else {
-            $this->addFlashMessage('error', 'Erreur lors de l\'ajout de l\'entreprise');
+            $this->addFlashMessage('error', 'Erreur lors de l\'ajout de l\'entreprise. Veuillez réessayer.');
             header('Location: /pilotes/entreprises/ajouter');
         }
     }
@@ -882,6 +924,12 @@ class PilotesController extends BaseController {
         ]);
     }
 
+    /**
+     * Traite le formulaire de modification d'une entreprise
+     *
+     * @param array $params Paramètres de la route
+     * @return void
+     */
     public function mettreAJourEntreprise($params) {
         $this->requirePilote();
 
@@ -893,25 +941,72 @@ class PilotesController extends BaseController {
             return;
         }
 
-        // Récupérer les données du formulaire
-        $nom = $_POST['nom'] ?? '';
-        $description = $_POST['description'] ?? '';
-        $email = $_POST['email'] ?? '';
-        $telephone = $_POST['telephone'] ?? '';
-        $effectif = (int)($_POST['effectif'] ?? 0);
-        $ville = $_POST['ville'] ?? '';
-        $codePostal = (int)($_POST['code_postal'] ?? 0);
-        $adresse = $_POST['adresse'] ?? '';
-        $secteurs = $_POST['secteurs'] ?? [];
-
-        // Validation des données
-        if (empty($nom) || empty($email) || empty($ville) || empty($codePostal)) {
-            $this->addFlashMessage('error', 'Veuillez remplir tous les champs obligatoires');
+        // Vérification du token CSRF
+        if (!isset($_POST['csrf_token']) || !isset($_SESSION['csrf_token']) ||
+            $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+            $this->addFlashMessage('error', 'Erreur de sécurité. Veuillez réessayer.');
             header('Location: /pilotes/entreprises/' . $enterpriseId . '/modifier');
             return;
         }
 
-        // Mettre à jour l'entreprise
+        // Récupération et nettoyage des données du formulaire
+        $nom = SecurityUtil::sanitizeInput($_POST['nom'] ?? '');
+        $description = SecurityUtil::sanitizeInput($_POST['description'] ?? '');
+        $email = SecurityUtil::sanitizeInput($_POST['email'] ?? '');
+        $telephone = SecurityUtil::sanitizeInput($_POST['telephone'] ?? '');
+        $effectif = (int)($_POST['effectif'] ?? 0);
+        $ville = SecurityUtil::sanitizeInput($_POST['ville'] ?? '');
+        $codePostal = (int)($_POST['code_postal'] ?? 0);
+        $adresse = SecurityUtil::sanitizeInput($_POST['adresse'] ?? '');
+        $secteursCsv = SecurityUtil::sanitizeInput($_POST['secteurs'] ?? '');
+
+        // Validation des données - approche directe
+        $errors = [];
+
+        // Validation du nom
+        if (empty(trim($nom))) {
+            $errors['nom'] = 'Le nom de l\'entreprise est obligatoire';
+        }
+
+        // Validation de l'email
+        if (empty(trim($email)) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $errors['email'] = 'L\'adresse email est invalide ou manquante';
+        }
+
+        // Validation de la ville
+        if (empty(trim($ville))) {
+            $errors['ville'] = 'La ville est obligatoire';
+        }
+
+        // Validation du code postal
+        if (empty($codePostal) || $codePostal <= 0) {
+            $errors['code_postal'] = 'Le code postal est obligatoire et doit être un nombre positif';
+        }
+
+        // Gestion des erreurs de validation
+        if (!empty($errors)) {
+            foreach ($errors as $error) {
+                $this->addFlashMessage('error', $error);
+            }
+
+            // Stockage temporaire des données pour repopulation du formulaire
+            $_SESSION['form_data'] = [
+                'nom' => $nom,
+                'description' => $description,
+                'email' => $email,
+                'telephone' => $telephone,
+                'effectif' => $effectif,
+                'ville' => $ville,
+                'code_postal' => $codePostal,
+                'adresse' => $adresse,
+                'secteurs' => $secteursCsv
+            ];
+
+            header('Location: /pilotes/entreprises/' . $enterpriseId . '/modifier');
+            return;
+        }
+
+        // Préparation des données pour la mise à jour
         $enterpriseData = [
             'nom' => $nom,
             'description' => $description,
@@ -923,8 +1018,10 @@ class PilotesController extends BaseController {
             'adresse' => $adresse
         ];
 
-        $success = $this->enterpriseModel->updateEnterprise($enterpriseId, $enterpriseData, $secteurs);
+        // Appel à la méthode du modèle
+        $success = $this->enterpriseModel->updateEnterprise($enterpriseId, $enterpriseData, $secteursCsv);
 
+        // Gestion du résultat et redirection appropriée
         if ($success) {
             $this->addFlashMessage('success', 'Entreprise mise à jour avec succès');
             header('Location: /pilotes/entreprises/' . $enterpriseId);
@@ -1277,7 +1374,7 @@ class PilotesController extends BaseController {
         }
 
         // Supprimer l'offre
-        $success = $this->offerModel->deleteOffer($offerId);
+        $success = $this->offerModel->delete($offerId);
 
         if ($success) {
             $this->addFlashMessage('success', 'Offre supprimée avec succès');

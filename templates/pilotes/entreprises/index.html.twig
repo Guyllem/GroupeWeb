@@ -4,14 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StageConnect - Gestion des Entreprises</title>
-    <link rel="stylesheet" href="{{ asset('css/pilote/main.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/styles_page_pilote.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/flash-messages.css') }}">
 </head>
 <body>
 {% set responsiveFilter = true %}
 {% set pilotePage = true %}
 {% include 'partials/navbar-pilote.html.twig' %}
-
-{% include 'partials/flash_messages.html.twig' %}
 
 <div class="slide-filter" id="slide-filter">
     <div class="slide-filter-content">
@@ -116,7 +115,6 @@
 </main>
 
 {% include 'partials/footer.html.twig' %}
-<script src="{{ asset('js/navigation.js') }}"></script>
-<script src="{{ asset('js/flash-messages.js') }}"></script>
+<script src="{{ asset('js/frontend_script.js') }}"></script>
 </body>
 </html>

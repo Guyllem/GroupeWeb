@@ -102,4 +102,36 @@ class SecurityUtil {
     public static function sanitizeInput($input) {
         return htmlspecialchars(strip_tags(trim($input)), ENT_QUOTES, 'UTF-8');
     }
+
+    /**
+     * Normalise et valide une chaîne CSV de secteurs
+     *
+     * @param string $secteursCsv Chaîne CSV de secteurs
+     * @return string Chaîne CSV normalisée
+     */
+    public static function normalizeSectors($secteursCsv) {
+        // Découper la chaîne en tableau
+        $sectors = array_map('trim', explode(',', $secteursCsv));
+
+        // Filtrer les valeurs vides
+        $sectors = array_filter($sectors, function($value) {
+            return !empty($value);
+        });
+
+        // Normaliser la casse (première lettre en majuscule, reste en minuscule)
+        $sectors = array_map(function($value) {
+            return ucfirst(strtolower($value));
+        }, $sectors);
+
+        // Supprimer les doublons
+        $sectors = array_unique($sectors);
+
+        // Limiter la longueur des secteurs (base de données)
+        $sectors = array_map(function($value) {
+            return substr($value, 0, 50); // Limite à 50 caractères
+        }, $sectors);
+
+        // Reconstruire la chaîne CSV
+        return implode(', ', $sectors);
+    }
 }
