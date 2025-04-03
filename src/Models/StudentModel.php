@@ -22,6 +22,7 @@ class StudentModel extends Model {
                 u.Nom_Utilisateur, 
                 u.Prenom_Utilisateur, 
                 u.Email_Utilisateur, 
+                u.Telephone_Utilisateur,
                 p.Nom_Promotion,
                 p.Id_Promotion,
                 c.Nom_Campus,
@@ -337,5 +338,212 @@ class StudentModel extends Model {
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
         return $result ? $result['Id_Etudiant'] : null;
+    }
+
+    /**
+     * Récupère les informations académiques complètes d'un étudiant
+     *
+     * @param int $studentId ID de l'étudiant
+     * @return array Données académiques incluant promotion et campus actuels
+     */
+    public function getStudentAcademicInfo($studentId) {
+        $conn = $this->db->connect();
+
+        $query = "
+        SELECT 
+            s.Id_Etudiant,
+            s.Id_Utilisateur,
+            u.Nom_Utilisateur,
+            u.Prenom_Utilisateur,
+            u.Email_Utilisateur,
+            u.Telephone_Utilisateur,
+            a.Id_Promotion,
+            a.Date_Debut_Appartenir,
+            a.Date_Fin_Appartenir,
+            p.Nom_Promotion,
+            p.Specialite_Promotion,
+            p.Niveau_Promotion,
+            p.Id_Campus,
+            c.Nom_Campus
+        FROM Etudiant s
+        JOIN Utilisateur u ON s.Id_Utilisateur = u.Id_Utilisateur
+        LEFT JOIN Appartenir a ON s.Id_Etudiant = a.Id_Etudiant
+        LEFT JOIN Promotion p ON a.Id_Promotion = p.Id_Promotion
+        LEFT JOIN Campus c ON p.Id_Campus = c.Id_Campus
+        WHERE s.Id_Etudiant = :studentId
+        ORDER BY a.Date_Debut_Appartenir DESC
+        LIMIT 1
+    ";
+
+        $stmt = $conn->prepare($query);
+        $stmt->bindParam(':studentId', $studentId, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $studentInfo = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$studentInfo) {
+            // Récupération des informations de base si aucune appartenance n'est trouvée
+            $query = "
+            SELECT 
+                s.Id_Etudiant,
+                s.Id_Utilisateur,
+                u.Nom_Utilisateur,
+                u.Prenom_Utilisateur,
+                u.Email_Utilisateur
+            FROM Etudiant s
+            JOIN Utilisateur u ON s.Id_Utilisateur = u.Id_Utilisateur
+            WHERE s.Id_Etudiant = :studentId
+        ";
+
+            $stmt = $conn->prepare($query);
+            $stmt->bindParam(':studentId', $studentId, PDO::PARAM_INT);
+            $stmt->execute();
+
+            $studentInfo = $stmt->fetch(PDO::FETCH_ASSOC);
+        }
+
+        // Ajouter les compétences au résultat
+        if ($studentInfo) {
+            $studentInfo['skills'] = $this->getStudentSkills($studentId);
+        }
+
+        return $studentInfo;
+    }
+
+    /**
+     * Met à jour les compétences d'un étudiant
+     *
+     * @param int $studentId ID de l'étudiant
+     * @param array $skillIds Tableau d'IDs de compétences
+     * @return bool Succès de l'opération
+     */
+    public function updateStudentSkills($studentId, array $skillIds) {
+        try {
+            $conn = $this->db->connect();
+            $conn->beginTransaction();
+
+            // 1. Supprimer toutes les compétences actuelles
+            $stmt = $conn->prepare('
+            DELETE FROM Posseder 
+            WHERE Id_Etudiant = :studentId
+        ');
+            $stmt->bindParam(':studentId', $studentId);
+            $stmt->execute();
+
+            // 2. Ajouter les nouvelles compétences
+            if (!empty($skillIds)) {
+                foreach ($skillIds as $skillId) {
+                    if (!empty($skillId)) {
+                        $stmt = $conn->prepare('
+                        INSERT INTO Posseder (
+                            Id_Etudiant, 
+                            Id_Competence
+                        ) VALUES (
+                            :studentId, 
+                            :skillId
+                        )
+                    ');
+                        $stmt->bindParam(':studentId', $studentId);
+                        $stmt->bindParam(':skillId', $skillId);
+                        $stmt->execute();
+                    }
+                }
+            }
+
+            $conn->commit();
+            return true;
+        } catch (\Exception $e) {
+            if (isset($conn) && $conn->inTransaction()) {
+                $conn->rollBack();
+            }
+            error_log('Erreur lors de la mise à jour des compétences: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Met à jour l'appartenance d'un étudiant à une promotion
+     *
+     * @param int $studentId ID de l'étudiant
+     * @param int $promotionId ID de la promotion
+     * @param string|null $startDate Date de début (format 'Y-m-d')
+     * @param string|null $endDate Date de fin (format 'Y-m-d')
+     * @param bool $replaceExisting Supprimer les associations existantes
+     * @return bool Succès de l'opération
+     */
+    public function updateStudentPromotion($studentId, $promotionId, $startDate = null, $endDate = null, $replaceExisting = true) {
+        if (empty($promotionId)) {
+            return false;
+        }
+
+        $startDate = $startDate ?? date('Y-m-d');
+        $endDate = $endDate ?? date('Y-m-d', strtotime('+2 years'));
+
+        try {
+            $conn = $this->db->connect();
+            $conn->beginTransaction();
+
+            // Vérifier si l'association existe déjà
+            $stmt = $conn->prepare('
+            SELECT * FROM Appartenir 
+            WHERE Id_Etudiant = :studentId 
+            AND Id_Promotion = :promotionId
+        ');
+            $stmt->bindParam(':studentId', $studentId);
+            $stmt->bindParam(':promotionId', $promotionId);
+            $stmt->execute();
+            $existingAssociation = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+            if ($existingAssociation) {
+                // Mettre à jour l'association existante
+                $stmt = $conn->prepare('
+                UPDATE Appartenir 
+                SET Date_Debut_Appartenir = :startDate, 
+                    Date_Fin_Appartenir = :endDate 
+                WHERE Id_Etudiant = :studentId 
+                AND Id_Promotion = :promotionId
+            ');
+            } else {
+                // Supprimer les anciennes associations si demandé
+                if ($replaceExisting) {
+                    $stmt = $conn->prepare('
+                    DELETE FROM Appartenir 
+                    WHERE Id_Etudiant = :studentId
+                ');
+                    $stmt->bindParam(':studentId', $studentId);
+                    $stmt->execute();
+                }
+
+                // Créer une nouvelle association
+                $stmt = $conn->prepare('
+                INSERT INTO Appartenir (
+                    Id_Etudiant, 
+                    Id_Promotion, 
+                    Date_Debut_Appartenir, 
+                    Date_Fin_Appartenir
+                ) VALUES (
+                    :studentId, 
+                    :promotionId, 
+                    :startDate, 
+                    :endDate
+                )
+            ');
+            }
+
+            $stmt->bindParam(':studentId', $studentId);
+            $stmt->bindParam(':promotionId', $promotionId);
+            $stmt->bindParam(':startDate', $startDate);
+            $stmt->bindParam(':endDate', $endDate);
+            $stmt->execute();
+
+            $conn->commit();
+            return true;
+        } catch (\Exception $e) {
+            if (isset($conn) && $conn->inTransaction()) {
+                $conn->rollBack();
+            }
+            error_log('Erreur lors de la mise à jour de la promotion: ' . $e->getMessage());
+            return false;
+        }
     }
 }

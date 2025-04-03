@@ -180,17 +180,20 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Gestion de la soumission du formulaire
     form.addEventListener('submit', function(e) {
-        e.preventDefault();
-
         // Vérification finale avant soumission
-        if (checkFormValidity()) {
-            // En production, soumettez ici ou effectuez une requête AJAX
-            // form.submit();
-
-            // Pour la démo, afficher la popup de confirmation
-            setTimeout(() => {
-                confirmationPopup.style.display = 'flex';
-            }, 500);
+        if (!checkFormValidity()) {
+            e.preventDefault(); // Bloquer uniquement si le formulaire est invalide
+            return false;
         }
+
+        // La soumission se poursuit naturellement si valide
+        // Le code ne bloque plus l'action par défaut du formulaire
+
+        // Optionnel: désactiver le bouton pour éviter les soumissions multiples
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Traitement en cours...";
+
+        // La soumission continue normalement vers le serveur
+        return true;
     });
 });
