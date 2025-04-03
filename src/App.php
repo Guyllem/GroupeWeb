@@ -240,9 +240,66 @@ class App {
         }
     }
 
-    // Autres méthodes inchangées...
+    /**
+     * Vérifie la protection CSRF pour les requêtes modifiant des données
+     *
+     * Cette méthode assure que les requêtes POST, PUT et DELETE contiennent
+     * un token CSRF valide pour protéger contre les attaques CSRF
+     *
+     * @return void
+     * @throws \Exception Si le token CSRF est invalide ou manquant
+     */
     private function checkCsrfProtection() {
-        // Code inchangé...
+        // On vérifie uniquement les méthodes modifiant des données
+        $method = $_SERVER['REQUEST_METHOD'];
+        if (!in_array($method, ['POST', 'PUT', 'DELETE'])) {
+            return;
+        }
+
+        // Cas spécial pour certaines routes qui ne nécessitent pas de vérification CSRF
+        // Par exemple, les webhooks externes ou les callbacks d'API
+        $exemptRoutes = [
+            // Ajoutez ici les routes exemptées si nécessaire
+            // '/api/webhook/external'
+        ];
+
+        $currentPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        if (in_array($currentPath, $exemptRoutes)) {
+            return;
+        }
+
+        // Vérification du token CSRF
+        $csrfToken = $_POST['csrf_token'] ?? $_SERVER['HTTP_X_CSRF_TOKEN'] ?? null;
+
+        if (!$csrfToken) {
+            // Journal de sécurité pour surveiller les tentatives d'attaque
+            error_log('Tentative d\'accès sans token CSRF: ' . $_SERVER['REQUEST_URI']);
+
+            // En environnement de production, on renvoie une erreur 403
+            header('HTTP/1.1 403 Forbidden');
+            echo $this->twig->render('error.html.twig', [
+                'code' => 403,
+                'message' => 'Accès refusé: token de sécurité manquant.'
+            ]);
+            exit;
+        }
+
+        // Utiliser notre utilitaire de sécurité pour vérifier le token
+        if (!SecurityUtil::verifyCsrfToken($csrfToken)) {
+            // Journal de sécurité avec informations contextuelles
+            error_log('Token CSRF invalide détecté: ' . $_SERVER['REQUEST_URI'] . ' - IP: ' . $_SERVER['REMOTE_ADDR']);
+
+            // Régénérer un nouveau token pour la session
+            SecurityUtil::generateCsrfToken();
+
+            // Erreur 403 avec message adapté
+            header('HTTP/1.1 403 Forbidden');
+            echo $this->twig->render('error.html.twig', [
+                'code' => 403,
+                'message' => 'Accès refusé: votre session a expiré ou est invalide. Veuillez rafraîchir la page et réessayer.'
+            ]);
+            exit;
+        }
     }
 
     private function handleException(\Exception $e) {
