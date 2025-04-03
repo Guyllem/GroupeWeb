@@ -280,4 +280,112 @@ class AdminController extends BaseController {
 
     // Répéter les méthodes pour la gestion des offres comme dans PilotesController
     // ...
+
+    /**
+     * Affiche le formulaire de réinitialisation de mot de passe d'un pilote
+     *
+     * @param array $params Paramètres de route contenant l'ID du pilote
+     * @return void
+     */
+    public function afficherReset($params) {
+        $this->requireAdmin();
+
+        // Validation et sécurisation de l'ID pilote
+        $piloteId = filter_var($params['id'] ?? 0, FILTER_VALIDATE_INT);
+        if (!$piloteId) {
+            $this->addFlashMessage('error', 'Identifiant de pilote invalide');
+            header('Location: /admin/pilotes');
+            return;
+        }
+
+        // Récupération des informations du pilote via le modèle
+        $pilot = $this->pilotModel->getPilotDetails($piloteId);
+        if (!$pilot) {
+            $this->addFlashMessage('error', 'Pilote introuvable dans la base de données');
+            header('Location: /admin/pilotes');
+            return;
+        }
+
+        // Génération de jeton CSRF sécurisé pour prévention d'attaques CSRF
+        if (!isset($_SESSION['csrf_token'])) {
+            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+        }
+
+        // Rendu du template avec les données nécessaires
+        $this->render('admin/pilotes/reset.html.twig', [
+            'adminPage' => true,
+            'pilot' => $pilot,
+            'csrf_token' => $_SESSION['csrf_token']
+        ]);
+    }
+
+    /**
+     * Traite la soumission du formulaire de réinitialisation de mot de passe d'un pilote
+     *
+     * @param array $params Paramètres de route contenant l'ID du pilote
+     * @return void
+     */
+    public function resetPassword($params) {
+        $this->requireAdmin();
+
+        // Validation sécurisée de l'ID pilote
+        $piloteId = filter_var($params['id'] ?? 0, FILTER_VALIDATE_INT);
+        if (!$piloteId) {
+            $this->addFlashMessage('error', 'Identifiant de pilote invalide');
+            header('Location: /admin/pilotes');
+            return;
+        }
+
+        // Vérification du jeton CSRF pour prévenir les attaques CSRF
+        if (!isset($_POST['csrf_token']) || !isset($_SESSION['csrf_token']) ||
+            !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
+            $this->addFlashMessage('error', 'Jeton de sécurité invalide. Veuillez réessayer.');
+            header('Location: /admin/pilotes/' . $piloteId . '/reset');
+            return;
+        }
+
+        // Récupération et validation des données de formulaire
+        $password = $_POST['password'] ?? '';
+        $confirmPassword = $_POST['confirm_password'] ?? '';
+
+        // Validations de sécurité et fonctionnelles du mot de passe
+        if (empty($password)) {
+            $this->addFlashMessage('error', 'Le mot de passe ne peut pas être vide');
+            header('Location: /admin/pilotes/' . $piloteId . '/reset');
+            return;
+        }
+
+        if (strlen($password) < 8) {
+            $this->addFlashMessage('error', 'Le mot de passe doit contenir au moins 8 caractères');
+            header('Location: /admin/pilotes/' . $piloteId . '/reset');
+            return;
+        }
+
+        if ($password !== $confirmPassword) {
+            $this->addFlashMessage('error', 'Les mots de passe ne correspondent pas');
+            header('Location: /admin/pilotes/' . $piloteId . '/reset');
+            return;
+        }
+
+        // Récupération des données complètes du pilote pour obtenir l'ID utilisateur
+        $pilot = $this->pilotModel->getPilotDetails($piloteId);
+        if (!$pilot) {
+            $this->addFlashMessage('error', 'Pilote introuvable');
+            header('Location: /admin/pilotes');
+            return;
+        }
+
+        // Mise à jour du mot de passe via le modèle UserModel
+        $success = $this->userModel->updatePassword($pilot['Id_Utilisateur'], $password);
+
+        // Gestion du résultat de l'opération
+        if ($success) {
+            $this->addFlashMessage('success', 'Mot de passe du pilote mis à jour avec succès');
+            header('Location: /admin/pilotes/' . $piloteId);
+        } else {
+            $this->addFlashMessage('error', 'Échec de la mise à jour du mot de passe. Veuillez réessayer.');
+            header('Location: /admin/pilotes/' . $piloteId . '/reset');
+        }
+    }
 }
+

@@ -111,6 +111,8 @@ class App {
             ->post('/admin/pilotes/:id/modifier', 'Admin', 'mettreAJourPilote')
             ->get('/admin/pilotes/:id/supprimer', 'Admin', 'afficherSupprimerPilote')
             ->post('/admin/pilotes/:id/supprimer', 'Admin', 'supprimerPilote')
+            ->get('/admin/pilotes/:id/reset', 'Admin', 'afficherReset')
+            ->post('/admin/pilotes/:id/reset', 'Admin', 'resetPassword')
 
 
 
