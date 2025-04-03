@@ -3,119 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StageConnect - Ajouter une offre</title>
-    <link rel="stylesheet" href="{{ asset('css/styles_page_pilote.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/modal.css') }}">
+    <title>StageConnect - Ajouter une entreprise</title>
+    <link rel="stylesheet" href="{{ asset('css/pilote/main.css') }}">
 </head>
 <body>
 {% set adminPage = true %}
 {% include 'partials/navbar-pilote.html.twig' %}
 
-{% include 'partials/flash_messages.html.twig' %}
-
 <main>
     <div class="form-container">
-        <a href="{{ url('pilotes/offres') }}" class="btn-return">
+        <a href="{{ url('pilotes/entreprises') }}" class="btn-return">
             <span class="arrow">←</span> Retour
         </a>
-        <h2 class="form-title">Ajouter une nouvelle offre de stage</h2>
+        <h2 class="form-title">Ajouter une nouvelle entreprise</h2>
 
-        <form action="{{ url('pilotes/offres/ajouter') }}" method="post" id="add-offre-form">
+        <form id="add-enterprise-form" method="post" action="{{ url('pilotes/entreprises/ajouter') }}" novalidate>
             <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
 
             <div class="form-group">
-                <label for="titre">Titre de l'offre *</label>
-                <input type="text" id="titre" name="titre" class="form-control" placeholder="Ex: Développeur Full-Stack" required>
-                <div id="titre-error" class="error-message">{{ errors.titre|default('') }}</div>
+                <label for="nom" class="form-label">Nom de l'entreprise *</label>
+                <input type="text" id="nom" name="nom" class="form-input" required placeholder="Ex: Thales">
+                <div id="nom-error" class="form-error"></div>
             </div>
 
             <div class="form-group">
-                <label for="description">Description de l'offre *</label>
+                <label for="email" class="form-label">Adresse email *</label>
+                <input type="email" id="email" name="email" class="form-input" required placeholder="Ex: contact@thales.com">
+                <div id="email-error" class="form-error"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="telephone" class="form-label">Numéro de téléphone</label>
+                <input type="tel" id="telephone" name="telephone" class="form-input" placeholder="Ex: 03 49 74 14 16">
+                <div id="telephone-error" class="form-error"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="effectif" class="form-label">Effectif</label>
+                <input type="number" id="effectif" name="effectif" class="form-input" min="1" placeholder="Ex: 500">
+                <div id="effectif-error" class="form-error"></div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-column">
+                    <div class="form-group">
+                        <label for="ville" class="form-label">Ville *</label>
+                        <input type="text" id="ville" name="ville" class="form-input" required placeholder="Ex: Nancy">
+                        <div id="ville-error" class="form-error"></div>
+                    </div>
+                </div>
+                <div class="form-column">
+                    <div class="form-group">
+                        <label for="code_postal" class="form-label">Code postal *</label>
+                        <input type="text" id="code_postal" name="code_postal" class="form-input" required placeholder="Ex: 54000">
+                        <div id="code_postal-error" class="form-error"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="adresse" class="form-label">Adresse</label>
+                <input type="text" id="adresse" name="adresse" class="form-input" placeholder="Ex: 6 rue Bois du Chêne le Loup">
+                <div id="adresse-error" class="form-error"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="secteurs" class="form-label">Secteurs d'activité</label>
+                <input type="text" id="secteurs" name="secteurs" class="form-input" placeholder="Ex: Informatique, BTP, Services (séparés par des virgules)">
+                <div id="secteurs-error" class="form-error"></div>
+                <p><i>Saisissez les secteurs d'activité séparés par des virgules.</i></p>
+            </div>
+
+            <div class="form-group">
+                <label for="description" class="form-label">Description de l'entreprise</label>
                 <div class="textarea-container">
-                    <textarea id="description" name="description" class="form-control" placeholder="Décrivez les missions, responsabilités et objectifs du stage" maxlength="1000" required>{{ formData.description|default('') }}</textarea>
+                    <textarea id="description" name="description" class="form-input" rows="5" placeholder="Décrivez l'entreprise, ses activités, sa culture..." maxlength="1000"></textarea>
                     <div class="char-count"><span id="char-count">0</span>/1000</div>
                 </div>
-                <div id="description-error" class="error-message">{{ errors.description|default('') }}</div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="remuneration">Rémunération mensuelle (€) *</label>
-                    <input type="number" id="remuneration" name="remuneration" class="form-control" placeholder="Ex: 600" min="0" step="0.01" value="{{ formData.remuneration|default('') }}" required>
-                    <div id="remuneration-error" class="error-message">{{ errors.remuneration|default('') }}</div>
-                </div>
-
-                <div class="form-group">
-                    <label for="niveau_requis">Niveau d'étude requis *</label>
-                    <select id="niveau_requis" name="niveau_requis" class="form-control" required>
-                        <option value="">Sélectionner un niveau</option>
-                        <option value="Bac+1" {% if formData.niveau_requis is defined and formData.niveau_requis == 'Bac+1' %}selected{% endif %}>Bac+1</option>
-                        <option value="Bac+2" {% if formData.niveau_requis is defined and formData.niveau_requis == 'Bac+2' %}selected{% endif %}>Bac+2</option>
-                        <option value="Bac+3" {% if formData.niveau_requis is defined and formData.niveau_requis == 'Bac+3' %}selected{% endif %}>Bac+3</option>
-                        <option value="Bac+4" {% if formData.niveau_requis is defined and formData.niveau_requis == 'Bac+4' %}selected{% endif %}>Bac+4</option>
-                        <option value="Bac+5" {% if formData.niveau_requis is defined and formData.niveau_requis == 'Bac+5' %}selected{% endif %}>Bac+5</option>
-                    </select>
-                    <div id="niveau_requis-error" class="error-message">{{ errors.niveau_requis|default('') }}</div>
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="date_debut">Date de début *</label>
-                    <input type="date" id="date_debut" name="date_debut" class="form-control" value="{{ formData.date_debut|default('') }}" required>
-                    <div id="date_debut-error" class="error-message">{{ errors.date_debut|default('') }}</div>
-                </div>
-
-                <div class="form-group">
-                    <label for="duree_min">Durée minimale (semaines) *</label>
-                    <input type="number" id="duree_min" name="duree_min" class="form-control" placeholder="Ex: 8" min="1" value="{{ formData.duree_min|default('') }}" required>
-                    <div id="duree_min-error" class="error-message">{{ errors.duree_min|default('') }}</div>
-                </div>
-
-                <div class="form-group">
-                    <label for="duree_max">Durée maximale (semaines)</label>
-                    <input type="number" id="duree_max" name="duree_max" class="form-control" placeholder="Ex: 16" min="1" value="{{ formData.duree_max|default('') }}">
-                    <div id="duree_max-error" class="error-message">{{ errors.duree_max|default('') }}</div>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="competences">Compétences requises</label>
-                <select id="competences" name="competences[]" class="form-control" multiple>
-                    {% for competence in competences %}
-                        <option value="{{ competence.Id_Competence }}" {% if formData.competences is defined and competence.Id_Competence in formData.competences %}selected{% endif %}>{{ competence.Nom_Competence }}</option>
-                    {% endfor %}
-                </select>
-                <div class="selected-skills" id="selected-skills">
-                    <!-- Les compétences sélectionnées s'afficheront ici via JavaScript -->
-                </div>
-                <div id="competences-error" class="error-message">{{ errors.competences|default('') }}</div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="id_entreprise">Entreprise associée *</label>
-                    <select id="id_entreprise" name="id_entreprise" class="form-control" required>
-                        <option value="">Sélectionner une entreprise</option>
-                        {% for entreprise in enterprises %}
-                            <option value="{{ entreprise.Id_Entreprise }}" {% if formData.id_entreprise is defined and formData.id_entreprise == entreprise.Id_Entreprise %}selected{% endif %}>{{ entreprise.Nom_Entreprise }}</option>
-                        {% endfor %}
-                    </select>
-                    <div id="id_entreprise-error" class="error-message">{{ errors.id_entreprise|default('') }}</div>
-                </div>
+                <div id="description-error" class="form-error"></div>
             </div>
 
             <div class="form-actions">
-                <a href="{{ url('pilotes/offres') }}" class="btn btn-back">Annuler</a>
-                <button type="submit" id="submit-btn" class="btn btn-submit" disabled>Ajouter l'offre</button>
+                <a href="{{ url('pilotes/entreprises') }}" class="btn btn-back">Annuler</a>
+                <button type="submit" class="btn btn-submit" id="submit-btn">Ajouter l'entreprise</button>
             </div>
         </form>
     </div>
 </main>
 
 {% include 'partials/footer.html.twig' %}
-<script src="{{ asset('js/frontend_script.js') }}"></script>
-<script src="{{ asset('js/form_offre.js') }}"></script>
-<script src="{{ asset('js/flash-messages.js') }}"></script>
+<script src="{{ asset('js/navigation.js') }}"></script>
+<script src="{{ asset('js/forms/form_entreprise.js') }}"></script>
 </body>
 </html>
