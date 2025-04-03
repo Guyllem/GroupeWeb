@@ -1,0 +1,130 @@
+/* Styles améliorés pour le sélecteur de compétences */
+
+/* Style du select multiple */
+select[multiple].form-control {
+    height: 140px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    background-color: #f9fafc;
+    padding: 8px;
+    font-size: 14px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #757DE8 #edeff5;
+}
+
+/* Amélioration des scrollbars pour WebKit */
+select[multiple].form-control::-webkit-scrollbar {
+    width: 8px;
+}
+
+select[multiple].form-control::-webkit-scrollbar-track {
+    background: #edeff5;
+    border-radius: 4px;
+}
+
+select[multiple].form-control::-webkit-scrollbar-thumb {
+    background-color: #757DE8;
+    border-radius: 4px;
+}
+
+/* États interactifs */
+select[multiple].form-control:focus {
+    border-color: #3F51B5;
+    box-shadow: 0 0 0 2px rgba(63, 81, 181, 0.15);
+    outline: none;
+}
+
+select[multiple].form-control option {
+    padding: 8px;
+    border-radius: 4px;
+    margin-bottom: 2px;
+    transition: background-color 0.15s;
+}
+
+select[multiple].form-control option:checked {
+    background-color: #3F51B5;
+    color: white;
+}
+
+select[multiple].form-control option:hover {
+    background-color: #f0f2ff;
+}
+
+/* Container des compétences sélectionnées */
+.selected-skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 12px;
+    min-height: 36px;
+    padding: 6px 0;
+}
+
+/* Style des tags de compétence */
+.skill-tag {
+    background-color: #3F51B5;
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 6px 12px;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 4px rgba(63, 81, 181, 0.2);
+}
+
+.skill-tag:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(63, 81, 181, 0.25);
+}
+
+/* Bouton de suppression des tags */
+.remove-skill {
+    background: none;
+    border: none;
+    color: white;
+    margin-left: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    transition: background-color 0.2s;
+}
+
+.remove-skill:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.remove-skill:active {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Message d'erreur */
+#competences-error {
+    color: #e53e3e;
+    font-size: 13px;
+    margin-top: 6px;
+    font-weight: 500;
+    transition: opacity 0.3s;
+}
+
+/* Style pour le label */
+label[for="competences"] {
+    color: #3F51B5;
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: block;
+}
+
+/* Style pour l'indication visuelle de sélection */
+.form-group:has(select[multiple].form-control:focus) label[for="competences"] {
+    color: #3F51B5;
+}
