@@ -12,11 +12,11 @@
 
 <main>
     <div class="form-container">
-        <a href="{{ url('pilotes/etudiants') }}" class="btn-return">
+        <a href="{{ url('admin/etudiants') }}" class="btn-return">
             <span class="arrow">←</span> Retour
         </a>
         <h2 class="form-title">Ajouter un nouvel élève</h2>
-        <form id="add-student-form" action="{{ url('pilotes/etudiants/ajouter') }}" method="post">
+        <form id="add-student-form" action="{{ url('admin/etudiants/ajouter') }}" method="post">
             <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
 
             <div class="form-row">
@@ -82,7 +82,7 @@
             </div>
 
             <div class="form-actions">
-                <a href="{{ url('pilotes/etudiants') }}" class="btn btn-back">Annuler</a>
+                <a href="{{ url('admin/etudiants') }}" class="btn btn-back">Annuler</a>
                 <button type="submit" class="btn btn-submit" id="submit-btn" disabled>Ajouter</button>
             </div>
         </form>

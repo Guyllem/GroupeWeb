@@ -12,12 +12,12 @@
 
 <main>
     <div class="form-container">
-        <a href="{{ url('pilotes/entreprises') }}" class="btn-return">
+        <a href="{{ url('admin/entreprises') }}" class="btn-return">
             <span class="arrow">←</span> Retour
         </a>
         <h2 class="form-title">Ajouter une nouvelle entreprise</h2>
 
-        <form id="add-enterprise-form" method="post" action="{{ url('pilotes/entreprises/ajouter') }}" novalidate>
+        <form id="add-enterprise-form" method="post" action="{{ url('admin/entreprises/ajouter') }}" novalidate>
             <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
 
             <div class="form-group">
@@ -84,7 +84,7 @@
             </div>
 
             <div class="form-actions">
-                <a href="{{ url('pilotes/entreprises') }}" class="btn btn-back">Annuler</a>
+                <a href="{{ url('admin/entreprises') }}" class="btn btn-back">Annuler</a>
                 <button type="submit" class="btn btn-submit" id="submit-btn">Ajouter l'entreprise</button>
             </div>
         </form>

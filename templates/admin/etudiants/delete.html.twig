@@ -16,8 +16,8 @@
         <h2>Voulez-vous réellement supprimer cet étudiant ?</h2>
         <p class="confirmation-text">Cette action est irréversible. Toutes les données de <strong>{{ student.Prenom_Utilisateur }} {{ student.Nom_Utilisateur }}</strong> seront définitivement supprimées.</p>
         <div class="logout-buttons">
-            <a class="btn-rester" href="{{ url('pilotes/etudiants/' ~ student.Id_Etudiant) }}">Non</a>
-            <form action="{{ url('pilotes/etudiants/' ~ student.Id_Etudiant ~ '/supprimer') }}" method="post" style="display: inline;">
+            <a class="btn-rester" href="{{ url('admin/etudiants/' ~ student.Id_Etudiant) }}">Non</a>
+            <form action="{{ url('admin/etudiants/' ~ student.Id_Etudiant ~ '/supprimer') }}" method="post" style="display: inline;">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                 <button type="submit" class="btn-deconnecter">Oui</button>
             </form>

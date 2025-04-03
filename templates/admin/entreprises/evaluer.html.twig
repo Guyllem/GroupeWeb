@@ -28,7 +28,7 @@
                 <div class="company-sector">{{ enterprise.tags[0].Nom_Secteur|default('Non spécifié') }}</div>
             </div>
 
-            <form action="{{ url('pilotes/entreprises/' ~ enterprise.Id_Entreprise ~ '/evaluer') }}" method="post">
+            <form action="{{ url('admin/entreprises/' ~ enterprise.Id_Entreprise ~ '/evaluer') }}" method="post">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
 
                 <div class="rating-section">

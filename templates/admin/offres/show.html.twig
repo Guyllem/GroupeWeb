@@ -69,9 +69,9 @@
         </div>
 
         <div class="button-container-entreprise">
-            <button class="button-entreprise button-delete-entreprise" onclick="window.location.href = '{{ url('pilotes/offres/' ~ offer.Id_Offre ~ '/supprimer') }}'">Supprimer</button>
-            <a href="{{ url('pilotes/offres/' ~ offer.Id_Offre ~ '/modifier') }}" class="button-entreprise button-edit-entreprise">Modifier</a>
-            <a href="{{ url('pilotes/entreprises/' ~ offer.Id_Entreprise) }}" class="button-entreprise button-evaluate-entreprise">Voir l'entreprise</a>
+            <button class="button-entreprise button-delete-entreprise" onclick="window.location.href = '{{ url('admin/offres/' ~ offer.Id_Offre ~ '/supprimer') }}'">Supprimer</button>
+            <a href="{{ url('admin/offres/' ~ offer.Id_Offre ~ '/modifier') }}" class="button-entreprise button-edit-entreprise">Modifier</a>
+            <a href="{{ url('admin/entreprises/' ~ offer.Id_Entreprise) }}" class="button-entreprise button-evaluate-entreprise">Voir l'entreprise</a>
         </div>
     </div>
 </main>

@@ -85,7 +85,7 @@
         <div class="main-content-gestion">
             <div class="add-header">
                 <input placeholder="Search..." class="search-input" name="search" type="search"/>
-                <a href="{{ url('pilotes/offres/ajouter') }}" class="add-something">Ajouter une nouvelle offre
+                <a href="{{ url('admin/offres/ajouter') }}" class="add-something">Ajouter une nouvelle offre
                     <div class="plus-icon">+</div>
                 </a>
             </div>
@@ -111,7 +111,7 @@
 
                         <div class="pilote-card-footer">
                             <div class="pilote-offres-count">Publiée le {{ offer.Date_Debut_Offre|date('d/m/Y') }}</div>
-                            <a href="{{ url('pilotes/offres/' ~ offer.Id_Offre) }}" class="pilote-view-btn">Regarder</a>
+                            <a href="{{ url('admin/offres/' ~ offer.Id_Offre) }}" class="pilote-view-btn">Regarder</a>
                         </div>
                     </div>
                 {% endfor %}

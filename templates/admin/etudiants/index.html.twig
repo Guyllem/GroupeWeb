@@ -98,7 +98,7 @@
     <div class="main-content-gestion">
         <div class="add-header">
             <input placeholder="Search..." class="search-input" name="search" type="search"/>
-            <a href="{{ url('pilotes/etudiants/ajouter') }}" class="add-something">Ajouter un nouvel élève
+            <a href="{{ url('admin/etudiants/ajouter') }}" class="add-something">Ajouter un nouvel élève
                 <div class="plus-icon">+</div>
             </a>
         </div>
@@ -124,7 +124,7 @@
                             </div>
                         </div>
                         <div class="actions-student">
-                            <a href="{{ url('/pilotes/etudiants/' ~ student.Id_Etudiant) }}" class="view-btn-student">Regarder</a>
+                            <a href="{{ url('/admin/etudiants/' ~ student.Id_Etudiant) }}" class="view-btn-student">Regarder</a>
                         </div>
                     </div>
                 </div>

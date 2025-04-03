@@ -16,8 +16,8 @@
         <h2>Voulez-vous réellement supprimer cette offre ?</h2>
         <p class="confirmation-text">Cette action est irréversible. Toutes les données de l'offre <strong>{{ offer.Titre_Offre }}</strong> seront définitivement supprimées.</p>
         <div class="logout-buttons">
-            <a class="btn-rester" href="{{ url('pilotes/offres/' ~ offer.Id_Offre) }}">Non</a>
-            <form action="{{ url('pilotes/offres/' ~ offer.Id_Offre ~ '/supprimer') }}" method="post" style="display: inline;">
+            <a class="btn-rester" href="{{ url('admin/offres/' ~ offer.Id_Offre) }}">Non</a>
+            <form action="{{ url('admin/offres/' ~ offer.Id_Offre ~ '/supprimer') }}" method="post" style="display: inline;">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                 <button type="submit" class="btn-deconnecter">Oui</button>
             </form>

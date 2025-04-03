@@ -12,12 +12,12 @@
 
 <main>
     <div class="form-container">
-        <a href="{{ url('pilotes/entreprises/' ~ enterprise.Id_Entreprise) }}" class="btn-return">
+        <a href="{{ url('admin/entreprises/' ~ enterprise.Id_Entreprise) }}" class="btn-return">
             <span class="arrow">←</span> Retour
         </a>
         <h2 class="form-title">Modifier l'entreprise</h2>
 
-        <form id="edit-enterprise-form" method="post" action="{{ url('pilotes/entreprises/' ~ enterprise.Id_Entreprise ~ '/modifier') }}" novalidate>
+        <form id="edit-enterprise-form" method="post" action="{{ url('admin/entreprises/' ~ enterprise.Id_Entreprise ~ '/modifier') }}" novalidate>
             <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
 
             <div class="form-group">
@@ -85,7 +85,7 @@
             </div>
 
             <div class="form-actions">
-                <a href="{{ url('pilotes/entreprises/' ~ enterprise.Id_Entreprise) }}" class="btn btn-back">Annuler</a>
+                <a href="{{ url('admin/entreprises/' ~ enterprise.Id_Entreprise) }}" class="btn btn-back">Annuler</a>
                 <button type="submit" class="btn btn-submit" id="submit-btn">Enregistrer les modifications</button>
             </div>
         </form>

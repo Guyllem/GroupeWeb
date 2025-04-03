@@ -17,7 +17,7 @@
         </a>
         <h2 class="form-title">Ajouter une nouvelle offre de stage</h2>
 
-        <form action="{{ url('pilotes/offres/ajouter') }}" method="post" id="add-offre-form">
+        <form action="{{ url('admin/offres/ajouter') }}" method="post" id="add-offre-form">
             <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
 
             <div class="form-group">
@@ -103,7 +103,7 @@
             </div>
 
             <div class="form-actions">
-                <a href="{{ url('pilotes/offres') }}" class="btn btn-back">Annuler</a>
+                <a href="{{ url('admin/offres') }}" class="btn btn-back">Annuler</a>
                 <button type="submit" id="submit-btn" class="btn btn-submit" disabled>Ajouter l'offre</button>
             </div>
         </form>

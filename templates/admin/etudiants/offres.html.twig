@@ -12,7 +12,7 @@
 
 <main class="content-principal">
     <div class="back-button">
-        <a href="{{ url('pilotes/etudiants/' ~ student.Id_Etudiant) }}"><span class="arrow">←</span> Retour au profil de l'étudiant</a>
+        <a href="{{ url('admin/etudiants/' ~ student.Id_Etudiant) }}"><span class="arrow">←</span> Retour au profil de l'étudiant</a>
     </div>
 
     <h1 class="profile-title">Candidatures de {{ student.Prenom_Utilisateur }} {{ student.Nom_Utilisateur }}</h1>
@@ -38,7 +38,7 @@
                             <span>Entreprise: {{ offer.Nom_Entreprise }}</span>
                         </div>
                         <div class="actions">
-                            <a href="{{ url('pilotes/offres/' ~ offer.Id_Offre) }}" class="view-btn">Détails de l'offre</a>
+                            <a href="{{ url('admin/offres/' ~ offer.Id_Offre) }}" class="view-btn">Détails de l'offre</a>
                         </div>
                     </div>
                 </div>
@@ -46,7 +46,7 @@
         {% else %}
             <div class="no-applications">
                 <p>Cet étudiant n'a pas encore postulé à des offres.</p>
-                <a href="{{ url('pilotes/etudiants/' ~ student.Id_Etudiant) }}" class="view-btn">Retour au profil</a>
+                <a href="{{ url('admin/etudiants/' ~ student.Id_Etudiant) }}" class="view-btn">Retour au profil</a>
             </div>
         {% endif %}
     </div>

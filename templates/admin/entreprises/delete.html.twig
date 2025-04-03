@@ -16,8 +16,8 @@
         <h2>Voulez-vous réellement supprimer cette entreprise ?</h2>
         <p class="confirmation-text">Cette action est irréversible. Toutes les données de <strong>{{ enterprise.Nom_Entreprise }}</strong> seront définitivement supprimées.</p>
         <div class="logout-buttons">
-            <a class="btn-rester" href="{{ url('pilotes/entreprises/' ~ enterprise.Id_Entreprise) }}">Non</a>
-            <form action="{{ url('pilotes/entreprises/' ~ enterprise.Id_Entreprise ~ '/supprimer') }}" method="post" style="display: inline;">
+            <a class="btn-rester" href="{{ url('admin/entreprises/' ~ enterprise.Id_Entreprise) }}">Non</a>
+            <form action="{{ url('admin/entreprises/' ~ enterprise.Id_Entreprise ~ '/supprimer') }}" method="post" style="display: inline;">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                 <button type="submit" class="btn-deconnecter">Oui</button>
             </form>

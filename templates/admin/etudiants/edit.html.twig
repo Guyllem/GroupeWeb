@@ -16,7 +16,7 @@
             <span class="arrow">←</span> Retour
         </a>
         <h2 class="form-title">Modifier l'élève</h2>
-        <form id="edit-student-form" method="post" action="{{ url('pilotes/etudiants/' ~ student.Id_Etudiant ~ '/modifier') }}" novalidate>
+        <form id="edit-student-form" method="post" action="{{ url('admin/etudiants/' ~ student.Id_Etudiant ~ '/modifier') }}" novalidate>
             <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
 
             <div class="form-row">

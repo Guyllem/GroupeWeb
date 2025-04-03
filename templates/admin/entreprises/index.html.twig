@@ -74,7 +74,7 @@
     <div class="main-content-gestion">
         <div class="add-header">
             <input placeholder="Search..." class="search-input" name="search" type="search"/>
-            <a href="{{ url('pilotes/entreprises/ajouter') }}" class="add-something">Ajouter une nouvelle entreprise
+            <a href="{{ url('admin/entreprises/ajouter') }}" class="add-something">Ajouter une nouvelle entreprise
                 <div class="plus-icon">+</div>
             </a>
         </div>
@@ -101,7 +101,7 @@
                             <br>
                             Evaluation actuelle : {{ enterprise.rating|default('0')|number_format(1) }} étoiles
                         </div>
-                        <a href="{{ url('pilotes/entreprises/' ~ enterprise.Id_Entreprise) }}" class="pilote-view-btn">Regarder</a>
+                        <a href="{{ url('admin/entreprises/' ~ enterprise.Id_Entreprise) }}" class="pilote-view-btn">Regarder</a>
                     </div>
                 </div>
             {% endfor %}

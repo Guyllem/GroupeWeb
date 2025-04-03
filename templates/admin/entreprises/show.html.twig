@@ -47,9 +47,9 @@
         </div>
 
         <div class="button-container-entreprise">
-            <button class="button-entreprise button-delete-entreprise" onclick="window.location.href='{{ url('pilotes/entreprises/' ~ enterprise.Id_Entreprise ~ '/supprimer') }}'">Supprimer</button>
-            <a href="{{ url('pilotes/entreprises/' ~ enterprise.Id_Entreprise ~ '/modifier') }}" class="button-entreprise button-edit-entreprise">Modifier</a>
-            <button class="button-entreprise button-evaluate-entreprise" onclick="window.location.href='{{ url('pilotes/entreprises/' ~ enterprise.Id_Entreprise ~ '/evaluer') }}'">Évaluer</button>
+            <button class="button-entreprise button-delete-entreprise" onclick="window.location.href='{{ url('admin/entreprises/' ~ enterprise.Id_Entreprise ~ '/supprimer') }}'">Supprimer</button>
+            <a href="{{ url('admin/entreprises/' ~ enterprise.Id_Entreprise ~ '/modifier') }}" class="button-entreprise button-edit-entreprise">Modifier</a>
+            <button class="button-entreprise button-evaluate-entreprise" onclick="window.location.href='{{ url('admin/entreprises/' ~ enterprise.Id_Entreprise ~ '/evaluer') }}'">Évaluer</button>
         </div>
 
         <div class="publication-info">

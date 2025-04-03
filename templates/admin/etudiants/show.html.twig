@@ -13,7 +13,7 @@
 <main>
     <div class="main-content-gestion">
         <div class="back-button">
-            <a href="{{ url('pilotes/etudiants') }}"><span class="arrow">←</span> Retour</a>
+            <a href="{{ url('admin/etudiants') }}"><span class="arrow">←</span> Retour</a>
         </div>
         <div class="eleve-detail">
             <div class="eleve-header">
@@ -33,7 +33,7 @@
                         <input type="tel" value="{{ student.Telephone_Utilisateur|default('Non renseigné') }}" readonly class="eleve-input">
                     </div>
 
-                    <a href="{{ url('pilotes/etudiants/' ~ student.Id_Etudiant ~ '/reset-password') }}" class="eleve-btn-password">Modifier le mot de passe</a>
+                    <a href="{{ url('admin/etudiants/' ~ student.Id_Etudiant ~ '/reset-password') }}" class="eleve-btn-password">Modifier le mot de passe</a>
                 </div>
 
                 <div class="eleve-competences-col">
@@ -52,13 +52,13 @@
 
             <div class="eleve-actions">
                 <div class="eleve-liens">
-                    <a href="{{ url('pilotes/etudiants/' ~ student.Id_Etudiant ~ '/wishlist') }}" class="eleve-btn-wishlist">Accéder à la wishlist</a>
-                    <a href="{{ url('pilotes/etudiants/' ~ student.Id_Etudiant ~ '/offres') }}" class="eleve-btn-offres">Accéder aux offres postulées</a>
+                    <a href="{{ url('admin/etudiants/' ~ student.Id_Etudiant ~ '/wishlist') }}" class="eleve-btn-wishlist">Accéder à la wishlist</a>
+                    <a href="{{ url('admin/etudiants/' ~ student.Id_Etudiant ~ '/offres') }}" class="eleve-btn-offres">Accéder aux offres postulées</a>
                 </div>
 
                 <div class="eleve-admin-actions">
-                    <a href="{{ url('pilotes/etudiants/' ~ student.Id_Etudiant ~ '/modifier') }}" class="eleve-btn-modifier">Modifier</a>
-                    <a href="{{ url('pilotes/etudiants/' ~ student.Id_Etudiant ~ '/supprimer') }}" class="eleve-btn-supprimer">Supprimer</a>
+                    <a href="{{ url('admin/etudiants/' ~ student.Id_Etudiant ~ '/modifier') }}" class="eleve-btn-modifier">Modifier</a>
+                    <a href="{{ url('admin/etudiants/' ~ student.Id_Etudiant ~ '/supprimer') }}" class="eleve-btn-supprimer">Supprimer</a>
                 </div>
             </div>
         </div>

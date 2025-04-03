@@ -12,12 +12,12 @@
 
 <main>
     <div class="form-container">
-        <a href="{{ url('pilotes/offres/' ~ offer.Id_Offre) }}" class="btn-return">
+        <a href="{{ url('admin/offres/' ~ offer.Id_Offre) }}" class="btn-return">
             <span class="arrow">←</span> Retour
         </a>
         <h2 class="form-title">Modifier l'offre de stage</h2>
 
-        <form id="edit-offre-form" method="post" action="{{ url('pilotes/offres/' ~ offer.Id_Offre ~ '/modifier') }}">
+        <form id="edit-offre-form" method="post" action="{{ url('admin/offres/' ~ offer.Id_Offre ~ '/modifier') }}">
             <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
 
             <div class="form-group">
@@ -151,7 +151,7 @@
             </div>
 
             <div class="form-actions">
-                <a href="{{ url('pilotes/offres/' ~ offer.Id_Offre) }}" class="btn btn-back">Annuler</a>
+                <a href="{{ url('admin/offres/' ~ offer.Id_Offre) }}" class="btn btn-back">Annuler</a>
                 <button type="submit" id="submit-btn" class="btn btn-submit">Enregistrer les modifications</button>
             </div>
         </form>
