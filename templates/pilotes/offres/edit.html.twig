@@ -124,13 +124,6 @@
             </div>
         </form>
     </div>
-
-    <div class="confirmation-popup" id="confirmationPopup" {% if success is defined and success %}style="display: flex;"{% endif %}>
-        <div class="popup-content">
-            <p>L'offre a bien été modifiée</p>
-            <button class="close-popup" onclick="window.location.href='{{ url('pilotes/offres/' ~ offer.Id_Offre) }}'">Fermer</button>
-        </div>
-    </div>
 </main>
 
 {% include 'partials/footer.html.twig' %}
