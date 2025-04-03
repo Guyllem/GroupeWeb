@@ -525,6 +525,81 @@ class AdminController extends BaseController {
         header('Location: /admin/etudiants');
     }
 
+    /**
+     * Affiche le formulaire de modification du mot de passe d'un étudiant
+     */
+    public function etudiantPassword($params) {
+        $this->requirePilote();
+
+        $etudiantId = $params['id'] ?? null;
+
+        if (!$etudiantId) {
+            $this->addFlashMessage('error', 'Étudiant non trouvé');
+            header('Location: /admin/etudiants');
+            return;
+        }
+
+        // Récupérer les détails de l'étudiant
+        $student = $this->studentModel->getStudentInfo($etudiantId);
+
+        if (!$student) {
+            $this->addFlashMessage('error', 'Étudiant non trouvé');
+            header('Location: /admin/etudiants');
+            return;
+        }
+
+        $this->render('admin/etudiants/reset.html.twig', [
+            'pilotePage' => true,
+            'student' => $student
+        ]);
+    }
+
+    /**
+     * Traite le formulaire de modification du mot de passe d'un étudiant
+     */
+    public function etudiantSavePassword($params) {
+        $this->requireAdmin();
+
+        $etudiantId = $params['id'] ?? null;
+
+        if (!$etudiantId) {
+            $this->addFlashMessage('error', 'Étudiant non trouvé');
+            header('Location: /admin/etudiants');
+            return;
+        }
+
+        // Récupérer les données du formulaire
+        $password = $_POST['password'] ?? '';
+        $confirmPassword = $_POST['confirm_password'] ?? '';
+
+        // Valider le mot de passe
+        if (empty($password) || $password !== $confirmPassword) {
+            $this->addFlashMessage('error', 'Les mots de passe ne correspondent pas ou sont vides');
+            header('Location: /admin/etudiants/' . $etudiantId . '/password');
+            return;
+        }
+
+        // Récupérer l'ID utilisateur de l'étudiant
+        $student = $this->studentModel->getStudentInfo($etudiantId);
+
+        if (!$student) {
+            $this->addFlashMessage('error', 'Étudiant non trouvé');
+            header('Location: /admin/etudiants');
+            return;
+        }
+
+        // Mettre à jour le mot de passe
+        $updatePassword = $this->pilotModel->updateStudentPassword($student['Id_Utilisateur'], $password);
+
+        if ($updatePassword) {
+            $this->addFlashMessage('success', 'Mot de passe mis à jour avec succès');
+            header('Location: /admin/etudiants/' . $etudiantId);
+        } else {
+            $this->addFlashMessage('error', 'Erreur lors de la mise à jour du mot de passe');
+            header('Location: /admin/etudiants/' . $etudiantId . '/password');
+        }
+    }
+
     /* ========= GESTION DES ENTREPRISES ========= */
 
     /**
