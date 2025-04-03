@@ -141,14 +141,6 @@
                     </select>
                     <div id="id_entreprise-error" class="error-message">{{ errors.id_entreprise|default('') }}</div>
                 </div>
-
-                <div class="form-group">
-                    <label for="localisation">Localisation *</label>
-                    <input type="text" id="localisation" name="localisation" class="form-control"
-                           value="{{ formData.localisation ?? (offer.Ville_Localisation ~ ', ' ~ offer.Code_Postal_Localisation) }}"
-                           placeholder="Ex: Nancy, 54000" required>
-                    <div id="localisation-error" class="error-message">{{ errors.localisation|default('') }}</div>
-                </div>
             </div>
 
             <div class="form-actions">
