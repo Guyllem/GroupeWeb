@@ -1374,7 +1374,7 @@ class PilotesController extends BaseController {
         }
 
         // Supprimer l'offre
-        $success = $this->offerModel->deleteOffer($offerId);
+        $success = $this->offerModel->delete($offerId);
 
         if ($success) {
             $this->addFlashMessage('success', 'Offre supprimée avec succès');
