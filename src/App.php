@@ -127,6 +127,7 @@ class App {
             ->get('/admin/entreprises/:id/modifier', 'Admin', 'modifierEntreprise')
             ->post('/admin/entreprises/:id/modifier', 'Admin', 'mettreAJourEntreprise')
             ->get('/admin/entreprises/:id/supprimer', 'Admin', 'supprimerEntreprise')
+            ->post('/admin/entreprises/:id/supprimer', 'Admin', 'confirmerSuppressionEntreprise')
 
             ->get('/admin/offres', 'Admin', 'offres')
             ->get('/admin/offres/:id', 'Admin', 'offreDetails')
@@ -135,6 +136,7 @@ class App {
             ->get('/admin/offres/:id/modifier', 'Admin', 'modifierOffre')
             ->post('/admin/offres/:id/modifier', 'Admin', 'mettreAJourOffre')
             ->get('/admin/offres/:id/supprimer', 'Admin', 'supprimerOffre')
+            ->post('/admin/offres/:id/supprimer', 'Admin', 'confirmerSuppressionOffre')
 
             // Routes légales
             ->get('/mentions-legales', 'Home', 'mentionsLegales')
