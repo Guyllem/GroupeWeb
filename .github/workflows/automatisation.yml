@@ -23,7 +23,7 @@ jobs:
 
       - name: Deploy to Server
         run: |
-          ssh user@ton-serveur.com << 'EOF'
+          ssh Kuybi@104.40.186.8 << 'EOF'
             if [ ! -d "/var/www/kuybi-test/GroupeWeb/.git" ]; then
               git clone --branch main https://github.com/Guyllem/GroupeWeb.git /var/www/kuybi-test/GroupeWeb/
             else
