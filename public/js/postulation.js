@@ -7,40 +7,48 @@ document.addEventListener('DOMContentLoaded', function() {
     const motivationError = document.getElementById('motivation-error');
     const submitBtn = document.getElementById('submitBtn');
 
+    // Fonction qui vérifie si les fichiers téléchargés sont valides (format PDF)
+    // et gère l'affichage des messages d'erreur et l'état du bouton de soumission
     function validateFiles() {
-    let cvValid = cvUpload.files.length > 0 && cvUpload.files[0].type === 'application/pdf';
-    let motivationValid = motivationUpload.files.length > 0 && motivationUpload.files[0].type === 'application/pdf';
+        // Vérification des types de fichiers
+        let cvValid = cvUpload.files.length > 0 && cvUpload.files[0].type === 'application/pdf';
+        let motivationValid = motivationUpload.files.length > 0 && motivationUpload.files[0].type === 'application/pdf';
 
-    if (cvUpload.files.length > 0 && !cvValid) {
-    cvError.textContent = 'Veuillez sélectionner un fichier PDF';
-} else {
-    cvError.textContent = '';
-}
+        // Gestion des messages d'erreur pour chaque fichier
+        if (cvUpload.files.length > 0 && !cvValid) {
+            cvError.textContent = 'Veuillez sélectionner un fichier PDF';
+        } else {
+            cvError.textContent = '';
+        }
 
-    if (motivationUpload.files.length > 0 && !motivationValid) {
-    motivationError.textContent = 'Veuillez sélectionner un fichier PDF';
-} else {
-    motivationError.textContent = '';
-}
+        if (motivationUpload.files.length > 0 && !motivationValid) {
+            motivationError.textContent = 'Veuillez sélectionner un fichier PDF';
+        } else {
+            motivationError.textContent = '';
+        }
 
-    submitBtn.disabled = !(cvValid && motivationValid);
-}
+        // Activation du bouton uniquement si les deux fichiers sont valides
+        submitBtn.disabled = !(cvValid && motivationValid);
+    }
 
+    // Mettre à jour l'interface lors de la sélection des fichiers
     cvUpload.addEventListener('change', function() {
-    if (this.files.length > 0) {
-    cvFileName.textContent = this.files[0].name;
-} else {
-    cvFileName.textContent = 'Aucun fichier sélectionné';
-}
-    validateFiles();
-});
+        // Affichage du nom du fichier CV sélectionné
+        if (this.files.length > 0) {
+            cvFileName.textContent = this.files[0].name;
+        } else {
+            cvFileName.textContent = 'Aucun fichier sélectionné';
+        }
+        validateFiles();
+    });
 
     motivationUpload.addEventListener('change', function() {
-    if (this.files.length > 0) {
-    motivationFileName.textContent = this.files[0].name;
-} else {
-    motivationFileName.textContent = 'Aucun fichier sélectionné';
-}
-    validateFiles();
-});
+        // Affichage du nom du fichier de lettre de motivation sélectionné
+        if (this.files.length > 0) {
+            motivationFileName.textContent = this.files[0].name;
+        } else {
+            motivationFileName.textContent = 'Aucun fichier sélectionné';
+        }
+        validateFiles();
+    });
 });

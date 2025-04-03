@@ -3,8 +3,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const validateBtn = document.querySelector('.validate-btn');
     const backBtn = document.querySelector('.back-btn');
     const ratingValue = document.querySelector('.rating-value');
-    const confirmationPopup = document.getElementById('confirmationPopup');
-    const closePopupBtn = document.querySelector('.close-popup');
 
     let selectedRating = 0;
 
@@ -51,23 +49,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Gestion du bouton valider
-    if (validateBtn) {
-        validateBtn.addEventListener('click', function() {
-            if (selectedRating > 0) {
-                // Ici, vous pouvez ajouter le code pour envoyer la note à votre backend
-                // Par exemple avec une requête AJAX ou fetch
-
-                // Simulation d'envoi (à remplacer par votre logique d'envoi réelle)
-                console.log(`Note envoyée: ${selectedRating}/5`);
-
-                // Afficher la popup de confirmation
-                if (confirmationPopup) {
-                    confirmationPopup.style.display = 'flex';
-                }
-            }
-        });
-    }
 
     // Animation sur hover des étoiles
     const starLabels = document.querySelectorAll('.star-rating label');

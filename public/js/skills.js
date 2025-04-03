@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const skillDropdown = document.getElementById("skill-dropdown");
     const skillsGrid = document.getElementById("skills-grid");
 
-    // 1. Gestion du menu déroulant
+    // Gestion du menu déroulant
     if (addSkillButton) {
         addSkillButton.addEventListener("click", function(e) {
             e.stopPropagation(); // Empêche la propagation au document
@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // 2. Fermer le dropdown si on clique ailleurs
+    // Fermer le dropdown si on clique ailleurs
     document.addEventListener("click", function(e) {
         if (skillDropdown && skillDropdown.classList.contains("active")) {
             if (!e.target.closest(".skill-dropdown-container")) {
@@ -21,7 +21,7 @@ $            }
         }
     });
 
-    // 3. Sélection d'une compétence
+    // Sélection d'une compétence
     const skillItems = document.querySelectorAll(".skill-dropdown-item");
     skillItems.forEach(item => {
         item.addEventListener("click", function() {
@@ -66,7 +66,7 @@ $            }
         });
     });
 
-    // 4. Initialiser les gestionnaires pour les boutons de suppression existants
+    // Initialiser les gestionnaires pour les boutons de suppression existants
     const deleteButtons = document.querySelectorAll(".skill-delete");
     deleteButtons.forEach(btn => {
         btn.addEventListener("click", function(e) {
