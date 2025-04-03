@@ -546,4 +546,91 @@ class StudentModel extends Model {
             return false;
         }
     }
+
+    /**
+     * Associe un étudiant à une promotion
+     *
+     * @param int $studentId ID de l'étudiant
+     * @param int $promotionId ID de la promotion
+     * @param string $startDate Date de début (format Y-m-d)
+     * @param string $endDate Date de fin (format Y-m-d)
+     * @return bool Succès de l'opération
+     */
+    public function assignToPromotion($studentId, $promotionId, $startDate, $endDate) {
+        $conn = $this->db->connect();
+
+        try {
+            // Vérifier s'il existe déjà une association
+            $stmt = $conn->prepare('
+            SELECT COUNT(*) FROM Appartenir 
+            WHERE Id_Etudiant = :studentId AND Id_Promotion = :promotionId
+        ');
+            $stmt->bindParam(':studentId', $studentId);
+            $stmt->bindParam(':promotionId', $promotionId);
+            $stmt->execute();
+
+            if ($stmt->fetchColumn() > 0) {
+                // Mettre à jour l'association existante
+                $stmt = $conn->prepare('
+                UPDATE Appartenir 
+                SET Date_Debut_Appartenir = :startDate, Date_Fin_Appartenir = :endDate
+                WHERE Id_Etudiant = :studentId AND Id_Promotion = :promotionId
+            ');
+            } else {
+                // Créer une nouvelle association
+                $stmt = $conn->prepare('
+                INSERT INTO Appartenir (Id_Etudiant, Id_Promotion, Date_Debut_Appartenir, Date_Fin_Appartenir)
+                VALUES (:studentId, :promotionId, :startDate, :endDate)
+            ');
+            }
+
+            $stmt->bindParam(':studentId', $studentId);
+            $stmt->bindParam(':promotionId', $promotionId);
+            $stmt->bindParam(':startDate', $startDate);
+            $stmt->bindParam(':endDate', $endDate);
+
+            return $stmt->execute();
+        } catch (\Exception $e) {
+            error_log($e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Récupère tous les étudiants sans filtrage par pilote
+     *
+     * @return array Liste de tous les étudiants
+     */
+    public function getAllStudents() {
+        $query = '
+        SELECT 
+            e.Id_Etudiant,
+            u.Id_Utilisateur,
+            u.Nom_Utilisateur,
+            u.Prenom_Utilisateur,
+            u.Email_Utilisateur,
+            p.Id_Promotion,
+            p.Nom_Promotion,
+            c.Id_Campus,
+            c.Nom_Campus,
+            (SELECT COUNT(*) FROM Candidature WHERE Id_Etudiant = e.Id_Etudiant) as application_count,
+            (SELECT COUNT(*) FROM Souhaiter WHERE Id_Etudiant = e.Id_Etudiant) as wishlist_count
+        FROM Etudiant e
+        JOIN Utilisateur u ON e.Id_Utilisateur = u.Id_Utilisateur
+        LEFT JOIN Appartenir a ON e.Id_Etudiant = a.Id_Etudiant
+        LEFT JOIN Promotion p ON a.Id_Promotion = p.Id_Promotion
+        LEFT JOIN Campus c ON p.Id_Campus = c.Id_Campus
+        GROUP BY 
+            e.Id_Etudiant, u.Id_Utilisateur, u.Nom_Utilisateur, u.Prenom_Utilisateur, 
+            u.Email_Utilisateur, p.Id_Promotion, p.Nom_Promotion, c.Id_Campus, c.Nom_Campus
+        ORDER BY u.Nom_Utilisateur, u.Prenom_Utilisateur
+    ';
+
+
+        $conn = $this->db->connect();
+        $stmt = $conn->prepare($query);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
