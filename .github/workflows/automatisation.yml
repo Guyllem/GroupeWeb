@@ -20,10 +20,12 @@ jobs:
           echo "${{ secrets.SSH_AZURE }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H 104.40.186.8 >> ~/.ssh/known_hosts
+          # Optional: Add configuration to prevent strict host checking
+          echo -e "Host *\n  StrictHostKeyChecking no\n  UserKnownHostsFile=/dev/null" >> ~/.ssh/config
 
       - name: Deploy to Server
         run: |
-          ssh Kuybi@104.40.186.8 << 'EOF'
+          ssh -v Kuybi@104.40.186.8 << 'EOF'
             if [ ! -d "/var/www/kuybi-test/GroupeWeb/.git" ]; then
               git clone --branch main https://github.com/Guyllem/GroupeWeb.git /var/www/kuybi-test/GroupeWeb/
             else
@@ -34,4 +36,3 @@ jobs:
             chmod +x start.sh
             ./start.sh
           EOF
-
