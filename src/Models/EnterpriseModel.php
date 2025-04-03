@@ -411,4 +411,233 @@ class EnterpriseModel extends Model {
 
         return $offers;
     }
+
+    /**
+     * Crée une nouvelle entreprise avec sa localisation et ses secteurs (format CSV)
+     *
+     * @param array $data Données de l'entreprise (nom, description, email, etc.)
+     * @param string $secteursCsv Liste des secteurs au format CSV "Informatique,Finance,Marketing"
+     * @return int|null ID de l'entreprise créée ou null en cas d'erreur
+     */
+    public function createEnterprise($data, $secteursCsv = '') {
+        $conn = $this->db->connect();
+
+        try {
+            // Démarrer une transaction
+            $conn->beginTransaction();
+
+            // 1. Créer d'abord la localisation
+            $stmtLoc = $conn->prepare('
+            INSERT INTO Localisation (Ville_Localisation, Code_Postal_Localisation, Adresse_Localisation)
+            VALUES (:ville, :codePostal, :adresse)
+        ');
+            $stmtLoc->bindParam(':ville', $data['ville']);
+            $stmtLoc->bindParam(':codePostal', $data['codePostal']);
+            $stmtLoc->bindParam(':adresse', $data['adresse']);
+            $stmtLoc->execute();
+
+            $localisationId = $conn->lastInsertId();
+
+            // 2. Créer l'entreprise avec l'ID de localisation
+            $stmtEnt = $conn->prepare('
+            INSERT INTO Entreprise (
+                Nom_Entreprise, 
+                Description_Entreprise, 
+                Email_Entreprise, 
+                Telephone_Entreprise, 
+                Effectif_Entreprise, 
+                Id_Localisation
+            )
+            VALUES (
+                :nom, 
+                :description, 
+                :email, 
+                :telephone, 
+                :effectif, 
+                :localisationId
+            )
+        ');
+            $stmtEnt->bindParam(':nom', $data['nom']);
+            $stmtEnt->bindParam(':description', $data['description']);
+            $stmtEnt->bindParam(':email', $data['email']);
+            $stmtEnt->bindParam(':telephone', $data['telephone']);
+            $stmtEnt->bindParam(':effectif', $data['effectif']);
+            $stmtEnt->bindParam(':localisationId', $localisationId);
+            $stmtEnt->execute();
+
+            $enterpriseId = $conn->lastInsertId();
+
+            // 3. Traiter la chaîne CSV des secteurs
+            if (!empty($secteursCsv)) {
+                // Découper la chaîne CSV en tableau de noms de secteurs
+                $secteurNames = array_map('trim', explode(',', $secteursCsv));
+
+                // Préparer les requêtes
+                $stmtSectorFind = $conn->prepare('SELECT Id_Secteur FROM Secteur WHERE Nom_Secteur = :sectorName');
+                $stmtSectorCreate = $conn->prepare('INSERT INTO Secteur (Nom_Secteur) VALUES (:sectorName)');
+                $stmtFournir = $conn->prepare('INSERT INTO Fournir (Id_Entreprise, Id_Secteur) VALUES (:enterpriseId, :sectorId)');
+
+                foreach ($secteurNames as $sectorName) {
+                    if (empty($sectorName)) continue;
+
+                    // Recherche du secteur par son nom
+                    $stmtSectorFind->bindParam(':sectorName', $sectorName);
+                    $stmtSectorFind->execute();
+                    $existingSector = $stmtSectorFind->fetch(PDO::FETCH_ASSOC);
+
+                    if ($existingSector) {
+                        // Si le secteur existe, récupérer son ID
+                        $sectorId = $existingSector['Id_Secteur'];
+                    } else {
+                        // Sinon, créer le secteur et récupérer son ID
+                        $stmtSectorCreate->bindParam(':sectorName', $sectorName);
+                        $stmtSectorCreate->execute();
+                        $sectorId = $conn->lastInsertId();
+                    }
+
+                    // Associer le secteur à l'entreprise
+                    $stmtFournir->bindParam(':enterpriseId', $enterpriseId);
+                    $stmtFournir->bindParam(':sectorId', $sectorId);
+                    $stmtFournir->execute();
+                }
+            }
+
+            // Valider la transaction
+            $conn->commit();
+
+            return $enterpriseId;
+        } catch (\Exception $e) {
+            // En cas d'erreur, annuler la transaction
+            $conn->rollBack();
+            error_log('Erreur lors de la création de l\'entreprise: ' . $e->getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * Met à jour une entreprise existante avec sa localisation et ses secteurs
+     *
+     * @param int $enterpriseId ID de l'entreprise à mettre à jour
+     * @param array $data Données de l'entreprise (nom, description, email, etc.)
+     * @param string $secteursCsv Liste des secteurs au format CSV
+     * @return bool Succès de l'opération
+     */
+    public function updateEnterprise($enterpriseId, $data, $secteursCsv = '') {
+        $conn = $this->db->connect();
+
+        try {
+            // Démarrer une transaction
+            $conn->beginTransaction();
+
+            // 1. Récupérer l'ID de localisation associé à l'entreprise
+            $stmt = $conn->prepare('SELECT Id_Localisation FROM Entreprise WHERE Id_Entreprise = :enterpriseId');
+            $stmt->bindParam(':enterpriseId', $enterpriseId);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if (!$result) {
+                throw new \Exception("Entreprise non trouvée");
+            }
+
+            $localisationId = $result['Id_Localisation'];
+
+            // 2. Mettre à jour la localisation
+            $stmtLoc = $conn->prepare('
+            UPDATE Localisation 
+            SET Ville_Localisation = :ville,
+                Code_Postal_Localisation = :codePostal,
+                Adresse_Localisation = :adresse
+            WHERE Id_Localisation = :localisationId
+        ');
+            $stmtLoc->bindParam(':ville', $data['ville']);
+            $stmtLoc->bindParam(':codePostal', $data['codePostal']);
+            $stmtLoc->bindParam(':adresse', $data['adresse']);
+            $stmtLoc->bindParam(':localisationId', $localisationId);
+            $stmtLoc->execute();
+
+            // 3. Mettre à jour l'entreprise
+            $stmtEnt = $conn->prepare('
+            UPDATE Entreprise 
+            SET Nom_Entreprise = :nom,
+                Description_Entreprise = :description,
+                Email_Entreprise = :email,
+                Telephone_Entreprise = :telephone,
+                Effectif_Entreprise = :effectif
+            WHERE Id_Entreprise = :enterpriseId
+        ');
+            $stmtEnt->bindParam(':nom', $data['nom']);
+            $stmtEnt->bindParam(':description', $data['description']);
+            $stmtEnt->bindParam(':email', $data['email']);
+            $stmtEnt->bindParam(':telephone', $data['telephone']);
+            $stmtEnt->bindParam(':effectif', $data['effectif']);
+            $stmtEnt->bindParam(':enterpriseId', $enterpriseId);
+            $stmtEnt->execute();
+
+            // 4. Supprimer toutes les associations de secteurs existantes
+            $stmtDeleteSectors = $conn->prepare('
+            DELETE FROM Fournir 
+            WHERE Id_Entreprise = :enterpriseId
+        ');
+            $stmtDeleteSectors->bindParam(':enterpriseId', $enterpriseId);
+            $stmtDeleteSectors->execute();
+
+            // 5. Traiter et ajouter les nouveaux secteurs
+            if (!empty($secteursCsv)) {
+                // Normaliser et découper la chaîne CSV
+                $secteurNames = array_map(function($name) {
+                    return trim($name);
+                }, explode(',', $secteursCsv));
+                $secteurNames = array_filter($secteurNames, function($name) {
+                    return !empty($name);
+                });
+
+                // Limiter le nombre de secteurs (sécurité et performance)
+                if (count($secteurNames) > 15) {
+                    $secteurNames = array_slice($secteurNames, 0, 15);
+                }
+
+                // Préparation des requêtes
+                $stmtSectorFind = $conn->prepare('SELECT Id_Secteur FROM Secteur WHERE LOWER(Nom_Secteur) = LOWER(:sectorName)');
+                $stmtSectorCreate = $conn->prepare('INSERT INTO Secteur (Nom_Secteur) VALUES (:sectorName)');
+                $stmtFournir = $conn->prepare('INSERT INTO Fournir (Id_Entreprise, Id_Secteur) VALUES (:enterpriseId, :sectorId)');
+
+                // Traitement de chaque secteur
+                foreach ($secteurNames as $sectorName) {
+                    // Recherche du secteur par son nom (insensible à la casse)
+                    $stmtSectorFind->bindParam(':sectorName', $sectorName);
+                    $stmtSectorFind->execute();
+                    $existingSector = $stmtSectorFind->fetch(PDO::FETCH_ASSOC);
+
+                    if ($existingSector) {
+                        // Si le secteur existe, récupérer son ID
+                        $sectorId = $existingSector['Id_Secteur'];
+                    } else {
+                        // Sinon, créer le secteur et récupérer son ID
+                        // Normaliser la casse (première lettre majuscule)
+                        $normalizedName = ucfirst(strtolower($sectorName));
+                        $stmtSectorCreate->bindParam(':sectorName', $normalizedName);
+                        $stmtSectorCreate->execute();
+                        $sectorId = $conn->lastInsertId();
+                    }
+
+                    // Associer le secteur à l'entreprise
+                    $stmtFournir->bindParam(':enterpriseId', $enterpriseId);
+                    $stmtFournir->bindParam(':sectorId', $sectorId);
+                    $stmtFournir->execute();
+                }
+            }
+
+            // Valider la transaction
+            $conn->commit();
+
+            return true;
+        } catch (\Exception $e) {
+            // En cas d'erreur, annuler la transaction
+            if ($conn->inTransaction()) {
+                $conn->rollBack();
+            }
+            error_log('Erreur lors de la mise à jour de l\'entreprise: ' . $e->getMessage());
+            return false;
+        }
+    }
 }
