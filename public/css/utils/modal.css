@@ -18,23 +18,18 @@
 
 /* Logout modal */
 .logout-modal {
-    position: absolute;
+    position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: #e8eaf6;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
-    width: 80%;
-    max-width: 1000px;
-    max-height: 80%;
+    background-color: #ffffff;
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    max-width: 550px;
+    width: 90%;
     text-align: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    z-index: 1050;
 }
 
 /* ====== INFORMATIONS ENTREPRISE ====== */
@@ -145,36 +140,55 @@
 
 .logout-buttons {
     display: flex;
-    margin: 30px 0;
-    width: 75%;
-    font-size: 1.5rem;
-    gap: 30px;
+    gap: 1rem;
+    width: 100%;
+    margin: 1.5rem 0 0 0;
 }
 
+
 .btn-rester, .btn-deconnecter {
-    padding: 12px 20px;
-    border-radius: 5px;
-    text-decoration: none;
+    padding: 0.85rem 1.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
     font-weight: 500;
     flex: 1;
     text-align: center;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    border: none;
 }
 
 .btn-rester {
-    background-color: #3F51B5;
-    color: white;
+    background-color: #eef0fb;
+    color: #3F51B5;
 }
 
 .btn-deconnecter {
-    background-color: #ff5252;
+    background-color: #f84f57;
     color: white;
 }
 
-.btn-rester:hover, .btn-deconnecter:hover {
-    transform: scale(1.05);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+.btn-rester:hover {
+    background-color: #dce0f8;
 }
+
+.btn-deconnecter:hover {
+    background-color: #e6323b;
+}
+
+
+.confirmation-text {
+    color: #555555;
+    margin-bottom: 2rem;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.confirmation-text strong {
+    color: #3F51B5;
+    font-weight: 600;
+}
+
 
 .submit-btn {
     display: inline-block;
@@ -191,6 +205,8 @@
     transition: all 0.3s ease;
 }
 
+
+
 .submit-btn:hover {
     transform: scale(1.05);
     box-shadow: 0.5rem 0.5rem 0.5rem rgba(0, 0, 0, 0.3);
@@ -198,10 +214,11 @@
 
 /* ====== ÉLÉMENTS D'INTERFACE ====== */
 .logout-modal h2 {
-    margin-top: 0;
-    margin-bottom: 30px;
-    font-size: 2rem;
-    color: #000;
+    margin: 0 0 1.5rem 0;
+    font-size: 1.75rem;
+    color: #333333;
+    font-weight: 600;
+    line-height: 1.3;
 }
 
 .checkbox-form {
@@ -304,6 +321,11 @@
     top: 15%;
 }
 
+
+
+
+
+
 /* ====== RESPONSIVE DESIGN ====== */
 @media (max-width: 768px) {
     .submit-btn {
@@ -322,17 +344,8 @@
         width: 80%;
     }
 
-    .logout-modal {
-        width: 90%;
-        padding: 20px;
-    }
-
-    .logout-buttons {
-        flex-direction: column;
-    }
-
     .btn-rester, .btn-deconnecter {
-        margin-bottom: 10px;
+        margin-bottom: 0.5rem;
     }
 
     .rate-container {
