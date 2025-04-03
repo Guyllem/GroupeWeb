@@ -146,3 +146,165 @@
 .skill-delete:hover {
     background-color: rgba(255, 255, 255, 0.4);
 }
+
+/* Media Queries pour le menu déroulant des compétences
+ * Optimisation responsive selon les points de rupture standard */
+
+/* Grand écran (défaut) - Déjà défini dans le CSS principal */
+
+/* Tablettes et petits écrans (992px et moins) */
+@media (max-width: 992px) {
+    .skill-dropdown-container {
+        max-width: 100%;
+    }
+
+    .skills-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+
+    .add-skill-button {
+        padding: 10px 16px;
+        font-size: 15px;
+    }
+
+    .skill-dropdown {
+        max-height: 220px;
+    }
+}
+
+/* Tablettes en mode portrait et smartphones larges (768px et moins) */
+@media (max-width: 768px) {
+    .skills-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+
+    .skill-badge {
+        padding: 8px 10px;
+        font-size: 13px;
+    }
+
+    .skill-dropdown {
+        max-height: 200px;
+        border-radius: 6px;
+    }
+
+    .skill-dropdown-item {
+        padding: 9px 14px;
+        font-size: 13px;
+    }
+
+    /* Ajustement pour éviter que le dropdown soit coupé par le bas de l'écran */
+    .skill-dropdown-container {
+        position: static;
+        margin-bottom: 20px;
+    }
+
+    .skill-dropdown {
+        position: relative;
+        top: 0;
+        margin-top: 8px;
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+    }
+}
+
+/* Smartphones (576px et moins) */
+@media (max-width: 576px) {
+    .skills-section {
+        padding: 5px;
+    }
+
+    .skills-grid {
+        grid-template-columns: repeat(1, 1fr);
+        gap: 8px;
+    }
+
+    .skill-badge {
+        padding: 8px 12px;
+        font-size: 14px;
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    /* Ajuster position du menu pour les petits écrans */
+    .skill-dropdown-container {
+        margin-bottom: 30px;
+    }
+
+    .add-skill-button {
+        padding: 12px 16px;
+        font-size: 15px;
+        text-align: center;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .skill-add-icon {
+        margin-right: 8px;
+        font-size: 18px;
+        line-height: 1;
+    }
+
+    /* Améliorer l'interaction tactile */
+    .skill-dropdown-item {
+        padding: 12px 16px; /* Zones de toucher plus grandes */
+        font-size: 14px;
+    }
+
+    .skill-delete {
+        width: 24px; /* Plus grand pour faciliter le toucher */
+        height: 24px;
+        font-size: 16px;
+    }
+}
+
+/* Petits smartphones (375px et moins) */
+@media (max-width: 375px) {
+    .skills-section {
+        padding: 2px;
+    }
+
+    .skills-title {
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+
+    .skill-badge {
+        font-size: 13px;
+    }
+
+    .add-skill-button {
+        padding: 10px 12px;
+        font-size: 14px;
+    }
+
+    /* Assurer que le menu déroulant reste utilisable */
+    .skill-dropdown {
+        max-height: 180px;
+    }
+
+    .skill-dropdown-item {
+        padding: 10px 14px;
+    }
+}
+
+/* Fix spécifique pour éviter les problèmes sur les écrans très petits */
+@media (max-width: 320px) {
+    .skill-badge {
+        font-size: 12px;
+        padding: 6px 10px;
+    }
+
+    .skill-delete {
+        width: 20px;
+        height: 20px;
+    }
+
+    .skill-dropdown-item {
+        padding: 10px 12px;
+        font-size: 13px;
+    }
+}
