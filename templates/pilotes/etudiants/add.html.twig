@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StageConnect - Ajouter un Étudiant</title>
+    <link rel="stylesheet" href="{{ asset('css/flash-messages.css') }}">
     <link rel="stylesheet" href="{{ asset('css/styles_page_pilote.css') }}">
     <link rel="stylesheet" href="{{ asset('css/modal.css') }}">
 </head>
@@ -17,7 +18,7 @@
             <span class="arrow">←</span> Retour
         </a>
         <h2 class="form-title">Ajouter un nouvel élève</h2>
-        <form id="add-student-form" action="{{ url('pilotes/etudiants/ajouter') }}" method="post" novalidate>
+        <form id="add-student-form" action="{{ url('pilotes/etudiants/ajouter') }}" method="post">
             <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
 
             <div class="form-row">
