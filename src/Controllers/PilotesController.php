@@ -108,7 +108,25 @@ class PilotesController extends BaseController {
 
     public function ajouterEtudiant() {
         $this->requirePilote();
-        // Afficher le formulaire d'ajout d'étudiant
+
+        // Récupérer le pilote actuel
+        $userId = $_SESSION['user_id'];
+        $pilotId = $this->pilotModel->getPilotIdFromUserId($userId);
+
+        if (!$pilotId) {
+            $this->addFlashMessage('error', 'Erreur d\'identification du pilote');
+            header('Location: /pilotes');
+            exit;
+        }
+
+        // Instancier les modèles de données
+        $campusModel = new CampusModel($this->db);
+
+        // Récupérer uniquement les promotions supervisées par ce pilote
+        $promotions = $this->pilotModel->getSupervisedPromotions($pilotId);
+
+        // Récupérer tous les campus (ou filtrer également selon les campus des promotions)
+        $campus = $campusModel->getAllCampus();
 
         // Générer le token CSRF pour le formulaire
         if (!isset($_SESSION['csrf_token'])) {
@@ -117,7 +135,9 @@ class PilotesController extends BaseController {
 
         $this->render('pilotes/etudiants/add.html.twig', [
             'pilotePage' => true,
-            'csrf_token' => $_SESSION['csrf_token']
+            'csrf_token' => $_SESSION['csrf_token'],
+            'promotions' => $promotions,
+            'campus' => $campus
         ]);
     }
 
@@ -133,6 +153,16 @@ class PilotesController extends BaseController {
     public function modifierEtudiant($params) {
         $this->requirePilote();
 
+        // Récupérer le pilote actuel
+        $userId = $_SESSION['user_id'];
+        $pilotId = $this->pilotModel->getPilotIdFromUserId($userId);
+
+        if (!$pilotId) {
+            $this->addFlashMessage('error', 'Erreur d\'identification du pilote');
+            header('Location: /pilotes');
+            exit;
+        }
+
         $etudiantId = $params['id'] ?? null;
 
         if (!$etudiantId) {
@@ -141,14 +171,23 @@ class PilotesController extends BaseController {
             return;
         }
 
-        // Récupérer les détails de l'étudiant
-        $student = $this->studentModel->getStudentInfo($etudiantId);
+        // Récupérer les données complètes de l'étudiant via le modèle
+        $student = $this->studentModel->getStudentAcademicInfo($etudiantId);
 
         if (!$student) {
             $this->addFlashMessage('error', 'Étudiant non trouvé');
             header('Location: /pilotes/etudiants');
             return;
         }
+
+        // Instancier les modèles de données
+        $campusModel = new CampusModel($this->db);
+
+        // Récupérer uniquement les promotions supervisées par ce pilote
+        $promotions = $this->pilotModel->getSupervisedPromotions($pilotId);
+
+        // Récupérer tous les campus (ou filtrer également selon les campus des promotions)
+        $campus = $campusModel->getAllCampus();
 
         // Générer le token CSRF pour le formulaire
         if (!isset($_SESSION['csrf_token'])) {
@@ -161,7 +200,9 @@ class PilotesController extends BaseController {
         $this->render('pilotes/etudiants/edit.html.twig', [
             'pilotePage' => true,
             'student' => $student,
-            'csrf_token' => $_SESSION['csrf_token']
+            'csrf_token' => $_SESSION['csrf_token'],
+            'promotions' => $promotions,
+            'campus' => $campus
         ]);
     }
 
