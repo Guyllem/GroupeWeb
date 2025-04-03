@@ -3,37 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StageConnect - Gestion des Entreprises</title>
+    <title>StageConnect - Gestion des Étudiants</title>
     <link rel="stylesheet" href="{{ asset('css/pilote/main.css') }}">
 </head>
 <body>
 {% set responsiveFilter = true %}
-{% set adminPage = true %}
+{% set pilotePage = true %}
 {% include 'partials/navbar-pilote.html.twig' %}
 
 <div class="slide-filter" id="slide-filter">
     <div class="slide-filter-content">
         <h3>Filtres</h3>
         <div class="slide-filter-section">
-            <h4>Localisation :</h4>
-            <input type="text" placeholder="Ville, Code Postal, Département, Région" class="input-location">
-        </div>
-        <div class="slide-filter-section">
-            <h4>Secteur :</h4>
-            <input type="text" placeholder="Informatique, BTP, Industrie" class="input-skills">
-        </div>
-        <div class="slide-filter-section">
-            <h4>Nombres d'offres :</h4>
-            <div class="slide-radio-group">
-                <label><input type="radio" name="sort"> Croissant</label>
-                <label><input type="radio" name="sort"> Décroissant</label>
+            <h4>Campus :</h4>
+            <div class="dropdown">
+                <button class="dropdown-toggle">Choisir ↓</button>
+                <div class="dropdown-menu">
+                    <a href="#" class="dropdown-item" data-value="Nancy">Nancy</a>
+                    <a href="#" class="dropdown-item" data-value="Metz">Metz</a>
+                    <a href="#" class="dropdown-item" data-value="Listembourg">Listembourg</a>
+                </div>
             </div>
         </div>
         <div class="slide-filter-section">
-            <h4>Popularité :</h4>
-            <div class="slide-radio-group">
-                <label><input type="radio" name="sort"> Croissant</label>
-                <label><input type="radio" name="sort"> Décroissant</label>
+            <h4>Classe :</h4>
+            <div class="dropdown">
+                <button class="dropdown-toggle">Choisir ↓</button>
+                <div class="dropdown-menu">
+                    <a href="#" class="dropdown-item" data-value="A1">A1</a>
+                    <a href="#" class="dropdown-item" data-value="A2 Info">A2 Info</a>
+                    <a href="#" class="dropdown-item" data-value="A2 Géné">A2 Géné</a>
+                </div>
+            </div>
+        </div>
+        <div class="slide-filter-section">
+            <h4>Nombres d'offres postulées :</h4>
+            <h5> Min: <input type="text" placeholder="0" class="input-min"> </h5>
+            <h5> Max : <input type="text" placeholder="10" class="input-max"> </h5>
+        </div>
+        <div class="slide-filter-section">
+            <h4>Nombres d'offres en wishlist :</h4>
+            <div class="duration-inputs">
+                <h5> Min : <input type="text" placeholder="0" class="input-min"> </h5>
+                <h5> Max : <input type="text" placeholder="15" class="input-max"> </h5>
             </div>
         </div>
         <button class="slide-apply-btn">Appliquer</button>
@@ -46,25 +58,37 @@
         <h3>Filtres</h3>
         <div class="filter-sections-container">
             <div class="filter-section">
-                <h4>Localisation :</h4>
-                <input type="text" placeholder="Ville, Code Postal, Département, Région" class="input-location">
-            </div>
-            <div class="filter-section">
-                <h4>Secteur :</h4>
-                <input type="text" placeholder="Informatique, BTP, Industrie" class="input-skills">
-            </div>
-            <div class="filter-section">
-                <h4>Nombres d'offres :</h4>
-                <div class="radio-group">
-                    <label><input type="radio" name="sort"> Croissant</label>
-                    <label><input type="radio" name="sort"> Décroissant</label>
+                <h4>Campus :</h4>
+                <div class="dropdown">
+                    <button class="dropdown-toggle">Choisir ↓</button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-item" data-value="Nancy">Nancy</div>
+                        <div class="dropdown-item" data-value="Metz">Metz</div>
+                        <div class="dropdown-item" data-value="Listembourg">Listembourg</div>
+                    </div>
                 </div>
             </div>
             <div class="filter-section">
-                <h4>Popularité :</h4>
-                <div class="radio-group">
-                    <label><input type="radio" name="sort"> Croissant</label>
-                    <label><input type="radio" name="sort"> Décroissant</label>
+                <h4>Classe :</h4>
+                <div class="dropdown">
+                    <button class="dropdown-toggle">Choisir ↓</button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-item" data-value="A1">A1</div>
+                        <div class="dropdown-item" data-value="A2 Info">A2 Info</div>
+                        <div class="dropdown-item" data-value="A2 Géné">A2 Géné</div>
+                    </div>
+                </div>
+            </div>
+            <div class="filter-section">
+                <h4>Nombres d'offres postulées :</h4>
+                <h5> Min: <input type="text" placeholder="0" class="input-min"> </h5>
+                <h5> Max : <input type="text" placeholder="10" class="input-max"> </h5>
+            </div>
+            <div class="filter-section">
+                <h4>Nombres d'offres en wishlist :</h4>
+                <div class="duration-inputs">
+                    <h5> Min : <input type="text" placeholder="0" class="input-min"> </h5>
+                    <h5> Max : <input type="text" placeholder="15" class="input-max"> </h5>
                 </div>
             </div>
             <button class="apply-btn">Appliquer</button>
@@ -74,40 +98,40 @@
     <div class="main-content-gestion">
         <div class="add-header">
             <input placeholder="Search..." class="search-input" name="search" type="search"/>
-            <a href="{{ url('pilotes/entreprises/ajouter') }}" class="add-something">Ajouter une nouvelle entreprise
+            <a href="{{ url('pilotes/etudiants/ajouter') }}" class="add-something">Ajouter un nouvel élève
                 <div class="plus-icon">+</div>
             </a>
         </div>
 
-        {% if enterprises|length > 0 %}
-            {% for enterprise in enterprises %}
-                <div class="pilote-card-entreprise">
-                    <div class="pilote-card-header">
-                        <div class="pilote-company-name">{{ enterprise.Nom_Entreprise }}</div>
-                        <div class="pilote-tags-container">
-                            {% for tag in enterprise.tags %}
-                                <div class="pilote-tag">{{ tag.Nom_Secteur }}</div>
-                            {% endfor %}
+        {% if students|length > 0 %}
+            {% for student in students %}
+                <div class="card-student">
+                    <div class="card-student-header">
+                        <div class="name-student">
+                            <h3>{{ student.Nom_Utilisateur }} {{ student.Prenom_Utilisateur }}</h3>
+                        </div>
+                        <div class="location-info">
+                            <div class="promotion-student">{{ student.Nom_Promotion }} - {{ student.Nom_Campus|default('Non assigné') }}</div>
                         </div>
                     </div>
-
-                    <div class="pilote-description">
-                        {{ enterprise.Description_Entreprise|length > 200 ? enterprise.Description_Entreprise|slice(0, 200) ~ '...' : enterprise.Description_Entreprise }}
-                    </div>
-
-                    <div class="pilote-card-footer">
-                        <div class="pilote-offres-count">
-                            Nombre d'offres publiées : {{ enterprise.offer_count|default('0') }}
-                            <br>
-                            Evaluation actuelle : {{ enterprise.rating|default('0')|number_format(1) }} étoiles
+                    <div class="card-student-footer">
+                        <div class="stats-student">
+                            <div class="stat-item-student">
+                                <span>nombre offre postulé : {{ student.application_count|default('0') }}</span>
+                            </div>
+                            <div class="stat-item-student">
+                                <span>nombre offre en wishlist : {{ student.wishlist_count|default('0') }}</span>
+                            </div>
                         </div>
-                        <a href="{{ url('pilotes/entreprises/' ~ enterprise.Id_Entreprise) }}" class="pilote-view-btn">Regarder</a>
+                        <div class="actions-student">
+                            <a href="{{ url('/pilotes/etudiants/' ~ student.Id_Etudiant) }}" class="view-btn-student">Regarder</a>
+                        </div>
                     </div>
                 </div>
             {% endfor %}
         {% else %}
-            <div class="no-results">
-                <p>Aucune entreprise trouvée. Veuillez modifier vos critères de recherche ou ajouter une nouvelle entreprise.</p>
+            <div class="no-students">
+                <p>Aucun étudiant trouvé.</p>
             </div>
         {% endif %}
     </div>
@@ -115,5 +139,6 @@
 
 {% include 'partials/footer.html.twig' %}
 <script src="{{ asset('js/navigation.js') }}"></script>
+<script src="{{ asset('js/flash-messages.js') }}"></script>
 </body>
 </html>
