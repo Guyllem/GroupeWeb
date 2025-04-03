@@ -3,90 +3,156 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StageConnect - Modifier une entreprise</title>
+    <title>StageConnect - Modifier l'offre</title>
     <link rel="stylesheet" href="{{ asset('css/pilote/main.css') }}">
 </head>
 <body>
-{% set adminPage = true %}
+{% set pilotePage = true %}
 {% include 'partials/navbar-pilote.html.twig' %}
 
 <main>
     <div class="form-container">
-        <a href="{{ url('pilotes/entreprises/' ~ enterprise.Id_Entreprise) }}" class="btn-return">
+        <a href="{{ url('pilotes/offres/' ~ offer.Id_Offre) }}" class="btn-return">
             <span class="arrow">←</span> Retour
         </a>
-        <h2 class="form-title">Modifier l'entreprise</h2>
+        <h2 class="form-title">Modifier l'offre de stage</h2>
 
-        <form id="edit-enterprise-form" method="post" action="{{ url('pilotes/entreprises/' ~ enterprise.Id_Entreprise ~ '/modifier') }}" novalidate>
+        <form id="edit-offre-form" method="post" action="{{ url('pilotes/offres/' ~ offer.Id_Offre ~ '/modifier') }}">
             <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
 
             <div class="form-group">
-                <label for="nom" class="form-label">Nom de l'entreprise *</label>
-                <input type="text" id="nom" name="nom" class="form-input" required value="{{ enterprise.Nom_Entreprise }}">
-                <div id="nom-error" class="form-error"></div>
+                <label for="titre">Titre de l'offre *</label>
+                <input type="text" id="titre" name="titre" class="form-control"
+                       placeholder="Ex: Développeur Full-Stack"
+                       value="{{ formData.titre ?? offer.Titre_Offre }}" required>
+                <div id="titre-error" class="error-message">{{ errors.titre|default('') }}</div>
             </div>
 
             <div class="form-group">
-                <label for="email" class="form-label">Adresse email *</label>
-                <input type="email" id="email" name="email" class="form-input" required value="{{ enterprise.Email_Entreprise }}">
-                <div id="email-error" class="form-error"></div>
-            </div>
-
-            <div class="form-group">
-                <label for="telephone" class="form-label">Numéro de téléphone</label>
-                <input type="tel" id="telephone" name="telephone" class="form-input" value="{{ enterprise.Telephone_Entreprise }}">
-                <div id="telephone-error" class="form-error"></div>
-            </div>
-
-            <div class="form-group">
-                <label for="effectif" class="form-label">Effectif</label>
-                <input type="number" id="effectif" name="effectif" class="form-input" min="1" value="{{ enterprise.Effectif_Entreprise }}">
-                <div id="effectif-error" class="form-error"></div>
+                <label for="description">Description de l'offre *</label>
+                <div class="textarea-container">
+                    <textarea id="description" name="description" class="form-control"
+                              placeholder="Décrivez les missions, responsabilités et objectifs du stage"
+                              maxlength="1000" required>{{ formData.description ?? offer.Description_Offre }}</textarea>
+                    <div class="char-count">
+                        <span id="char-count">{{ (formData.description ?? offer.Description_Offre)|length }}</span>/1000
+                    </div>
+                </div>
+                <div id="description-error" class="error-message">{{ errors.description|default('') }}</div>
             </div>
 
             <div class="form-row">
-                <div class="form-column">
-                    <div class="form-group">
-                        <label for="ville" class="form-label">Ville *</label>
-                        <input type="text" id="ville" name="ville" class="form-input" required value="{{ enterprise.Ville_Localisation }}">
-                        <div id="ville-error" class="form-error"></div>
-                    </div>
+                <div class="form-group">
+                    <label for="remuneration">Rémunération mensuelle (€) *</label>
+                    <input type="number" id="remuneration" name="remuneration" class="form-control"
+                           placeholder="Ex: 600" min="0" step="0.01"
+                           value="{{ formData.remuneration ?? offer.Remuneration_Offre }}" required>
+                    <div id="remuneration-error" class="error-message">{{ errors.remuneration|default('') }}</div>
                 </div>
-                <div class="form-column">
-                    <div class="form-group">
-                        <label for="code_postal" class="form-label">Code postal *</label>
-                        <input type="text" id="code_postal" name="code_postal" class="form-input" required value="{{ enterprise.Code_Postal_Localisation }}">
-                        <div id="code_postal-error" class="form-error"></div>
-                    </div>
+
+                <div class="form-group">
+                    <label for="niveau_requis">Niveau d'étude requis *</label>
+                    <select id="niveau_requis" name="niveau_requis" class="form-control" required>
+                        <option value="">Sélectionner un niveau</option>
+                        {% set niveaux = ['Bac+1', 'Bac+2', 'Bac+3', 'Bac+4', 'Bac+5'] %}
+                        {% for niveau in niveaux %}
+                            <option value="{{ niveau }}"
+                                    {% if formData.niveau_requis is defined %}
+                                {% if formData.niveau_requis == niveau %}selected{% endif %}
+                            {% elseif offer.Niveau_Requis_Offre == niveau %}
+                                selected
+                                    {% endif %}>
+                                {{ niveau }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                    <div id="niveau_requis-error" class="error-message">{{ errors.niveau_requis|default('') }}</div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="date_debut">Date de début *</label>
+                    <input type="date" id="date_debut" name="date_debut" class="form-control"
+                           value="{{ formData.date_debut ?? offer.Date_Debut_Offre|date('Y-m-d') }}" required>
+                    <div id="date_debut-error" class="error-message">{{ errors.date_debut|default('') }}</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="duree_min">Durée minimale (semaines) *</label>
+                    <input type="number" id="duree_min" name="duree_min" class="form-control"
+                           placeholder="Ex: 8" min="1"
+                           value="{{ formData.duree_min ?? offer.Duree_Min_Offre }}" required>
+                    <div id="duree_min-error" class="error-message">{{ errors.duree_min|default('') }}</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="duree_max">Durée maximale (semaines)</label>
+                    <input type="number" id="duree_max" name="duree_max" class="form-control"
+                           placeholder="Ex: 16" min="1"
+                           value="{{ formData.duree_max ?? offer.Duree_Max_Offre }}">
+                    <div id="duree_max-error" class="error-message">{{ errors.duree_max|default('') }}</div>
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="adresse" class="form-label">Adresse</label>
-                <input type="text" id="adresse" name="adresse" class="form-input" value="{{ enterprise.Adresse_Localisation }}">
-                <div id="adresse-error" class="form-error"></div>
-            </div>
-
-            <div class="form-group">
-                <label for="secteurs" class="form-label">Secteurs d'activité</label>
-                <input type="text" id="secteurs" name="secteurs" class="form-input"
-                       value="{% for tag in enterprise.tags %}{{ tag.Nom_Secteur }}{% if not loop.last %}, {% endif %}{% endfor %}">
-                <div id="secteurs-error" class="form-error"></div>
-                <p><i>Saisissez les secteurs d'activité séparés par des virgules.</i></p>
-            </div>
-
-            <div class="form-group">
-                <label for="description" class="form-label">Description de l'entreprise</label>
-                <div class="textarea-container">
-                    <textarea id="description" name="description" class="form-input" rows="5" maxlength="1000">{{ enterprise.Description_Entreprise }}</textarea>
-                    <div class="char-count"><span id="char-count">{{ enterprise.Description_Entreprise|length }}</span>/1000</div>
+                <label for="competences">Compétences requises *</label>
+                <select id="competences" name="competences[]" class="form-control" multiple required>
+                    {% for competence in competences %}
+                        <option value="{{ competence.Id_Competence }}"
+                                {% if formData.competences is defined and competence.Id_Competence in formData.competences %}
+                        selected
+                        {% elseif competence.Id_Competence in selected_competences %}
+                            selected
+                                {% endif %}>
+                            {{ competence.Nom_Competence }}
+                        </option>
+                    {% endfor %}
+                </select>
+                <div id="selected-skills" class="selected-skills">
+                    {% for competence in competences %}
+                        {% if competence.Id_Competence in selected_competences %}
+                            <div class="skill-tag">
+                                {{ competence.Nom_Competence }}
+                                <button type="button" class="remove-skill" data-id="{{ competence.Id_Competence }}">×</button>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
                 </div>
-                <div id="description-error" class="form-error"></div>
+                <div id="competences-error" class="error-message">{{ errors.competences|default('') }}</div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="id_entreprise">Entreprise associée *</label>
+                    <select id="id_entreprise" name="id_entreprise" class="form-control" required>
+                        <option value="">Sélectionner une entreprise</option>
+                        {% for entreprise in enterprises %}
+                            <option value="{{ entreprise.Id_Entreprise }}"
+                                    {% if formData.id_entreprise is defined %}
+                                {% if formData.id_entreprise == entreprise.Id_Entreprise %}selected{% endif %}
+                            {% elseif entreprise.Id_Entreprise == offer.Id_Entreprise %}
+                                selected
+                                    {% endif %}>
+                                {{ entreprise.Nom_Entreprise }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                    <div id="id_entreprise-error" class="error-message">{{ errors.id_entreprise|default('') }}</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="localisation">Localisation de l'entreprise</label>
+                    <input type="text" id="localisation" name="localisation" class="form-control"
+                           value="{{ offer.Ville_Localisation ~ ', ' ~ offer.Code_Postal_Localisation }}"
+                           readonly>
+                    <div class="info-text">La localisation est associée à l'entreprise sélectionnée.</div>
+                </div>
             </div>
 
             <div class="form-actions">
-                <a href="{{ url('pilotes/entreprises/' ~ enterprise.Id_Entreprise) }}" class="btn btn-back">Annuler</a>
-                <button type="submit" class="btn btn-submit" id="submit-btn">Enregistrer les modifications</button>
+                <a href="{{ url('pilotes/offres/' ~ offer.Id_Offre) }}" class="btn btn-back">Annuler</a>
+                <button type="submit" id="submit-btn" class="btn btn-submit">Enregistrer les modifications</button>
             </div>
         </form>
     </div>
@@ -94,6 +160,47 @@
 
 {% include 'partials/footer.html.twig' %}
 <script src="{{ asset('js/navigation.js') }}"></script>
-<script src="{{ asset('js/forms/form_entreprise.js') }}"></script>
+<script src="{{ asset('js/forms/form_offre.js') }}"></script>
+
+<script>
+    // Script pour mettre à jour le compteur de caractères de la description
+    document.addEventListener('DOMContentLoaded', function() {
+        const description = document.getElementById('description');
+        const charCount = document.getElementById('char-count');
+
+        if (description && charCount) {
+            // Initialiser le compteur
+            charCount.textContent = description.value.length;
+
+            // Mettre à jour le compteur lors de la saisie
+            description.addEventListener('input', function() {
+                charCount.textContent = this.value.length;
+            });
+        }
+
+        // Script pour gérer la mise à jour dynamique de la localisation
+        const entrepriseSelect = document.getElementById('id_entreprise');
+        const localisationInput = document.getElementById('localisation');
+
+        if (entrepriseSelect && localisationInput) {
+            // Préparer un objet avec les données de localisation des entreprises
+            const entrepriseLocalisations = {
+                {% for entreprise in enterprises %}
+                "{{ entreprise.Id_Entreprise }}": "{{ entreprise.Ville_Localisation|default('') ~ ', ' ~ entreprise.Code_Postal_Localisation|default('') }}",
+                {% endfor %}
+            };
+
+            // Mettre à jour la localisation lors du changement d'entreprise
+            entrepriseSelect.addEventListener('change', function() {
+                const selectedId = this.value;
+                if (selectedId && entrepriseLocalisations[selectedId]) {
+                    localisationInput.value = entrepriseLocalisations[selectedId];
+                } else {
+                    localisationInput.value = '';
+                }
+            });
+        }
+    });
+</script>
 </body>
 </html>

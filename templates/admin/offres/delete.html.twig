@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StageConnect - Confirmation de suppression d'entreprise</title>
-    <link rel="stylesheet" href="{{ asset('css/pilote/main.css') }}">
+    <title>StageConnect - Confirmation de suppression d'offre</title>
     <link rel="stylesheet" href="{{ asset('css/utils/modal.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/pilote/main.css') }}">
 </head>
 <body>
-{% set adminPage = true %}
+{% set pilotePage = true %}
 {% include 'partials/navbar-pilote.html.twig' %}
 
 <main>
     <div class="logout-modal">
-        <h2>Voulez-vous réellement supprimer cette entreprise ?</h2>
-        <p class="confirmation-text">Cette action est irréversible. Toutes les données de <strong>{{ enterprise.Nom_Entreprise }}</strong> seront définitivement supprimées.</p>
+        <h2>Voulez-vous réellement supprimer cette offre ?</h2>
+        <p class="confirmation-text">Cette action est irréversible. Toutes les données de l'offre <strong>{{ offer.Titre_Offre }}</strong> seront définitivement supprimées.</p>
         <div class="logout-buttons">
-            <a class="btn-rester" href="{{ url('pilotes/entreprises/' ~ enterprise.Id_Entreprise) }}">Non</a>
-            <form action="{{ url('pilotes/entreprises/' ~ enterprise.Id_Entreprise ~ '/supprimer') }}" method="post" style="display: inline;">
+            <a class="btn-rester" href="{{ url('pilotes/offres/' ~ offer.Id_Offre) }}">Non</a>
+            <form action="{{ url('pilotes/offres/' ~ offer.Id_Offre ~ '/supprimer') }}" method="post" style="display: inline;">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                 <button type="submit" class="btn-deconnecter">Oui</button>
             </form>
