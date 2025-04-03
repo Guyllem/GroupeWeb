@@ -1320,36 +1320,195 @@ class PilotesController extends BaseController {
         echo $this->twig->render('pilotes/offres/edit.html.twig', $templateData);
     }
 
+    /**
+     * Traite le formulaire de modification d'une offre avec feedback précis via flash messages
+     *
+     * @param array $params Paramètres de la route (contient l'ID de l'offre)
+     * @return void
+     */
     public function mettreAJourOffre($params) {
         $this->requirePilote();
 
-        $offerId = $params['id'] ?? null;
-
+        // Validation de l'identifiant avec typage strict
+        $offerId = filter_var($params['id'] ?? 0, FILTER_VALIDATE_INT);
         if (!$offerId) {
-            $this->addFlashMessage('error', 'Offre non trouvée');
+            $this->addFlashMessage('error', 'ID d\'offre invalide ou manquant dans les paramètres de route');
             header('Location: /pilotes/offres');
             return;
         }
 
-        // Récupérer les données du formulaire
-        $titre = $_POST['titre'] ?? '';
-        $description = $_POST['description'] ?? '';
-        $remuneration = (int)($_POST['remuneration'] ?? 0);
-        $niveauRequis = $_POST['niveau_requis'] ?? '';
-        $dateDebut = $_POST['date_debut'] ?? '';
-        $dureeMin = (int)($_POST['duree_min'] ?? 0);
-        $dureeMax = (int)($_POST['duree_max'] ?? 0);
-        $idEntreprise = (int)($_POST['id_entreprise'] ?? 0);
-        $competences = $_POST['competences'] ?? [];
+        // Récupération de l'entité avec vérification d'existence
+        $existingOffer = $this->offerModel->getOfferDetails($offerId);
+        if (!$existingOffer) {
+            $this->addFlashMessage('error', 'L\'offre #' . $offerId . ' n\'existe pas ou a été supprimée');
+            header('Location: /pilotes/offres');
+            return;
+        }
 
-        // Validation des données
-        if (empty($titre) || empty($dateDebut) || $idEntreprise <= 0) {
-            $this->addFlashMessage('error', 'Veuillez remplir tous les champs obligatoires');
+        // Vérification CSRF avec contexte explicite
+        if (!isset($_POST['csrf_token']) || !SecurityUtil::verifyCsrfToken($_POST['csrf_token'])) {
+            $this->addFlashMessage('error', 'Token CSRF invalide - Possible tentative de falsification de requête ou session expirée');
             header('Location: /pilotes/offres/' . $offerId . '/modifier');
             return;
         }
 
-        // Mettre à jour l'offre
+        // Collecte et assainissement des données avec vérifications avancées
+        $hasErrors = false;
+
+        // Titre - Validation sémantique et sanitization
+        $titre = SecurityUtil::sanitizeInput($_POST['titre'] ?? '');
+        if (empty($titre)) {
+            $this->addFlashMessage('error', 'Titre: Le champ est obligatoire');
+            $hasErrors = true;
+        } elseif (strlen($titre) < 3) {
+            $this->addFlashMessage('error', 'Titre: Minimum 3 caractères requis (actuellement ' . strlen($titre) . ')');
+            $hasErrors = true;
+        } elseif (strlen($titre) > 100) {
+            $this->addFlashMessage('error', 'Titre: Maximum 100 caractères autorisés (actuellement ' . strlen($titre) . ')');
+            $hasErrors = true;
+        }
+
+        // Description - Contrôle de longueur et pertinence
+        $description = SecurityUtil::sanitizeInput($_POST['description'] ?? '');
+        if (empty($description)) {
+            $this->addFlashMessage('error', 'Description: Le champ est obligatoire');
+            $hasErrors = true;
+        } elseif (strlen($description) < 30) {
+            $this->addFlashMessage('error', 'Description: Minimum 30 caractères requis pour une description pertinente');
+            $hasErrors = true;
+        } elseif (strlen($description) > 1000) {
+            $this->addFlashMessage('error', 'Description: Maximum 1000 caractères autorisés');
+            $hasErrors = true;
+        }
+
+        // Rémunération - Validation numérique avec plages acceptables
+        $remuneration = filter_var($_POST['remuneration'] ?? 0, FILTER_VALIDATE_FLOAT);
+        if ($remuneration === false) {
+            $this->addFlashMessage('error', 'Rémunération: Format numérique invalide');
+            $hasErrors = true;
+        } elseif ($remuneration < 0) {
+            $this->addFlashMessage('error', 'Rémunération: La valeur ne peut pas être négative');
+            $hasErrors = true;
+        } elseif ($remuneration > 5000) {
+            $this->addFlashMessage('warning', 'Rémunération: La valeur (' . $remuneration . '€) semble anormalement élevée pour un stage');
+            // Warning ne bloque pas la validation
+        }
+
+        // Niveau requis - Validation par liste blanche
+        $niveauRequis = SecurityUtil::sanitizeInput($_POST['niveau_requis'] ?? '');
+        $niveauxAcceptes = ['Bac+1', 'Bac+2', 'Bac+3', 'Bac+4', 'Bac+5'];
+        if (empty($niveauRequis)) {
+            $this->addFlashMessage('error', 'Niveau requis: Le champ est obligatoire');
+            $hasErrors = true;
+        } elseif (!in_array($niveauRequis, $niveauxAcceptes)) {
+            $this->addFlashMessage('error', 'Niveau requis: La valeur "' . $niveauRequis . '" n\'est pas acceptée (valeurs possibles: ' . implode(', ', $niveauxAcceptes) . ')');
+            $hasErrors = true;
+        }
+
+        // Date de début - Validation calendaire avec contraintes temporelles
+        $dateDebut = SecurityUtil::sanitizeInput($_POST['date_debut'] ?? '');
+        if (empty($dateDebut)) {
+            $this->addFlashMessage('error', 'Date de début: Le champ est obligatoire');
+            $hasErrors = true;
+        } elseif (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $dateDebut)) {
+            $this->addFlashMessage('error', 'Date de début: Le format doit être AAAA-MM-JJ');
+            $hasErrors = true;
+        } else {
+            try {
+                $dateObj = new \DateTime($dateDebut);
+                $now = new \DateTime();
+                $now->setTime(0, 0, 0); // Normaliser pour comparaison par jour
+                $futureLimit = new \DateTime('+2 years');
+
+                if ($dateObj < $now) {
+                    $this->addFlashMessage('error', 'Date de début: La date doit être ultérieure à aujourd\'hui');
+                    $hasErrors = true;
+                } elseif ($dateObj > $futureLimit) {
+                    $this->addFlashMessage('error', 'Date de début: La date ne peut pas être à plus de 2 ans dans le futur');
+                    $hasErrors = true;
+                }
+            } catch (\Exception $e) {
+                $this->addFlashMessage('error', 'Date de début: Date invalide');
+                $hasErrors = true;
+            }
+        }
+
+        // Durées - Validation des bornes avec règles métier
+        $dureeMin = filter_var($_POST['duree_min'] ?? 0, FILTER_VALIDATE_INT);
+        if ($dureeMin === false || $dureeMin <= 0) {
+            $this->addFlashMessage('error', 'Durée minimale: Doit être un nombre entier positif');
+            $hasErrors = true;
+        } elseif ($dureeMin > 52) {
+            $this->addFlashMessage('error', 'Durée minimale: Ne peut pas dépasser 52 semaines (1 an)');
+            $hasErrors = true;
+        } elseif ($dureeMin < 1) {
+            $this->addFlashMessage('error', 'Durée minimale: Ne peut pas être inférieure à 1 semaines');
+            $hasErrors = true;
+        }
+
+        $dureeMax = filter_var($_POST['duree_max'] ?? 0, FILTER_VALIDATE_INT);
+        if ($dureeMax !== false && $dureeMax > 0) {
+            if ($dureeMax < $dureeMin) {
+                $this->addFlashMessage('error', 'Durée maximale: Doit être supérieure ou égale à la durée minimale (' . $dureeMin . ' semaines)');
+                $hasErrors = true;
+            } elseif ($dureeMax > 52) {
+                $this->addFlashMessage('error', 'Durée maximale: Ne peut pas dépasser 52 semaines (1 an)');
+                $hasErrors = true;
+            }
+        } else {
+            // Si non spécifiée, utiliser la durée minimale
+            $dureeMax = $dureeMin;
+        }
+
+        // Entreprise - Validation avec vérification d'existence
+        $idEntreprise = filter_var($_POST['id_entreprise'] ?? 0, FILTER_VALIDATE_INT);
+        if (!$idEntreprise || $idEntreprise <= 0) {
+            $this->addFlashMessage('error', 'Entreprise: Veuillez sélectionner une entreprise valide');
+            $hasErrors = true;
+        } else {
+            // Vérification d'intégrité référentielle
+            $entreprise = $this->enterpriseModel->getById($idEntreprise);
+            if (!$entreprise) {
+                $this->addFlashMessage('error', 'Entreprise: L\'entreprise sélectionnée (ID: ' . $idEntreprise . ') n\'existe pas');
+                $hasErrors = true;
+            }
+        }
+
+        // Compétences - Validation de présence et d'existence
+        $competences = [];
+        if (isset($_POST['competences']) && is_array($_POST['competences'])) {
+            foreach ($_POST['competences'] as $comp) {
+                $competenceId = filter_var($comp, FILTER_VALIDATE_INT);
+                if ($competenceId && $competenceId > 0) {
+                    $competences[] = $competenceId;
+                }
+            }
+        }
+
+        if (empty($competences)) {
+            $this->addFlashMessage('error', 'Compétences: Sélectionnez au moins une compétence requise');
+            $hasErrors = true;
+        } else {
+            // Vérification d'intégrité référentielle des compétences
+            $allCompetences = $this->offerModel->getAllCompetences();
+            $validIds = array_column($allCompetences, 'Id_Competence');
+            $invalidIds = array_diff($competences, $validIds);
+
+            if (!empty($invalidIds)) {
+                $this->addFlashMessage('error', 'Compétences: Certaines compétences sélectionnées sont invalides: ' . implode(', ', $invalidIds));
+                $hasErrors = true;
+            }
+        }
+
+        // Gestion d'état - En cas d'erreurs, rediriger vers le formulaire
+        if ($hasErrors) {
+            // Conserver les données pour remplir le formulaire
+            $_SESSION['form_data'] = $_POST;
+            header('Location: /pilotes/offres/' . $offerId . '/modifier');
+            return;
+        }
+
+        // Préparation des données pour le modèle en cas de validation réussie
         $offerData = [
             'titre' => $titre,
             'description' => $description,
@@ -1361,13 +1520,22 @@ class PilotesController extends BaseController {
             'idEntreprise' => $idEntreprise
         ];
 
-        $success = $this->offerModel->updateOffer($offerId, $offerData, $competences);
+        // Mise à jour via le modèle avec gestion d'erreurs contextuelle
+        try {
+            $success = $this->offerModel->updateOffer($offerId, $offerData, $competences);
 
-        if ($success) {
-            $this->addFlashMessage('success', 'Offre mise à jour avec succès');
-            header('Location: /pilotes/offres/' . $offerId);
-        } else {
-            $this->addFlashMessage('error', 'Erreur lors de la mise à jour de l\'offre');
+            if ($success) {
+                $this->addFlashMessage('success', 'L\'offre #' . $offerId . ' a été mise à jour avec succès');
+                header('Location: /pilotes/offres/' . $offerId);
+            } else {
+                throw new \Exception("Échec de mise à jour sans exception");
+            }
+        } catch (\Exception $e) {
+            // Journalisation technique de l'erreur interne
+            error_log('Erreur technique lors de la mise à jour de l\'offre #' . $offerId . ': ' . $e->getMessage());
+
+            // Message utilisateur sans divulgation de détails techniques
+            $this->addFlashMessage('error', 'Une erreur est survenue lors de la mise à jour de l\'offre. L\'équipe technique a été notifiée (Ref #' . time() . ')');
             header('Location: /pilotes/offres/' . $offerId . '/modifier');
         }
     }

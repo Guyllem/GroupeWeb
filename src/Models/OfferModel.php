@@ -390,4 +390,82 @@ class OfferModel extends Model {
         }
     }
 
+    /**
+     * Met à jour une offre existante et ses compétences associées
+     *
+     * @param int $offerId ID de l'offre à mettre à jour
+     * @param array $offerData Données de l'offre (déjà assainies)
+     * @param array $competences IDs des compétences requises (déjà validés)
+     * @return bool Succès ou échec de la mise à jour
+     */
+    public function updateOffer($offerId, $offerData, $competences = []) {
+        // Vérifier que l'ID est un entier valide
+        $offerId = filter_var($offerId, FILTER_VALIDATE_INT);
+        if (!$offerId) {
+            return false;
+        }
+
+        // Connexion à la base de données
+        $conn = $this->db->connect();
+
+        try {
+            // Démarrer une transaction
+            $conn->beginTransaction();
+
+            // Préparer les données pour la mise à jour
+            $offerUpdateData = [
+                'Titre_Offre' => $offerData['titre'],
+                'Description_Offre' => $offerData['description'],
+                'Remuneration_Offre' => $offerData['remuneration'],
+                'Niveau_Requis_Offre' => $offerData['niveauRequis'],
+                'Date_Debut_Offre' => $offerData['dateDebut'],
+                'Duree_Min_Offre' => $offerData['dureeMin'],
+                'Duree_Max_Offre' => $offerData['dureeMax'],
+                'Id_Entreprise' => $offerData['idEntreprise']
+            ];
+
+            // Mettre à jour l'offre en utilisant la méthode update héritée
+            $updateResult = $this->update($offerId, $offerUpdateData);
+
+            if (!$updateResult) {
+                throw new \Exception("Erreur lors de la mise à jour de l'offre");
+            }
+
+            // Supprimer toutes les associations de compétences existantes
+            $stmt = $conn->prepare('DELETE FROM Necessiter WHERE Id_Offre = :offerId');
+            $stmt->bindValue(':offerId', $offerId, \PDO::PARAM_INT);
+            $stmt->execute();
+
+            // Ajouter les nouvelles associations de compétences
+            if (!empty($competences)) {
+                foreach ($competences as $competenceId) {
+                    // Validation supplémentaire (défense en profondeur)
+                    if (!is_numeric($competenceId) || $competenceId <= 0) {
+                        continue; // Ignorer les IDs non valides
+                    }
+
+                    $stmt = $conn->prepare('INSERT INTO Necessiter (Id_Offre, Id_Competence) VALUES (:offerId, :competenceId)');
+                    $stmt->bindValue(':offerId', $offerId, \PDO::PARAM_INT);
+                    $stmt->bindValue(':competenceId', $competenceId, \PDO::PARAM_INT);
+                    $stmt->execute();
+                }
+            }
+
+            // Valider la transaction
+            $conn->commit();
+
+            return true;
+
+        } catch (\Exception $e) {
+            // Annuler la transaction en cas d'erreur
+            if ($conn->inTransaction()) {
+                $conn->rollBack();
+            }
+
+            // Log de l'erreur
+            error_log('Erreur lors de la mise à jour de l\'offre: ' . $e->getMessage());
+
+            return false;
+        }
+    }
 }
