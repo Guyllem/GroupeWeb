@@ -33,7 +33,7 @@
                         <input type="tel" value="{{ student.Telephone_Utilisateur|default('Non renseigné') }}" readonly class="eleve-input">
                     </div>
 
-                    <a href="{{ url('pilotes/etudiants/' ~ student.Id_Etudiant ~ '/reset-password') }}" class="eleve-btn-password">Modifier le mot de passe</a>
+                    <a href="{{ url('admin/etudiants/' ~ student.Id_Etudiant ~ '/reset') }}" class="eleve-btn-password">Modifier le mot de passe</a>
                 </div>
 
                 <div class="eleve-competences-col">
