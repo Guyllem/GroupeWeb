@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StageConnect - Détails Offre</title>
+    <link rel="stylesheet" href="{{ asset('css/pilote/main.css') }}">
+</head>
+<body>
+{% set adminPage = true %}
+{% include 'partials/navbar-pilote.html.twig' %}
+
+<main class="content-principal">
+    <div class="card-entreprise">
+        <div class="header-entreprise">
+            <div class="logo-container-entreprise">
+                <div class="logo-entreprise"></div>
+                <div class="company-name-entreprise">{{ offer.Titre_Offre }}</div>
+            </div>
+            <div class="tags-entreprise">
+                {% for skill in offer.skills %}
+                    <div class="tag-entreprise">{{ skill.Nom_Competence }}</div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="description-entreprise">
+            {{ offer.Description_Offre }}
+        </div>
+
+        <div class="info-container-entreprise">
+            <div class="info-column-entreprise">
+                <div class="stage-info-row">
+                    <div class="info-label-entreprise">Niveau attendu :</div>
+                    <div class="info-value-entreprise">{{ offer.Niveau_Requis_Offre }}</div>
+                </div>
+
+                <div class="stage-info-row">
+                    <div class="info-label-entreprise">Rémunération :</div>
+                    <div class="info-value-entreprise">{{ offer.Remuneration_Offre }} €/mois</div>
+                </div>
+
+                <div class="stage-info-row">
+                    <div class="info-label-entreprise">Localisation :</div>
+                    <div class="info-value-entreprise">{{ offer.Ville_Localisation }}</div>
+                </div>
+            </div>
+
+            <div class="info-column-entreprise">
+                <div class="stage-info-row">
+                    <div class="info-label-entreprise">Date minimal du début du stage :</div>
+                    <div class="info-value-entreprise">{{ offer.Date_Debut_Offre|date('d/m/Y') }}</div>
+                </div>
+
+                <div class="stage-info-row">
+                    <div class="info-label-entreprise">Durée minimal du stage :</div>
+                    <div class="info-value-entreprise">{{ offer.Duree_Min_Offre }} semaines</div>
+                </div>
+
+                <div class="stage-info-row">
+                    <div class="info-label-entreprise">Durée maximal du stage :</div>
+                    <div class="info-value-entreprise">{{ offer.Duree_Max_Offre }} semaines</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="publication-info">
+            Publiée le {{ offer.Date_Debut_Offre|date('d/m/Y') }}
+        </div>
+
+        <div class="button-container-entreprise">
+            <button class="button-entreprise button-delete-entreprise" onclick="window.location.href = '{{ url('admin/offres/' ~ offer.Id_Offre ~ '/supprimer') }}'">Supprimer</button>
+            <a href="{{ url('admin/offres/' ~ offer.Id_Offre ~ '/modifier') }}" class="button-entreprise button-edit-entreprise">Modifier</a>
+            <a href="{{ url('admin/entreprises/' ~ offer.Id_Entreprise) }}" class="button-entreprise button-evaluate-entreprise">Voir l'entreprise</a>
+        </div>
+    </div>
+</main>
+
+{% include 'partials/footer.html.twig' %}
+<script src="{{ asset('js/navigation.js') }}"></script>
+</body>
+</html>

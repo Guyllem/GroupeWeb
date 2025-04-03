@@ -1,0 +1,348 @@
+.filter-menu {
+    display: none;
+    color: white;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.filter-menu img {
+    margin-right: 20px;
+    margin-top: 3px;
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+}
+
+/* Filtre latéral */
+.slide-filter {
+    position: fixed;
+    top: 0;
+    left: -200%;
+    width: auto;
+    box-shadow: 10em 0 10em rgba(21, 21, 21, 0.50);
+    height: 100vh;
+    background: white;
+    border-radius: 0px 20px 20px 0px;
+    min-height: calc(100vh - 115px);
+    color: white;
+    display: none;
+    flex-direction: column;
+    align-items: start;
+    justify-content: flex-start;
+    transition: left 0.3s ease-in-out;
+    z-index: 1000;
+    overflow-y: auto;
+}
+
+.slide-filter-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow-y: auto;
+    padding-bottom: 20px;
+}
+
+.slide-filter-section{
+    margin-left: 20px;
+    margin-top: 15px;
+    margin-right: 20px;
+}
+
+.slide-radio-group {
+    display: flex;
+    font-size: 14px;
+    flex-direction: column;
+    align-items: start;
+    padding: 10px;
+    color: #3F51B5;
+}
+
+.slide-filter h3 {
+    text-align: center;
+    color: #3F51B5;
+    font-size: 30px;
+    margin-bottom: 30px;
+}
+
+.slide-filter h4 {
+    text-align: start;
+    color: #3F51B5;
+    font-size: 14px;
+}
+
+.slide-filter h5 {
+    text-align: start;
+    color: #3F51B5;
+    font-size: 12px;
+}
+
+.slide-input-min, .slide-input-max {
+    width: 20%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+}
+
+.slide-apply-btn {
+    justify-content: center;
+    display: flex;
+    width: 80%;
+    padding: 10px;
+    background-color: #ff6b6b;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: auto auto 20px;
+    position: sticky;
+    bottom: 0;
+}
+
+.close-filter {
+    background: none;
+    border: none;
+    color: #3F51B5;
+    font-size: 35px;
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+}
+
+.slide-filter.open {
+    left: 0;
+}
+
+.slide-checkbox-item{
+    margin-top: 7px;
+}
+
+.slide-checkbox-group {
+    margin-top: 5px;
+    color: #3F51B5;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Section de filtres */
+.filters {
+    width: 25%;
+    padding: 20px;
+    background-color: #DEDEFF;
+    border-color: #3F51B5;
+    border-right: 2px solid #3F51B5;
+    max-height: 100%;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+}
+
+.filters::-webkit-scrollbar,
+.filters::-webkit-scrollbar-thumb,
+.filters::-webkit-scrollbar-track {
+    width: 0 !important;
+    height: 0 !important;
+    background: transparent !important;
+    display: none !important;
+    opacity: 0 !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+}
+
+html body .filters {
+    -ms-overflow-style: none !important;
+    scrollbar-width: none !important;
+}
+
+body .filters * {
+    scrollbar-width: none !important;
+}
+
+.filter-sections-container {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+.filters h3{
+    text-align: center;
+    color: #3F51B5;
+    margin-top: 0px;
+    font-size: 30px;
+}
+
+.filter-section {
+    margin-bottom: 20px;
+}
+
+.filter-section h4 {
+    margin-bottom: 10px;
+    color: #3F51B5;
+    text-align: left;
+    font-size: 20px;
+}
+
+.filter-section h5 {
+    margin-bottom: 15px;
+    font-weight: normal;
+    text-align: left;
+}
+
+.radio-group, .checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    text-align: left;
+}
+
+.input-min, .input-max {
+    width: 30%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+}
+
+.input-location, .input-skills {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+}
+
+.apply-btn {
+    width: 100%;
+    padding: 10px;
+    margin-top: auto;
+    background-color: #ff6b6b;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transform: scale(1);
+    transition: all 0.3s ease;
+}
+
+.apply-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0.5rem 0.5rem 0.5rem rgba(0, 0, 0, 0.3);
+}
+
+.apply-btn:active {
+    transform: scale(0.95);
+}
+
+/* Style du dropdown */
+.dropdown {
+    position: relative;
+    justify-content: start;
+    display: inline-block;
+    width: 100%;
+}
+
+.dropdown-toggle {
+    margin-top: 10px;
+    background-color: #ffffff;
+    color: #757DE8;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 10px;
+    text-align: start;
+    width: 100%;
+    position: relative;
+}
+
+.dropdown-menu {
+    position: absolute !important;
+    display: none;
+    top: 100%;
+    left: 0;
+    background-color: white;
+    width: 100%;
+    min-width: unset;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    border-radius: 5px;
+    margin-top: 5px;
+}
+
+.dropdown-menu .dropdown-item {
+    color: #333;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    cursor: pointer;
+}
+
+.dropdown-menu .dropdown-item:hover {
+    background-color: #f1f1f1;
+}
+
+.dropdown.active .dropdown-menu {
+    display: block;
+    width: 100%;
+}
+
+/* Barre de recherche et d'ajout */
+.add-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.search-input {
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid #d1d5db;
+    padding: 12px 20px;
+    border-radius: 12px;
+    width: 275px;
+    transition: all 0.3s ease-in-out;
+    outline: none;
+    order: 2;
+}
+
+.search-input:focus {
+    border-width: 2px;
+    width: 300px;
+}
+
+.add-something {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #DEDEFF;
+    color: #000;
+    padding: 15px 25px;
+    border-radius: 25px;
+    font-size: 18px;
+    border-width: 1px;
+    cursor: pointer;
+    width: 350px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    transition: ease-in-out 0.15s;
+    order: 1;
+}
+
+.add-something:hover {
+    transform: scale(1.05);
+    box-shadow: 0.2rem 0.2rem 0.2rem rgba(0, 0, 0, 0.3);
+}
+
+.plus-icon {
+    font-weight: bold;
+    font-size: 24px;
+}

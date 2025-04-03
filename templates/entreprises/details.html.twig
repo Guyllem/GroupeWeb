@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StageConnect - {{ enterprise.Nom_Entreprise }}</title>
+
+    <link rel="stylesheet" href="{{ asset('css/pilote/style/composants/cards.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/etudiant/main.css') }}">
+</head>
+<body>
+{% include 'partials/navbar-etudiant.html.twig' %}
+<main class="content-principal">
+    <div class="back-button">
+        <a href="{{ url('entreprises') }}"><span class="arrow">←</span> Accueil</a>
+    </div>
+    <div class="card-entreprise">
+        <div class="header-entreprise">
+            <div class="logo-container-entreprise">
+                <div class="company-name-entreprise">{{ enterprise.Nom_Entreprise }}</div>
+            </div>
+            <div class="tags-entreprise">
+                {% for tag in enterprise.tags %}
+                    <div class="tag-entreprise">{{ tag }}</div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="description-entreprise">
+            {{ enterprise.Description_Entreprise }}
+        </div>
+
+        <div class="section-title-entreprise">Secteur principal : {{ enterprise.tags[0].Nom_Secteur|default('Non spécifié') }}</div>
+
+        <div class="info-container-entreprise">
+            <div class="info-column-entreprise">
+                <div class="info-label-entreprise">Téléphone :</div>
+                <div class="info-value-entreprise">{{ enterprise.Telephone_Entreprise }}</div>
+
+                <div class="info-label-entreprise">Localisation :</div>
+                <div class="info-value-entreprise">{{ enterprise.Adresse_Localisation }}, {{ enterprise.Code_Postal_Localisation }}, {{ enterprise.Ville_Localisation }}</div>
+            </div>
+
+            <div class="info-column-entreprise">
+                <div class="info-label-entreprise">Adresse mail :</div>
+                <div class="info-value-entreprise email-value-entreprise">{{ enterprise.Email_Entreprise }}</div>
+            </div>
+        </div>
+
+        <div class="offers-button-container">
+            <a href="{{ url('entreprises/details/' ~ enterprise.Id_Entreprise ~ '/offres') }}" class="button-offers-entreprise">Voir les offres publiées par cette entreprise</a>
+        </div>
+
+        <div class="card-footer">
+            <div class="publication-info">
+                Evaluation actuelle : {{ enterprise.rating|number_format(1, '.', ' ') }} étoiles
+            </div>
+            <a href="{{ url('entreprises/details/' ~ enterprise.Id_Entreprise ~ '/evaluer') }}" class="view-btn">Evaluer</a>
+        </div>
+    </div>
+</main>
+{% include 'partials/footer.html.twig' %}
+<script src="{{ asset('js/navigation.js') }}"></script>
+</body>
+</html>

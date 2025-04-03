@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StageConnect - Entreprises</title>
+    <link rel="stylesheet" href="{{ asset('css/etudiant/main.css') }}">
+</head>
+<body>
+<main>
+    <div class="container">
+        {% set responsiveFilter = true %}
+        {% include 'partials/navbar-etudiant.html.twig' %}
+        <div class="slide-filter" id="slide-filter">
+            <div class="slide-filter-content">
+                <h3>Filtres</h3>
+                <div class="slide-filter-section">
+                    <h4>Nombres d'offres:</h4>
+                    <div class="slide-radio-group">
+                        <label><input type="radio" name="sort" value="asc"> Croissant</label>
+                        <label><input type="radio" name="sort" value="desc"> Décroissant</label>
+                    </div>
+                </div>
+
+                <div class="slide-filter-section">
+                    <h4>Popularité :</h4>
+                    <div class="slide-radio-group">
+                        <label><input type="radio" name="popularity" value="asc"> Croissant</label>
+                        <label><input type="radio" name="popularity" value="desc"> Décroissant</label>
+                    </div>
+                </div>
+
+                <div class="slide-filter-section">
+                    <h4>Localisation :</h4>
+                    <input type="text" placeholder="Ville, Code Postal, Département, Région" class="input-location" name="location">
+                </div>
+
+                <div class="slide-filter-section">
+                    <h4>Secteur :</h4>
+                    <input type="text" placeholder="Informatique, BTP, Industrie" class="input-skills" name="sector">
+                </div>
+
+                <button class="slide-apply-btn">Appliquer</button>
+                <button class="close-filter" id="close-filter">✖</button>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="filters">
+                <h3>Filtres</h3>
+                <div class="filter-sections-container">
+                    <div class="filter-section">
+                        <h4>Nombres d'offres :</h4>
+                        <div class="radio-group">
+                            <label><input type="radio" name="sort" value="asc"> Croissant</label>
+                            <label><input type="radio" name="sort" value="desc"> Décroissant</label>
+                        </div>
+                    </div>
+
+                    <div class="filter-section">
+                        <h4>Popularité :</h4>
+                        <div class="radio-group">
+                            <label><input type="radio" name="popularity" value="asc"> Croissant</label>
+                            <label><input type="radio" name="popularity" value="desc"> Décroissant</label>
+                        </div>
+                    </div>
+
+                    <div class="filter-section">
+                        <h4>Localisation :</h4>
+                        <input type="text" placeholder="Ville, Code Postal, Département, Région" class="input-location" name="location">
+                    </div>
+
+                    <div class="filter-section">
+                        <h4>Secteurs :</h4>
+                        <input type="text" placeholder="Informatique, BTP, Industrie" class="input-skills" name="sector">
+                    </div>
+
+                    <button class="apply-btn">Appliquer</button>
+                </div>
+            </div>
+
+            <div class="main-section">
+                <div class="search-bar">
+                    <a href="{{ url('offres') }}" class="switch-button">Voir les offres</a>
+                    <div class="search-container">
+                        <input placeholder="Search..." class="search-input" name="search" type="search"/>
+                    </div>
+                </div>
+
+                {% for enterprise in enterprises %}
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>{{ enterprise.Nom_Entreprise }}</h3>
+                            <div class="tags">
+                                {% for tag in enterprise.tags %}
+                                    <span class="tag">{{ tag }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <p>{{ enterprise.Description_Entreprise }}</p>
+                        </div>
+                        <div class="card-footer">
+                            <span class="publish-date">Evaluation actuelle : {{ enterprise.rating|number_format(1, '.', ' ') }} étoiles</span>
+                            <div class="actions">
+                                <a href="{{ url('entreprises/details/' ~ enterprise.Id_Entreprise) }}" class="view-btn">Regarder</a>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="no-results">
+                        <p>Aucune entreprise ne correspond à vos critères de recherche.</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</main>
+{% include 'partials/footer.html.twig' %}
+<script src="{{ asset('js/navigation.js') }}"></script>
+</body>
+</html>

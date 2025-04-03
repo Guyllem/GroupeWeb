@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StageConnect - Détails Offre</title>
-    <link rel="stylesheet" href="{{ asset('css/styles_page_pilote.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/pilote/main.css') }}">
 </head>
 <body>
 {% set pilotePage = true %}
@@ -69,7 +69,7 @@
         </div>
 
         <div class="button-container-entreprise">
-            <button class="button-entreprise button-delete-entreprise" onclick="confirmDelete('{{ url('pilotes/offres/' ~ offer.Id_Offre ~ '/supprimer') }}')">Supprimer</button>
+            <button class="button-entreprise button-delete-entreprise" onclick="window.location.href = '{{ url('pilotes/offres/' ~ offer.Id_Offre ~ '/supprimer') }}'">Supprimer</button>
             <a href="{{ url('pilotes/offres/' ~ offer.Id_Offre ~ '/modifier') }}" class="button-entreprise button-edit-entreprise">Modifier</a>
             <a href="{{ url('pilotes/entreprises/' ~ offer.Id_Entreprise) }}" class="button-entreprise button-evaluate-entreprise">Voir l'entreprise</a>
         </div>
@@ -77,13 +77,6 @@
 </main>
 
 {% include 'partials/footer.html.twig' %}
-<script src="{{ asset('js/frontend_script.js') }}"></script>
-<script>
-    function confirmDelete(url) {
-        if (confirm("Êtes-vous sûr de vouloir supprimer cette offre ?")) {
-            window.location.href = url;
-        }
-    }
-</script>
+<script src="{{ asset('js/navigation.js') }}"></script>
 </body>
 </html>

@@ -130,9 +130,33 @@ class BaseController {
      * @return array Messages flash
      */
     protected function getFlashMessages() {
-        $messages = $_SESSION['flash_messages'] ?? [];
-        unset($_SESSION['flash_messages']);
+        // Récupérer les messages sans les effacer
+        return $_SESSION['flash_messages'] ?? [];
+    }
 
-        return $messages;
+    /**
+     * Méthode centrale pour rendre les templates avec gestion automatique des flash messages
+     *
+     * @param string $template Chemin du template Twig à rendre
+     * @param array $data Données à passer au template
+     */
+    protected function render($template, $data = []) {
+        // Récupérer les messages flash pour le template
+        $data['flash_messages'] = $this->getFlashMessages();
+
+        // Rendre le template
+        $output = $this->twig->render($template, $data);
+
+        // Effacer les messages après le rendu
+        $this->clearFlashMessages();
+
+        echo $output;
+    }
+
+    /**
+     * Efface les messages flash de la session
+     */
+    protected function clearFlashMessages() {
+        unset($_SESSION['flash_messages']);
     }
 }

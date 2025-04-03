@@ -1,0 +1,584 @@
+/* Styles des cartes et éléments de contenu */
+.card {
+    background-color: #3F51B5;
+    border-radius: 8px;
+    color: white;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    margin-left: 10%;
+    margin-top: 3%;
+    margin-bottom: 5%;
+    height: auto;
+}
+
+/* Header de la carte */
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 15%;
+}
+
+
+.tag {
+    width: 20%;
+    background-color: white;
+    text-align: center;
+    justify-content: center;
+    color: #000000;
+    font-size: 120%;
+    margin-right: 4%;
+    margin-top: 0.4%;
+    font-weight: bold;
+    border-radius: 4px;
+    box-shadow: 0.2rem 0.2rem 0.2rem rgba(0, 0, 0, 0.3);
+}
+
+
+/* Corps de la carte */
+.card-body {
+    display: flex;
+    height: 100%;
+}
+
+
+/* Carte Entreprise */
+.card-entreprise {
+    background-color: #3f51b5;
+    color: white;
+    border-radius: 12px;
+    padding: 24px;
+    width: 90%;
+    max-width: 1200px;
+    margin: 30px auto;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease;
+}
+
+.header-entreprise {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding-bottom: 15px;
+}
+
+.logo-container-entreprise {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 10px;
+}
+
+.company-name-entreprise {
+    font-size: 28px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.name-company {
+    font-size: 18px;
+    opacity: 0.7;
+    font-style: italic;
+}
+
+.tags-entreprise {
+    margin-left: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.tag-entreprise {
+    background-color: white;
+    color: #3f51b5;
+    padding: 8px 16px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    display: inline-block;
+    transition: transform 0.2s ease;
+}
+
+.description-entreprise {
+    margin-bottom: 20px;
+    line-height: 1.6;
+    text-align: justify;
+    font-size: 16px;
+    padding: 5px 0;
+}
+
+.section-title-entreprise {
+    font-size: 18px;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.info-container-entreprise {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.info-column-entreprise {
+    flex: 1;
+    min-width: 250px;
+}
+
+.info-label-entreprise {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.info-value-entreprise {
+    background-color: rgba(255, 255, 255, 0.15);
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    font-size: 16px;
+    word-break: break-word;
+}
+
+.email-value-entreprise {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: white;
+    font-weight: bold;
+}
+
+/* Boutons d'action */
+.button-container-entreprise {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 25px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.button-entreprise {
+    padding: 10px 18px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    min-width: 120px;
+}
+
+.button-delete-entreprise {
+    background-color: #ff5252;
+    color: white;
+}
+
+.button-delete-entreprise:hover {
+    background-color: #ff1a1a;
+    transform: scale(1.05);
+}
+
+.button-edit-entreprise,
+.button-evaluate-entreprise {
+    background-color: white;
+    color: #3b5cbc;
+}
+
+.button-edit-entreprise:hover,
+.button-evaluate-entreprise:hover {
+    background-color: #ffffff;
+    transform: scale(1.05);
+}
+
+.publication-info {
+    margin: 0 auto 0 0;
+    font-style: italic;
+    display: flex;
+    align-items: center;
+}
+
+/* Bouton d'offres */
+.offers-button-container {
+    display: flex;
+    justify-content: center;
+    margin: 25px 0;
+}
+
+.button-offers-entreprise {
+    background-color: #757de8;
+    color: white;
+    padding: 12px 30px;
+    border-radius: 6px;
+    border: none;
+    font-weight: bold;
+    font-size: 16px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.button-offers-entreprise:hover {
+    background-color: #5b64ca;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.button-offers-entreprise:active {
+    transform: translateY(1px);
+}
+
+/* Carte étudiant */
+.card-student {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #3F51B5;
+    color: white;
+    border-radius: 8px;
+    padding: 15px;
+    margin-top: 40px;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    min-height: 120px;
+}
+
+.card-student-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.card-student-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    width: 100%;
+}
+
+.name-student {
+    display: flex;
+    flex-direction: column;
+}
+
+.name-student h3 {
+    margin: 0;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.location-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 5px;
+}
+
+.promotion-student {
+    background-color: white;
+    color: #333;
+    padding: 5px 15px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 14px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.stats-student {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    font-size: 12px;
+    opacity: 0.7;
+    font-style: italic;
+}
+
+.stat-item-student {
+    margin-top: 5px;
+}
+
+.actions-student {
+    display: flex;
+    align-items: flex-end;
+}
+
+.view-btn-student {
+    background-color: #757DE8;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+}
+
+.view-btn-student:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Détail étudiant */
+.eleve-detail {
+    background-color: #3F51B5;
+    color: white;
+    border-radius: 10px;
+    padding: 20px;
+    width: 90%;
+    margin: 20px auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.eleve-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.eleve-nom-prenom {
+    font-size: 30px;
+    font-weight: bold;
+    margin-right: auto;
+    margin-left: 10px;
+}
+
+.eleve-promotion {
+    background-color: white;
+    color: #333;
+    padding: 8px 15px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.eleve-info-container {
+    display: flex;
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.eleve-info-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.eleve-info-groupe {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.eleve-info-groupe label {
+    width: 150px;
+    min-width: 150px;
+    font-size: 18px;
+    color: #3C4CAA;
+}
+
+.eleve-input {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    color: #3F51B5;
+    font-size: 16px;
+}
+
+.eleve-btn-password {
+    align-self: center;
+    background-color: #3C4CAA;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.eleve-btn-password:hover {
+    transform: scale(1.02);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Section des compétences */
+.eleve-competences-col {
+    flex: 1;
+    padding-left: 30px;
+}
+
+.eleve-competences-titre {
+    font-size: 18px;
+    margin-bottom: 15px;
+    color: #3C4CAA;
+    text-align: left;
+}
+
+.eleve-competences-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    padding: 10px;
+}
+
+.eleve-competence {
+    background-color: #3F51B5;
+    color: white;
+    padding: 8px;
+    border-radius: 20px;
+    text-align: center;
+}
+
+/* Actions (boutons) */
+.eleve-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+.eleve-liens {
+    display: flex;
+    gap: 15px;
+}
+
+.eleve-btn-wishlist,
+.eleve-btn-offres {
+    background-color: #757DE8;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.eleve-btn-wishlist:hover,
+.eleve-btn-offres:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.eleve-admin-actions {
+    display: flex;
+    gap: 15px;
+}
+
+.eleve-btn-modifier {
+    background-color: #757DE8;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.eleve-btn-supprimer {
+    background-color: #FF6B6B;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.eleve-btn-modifier:hover,
+.eleve-btn-supprimer:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Carte entreprise pour la page pilote */
+.pilote-card-entreprise {
+    background-color: #3F51B5;
+    color: white;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    margin: 40px auto;
+}
+
+.pilote-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15px;
+}
+
+.pilote-company-name {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.pilote-tags-container {
+    display: flex;
+    padding-left: 20px;
+    gap: 10px;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+}
+
+.pilote-tag {
+    background-color: white;
+    color: #333;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.pilote-description {
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    padding-right: 20px;
+    width: 100%;
+    text-align: justify;
+}
+
+.pilote-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pilote-offres-count {
+    font-size: 14px;
+    opacity: 0.7;
+    font-style: italic;
+    text-align: start;
+}
+
+.pilote-view-btn {
+    background-color: #757DE8;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 15px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.pilote-view-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}

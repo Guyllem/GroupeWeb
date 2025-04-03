@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StageConnect - Offres de stage</title>
-    <link rel="stylesheet" href="{{ asset('css/styles_page_etudiant.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/etudiant/main.css') }}">
 </head>
 <body>
 <main>
@@ -114,22 +114,18 @@
 
             <div class="main-section">
                 <div class="search-bar">
-                    <div class="tabs">
-                        <button>Entreprises</button>
-                        <button class="active">Offres</button>
-                    </div>
+                    <a href="{{ url('entreprises') }}" class="switch-button">Voir les entreprises</a>
                     <div class="search-container">
                         <input placeholder="Search..." class="search-input" name="search" type="search"/>
                     </div>
                 </div>
-
                 {% for offer in offers %}
                     <div class="card">
                         <div class="card-header">
                             <h3>{{ offer.Titre_Offre }}</h3>
                             <div class="tags">
                                 {% for skill in offer.skills %}
-                                    <span class="tag">{{ skill }}</span>
+                                    <span class="tag">{{ skill.Nom_Competence }}</span>
                                 {% endfor %}
                             </div>
                         </div>
@@ -169,12 +165,15 @@
                         <p>Aucune offre disponible pour le moment.</p>
                     </div>
                 {% endfor %}
+                {% include 'partials/page-selection.html.twig' with {'currentPage': currentPage, 'totalPages': totalPages} %}
+
             </div>
         </div>
     </div>
 </main>
 
 {% include 'partials/footer.html.twig' %}
-<script src="{{ asset('js/frontend_script.js') }}"></script>
+<script src="{{ asset('js/navigation.js') }}"></script>
+<script src="{{ asset('js/wishlist.js') }}"></script>
 </body>
 </html>

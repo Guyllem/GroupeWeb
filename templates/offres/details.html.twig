@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StageConnect - {{ offer.Titre_Offre }}</title>
+    <link rel="stylesheet" href="{{ asset('css/pilote/style/composants/cards.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/etudiant/main.css') }}">
+</head>
+<body>
+<main>
+    <div class="container">
+        {% include 'partials/navbar-etudiant.html.twig' %}
+
+        <div class="content-principal">
+            <div class="back-button">
+                <a href="{{ url('offres') }}"><span class="arrow">←</span> Accueil</a>
+            </div>
+            <div class="card-entreprise">
+                <div class="header-entreprise">
+                    <div class="logo-container-entreprise">
+                        <div class="company-name-entreprise">{{ offer.Titre_Offre }}</div>
+                        <div class="name-company">{{ offer.Nom_Entreprise }}</div>
+                    </div>
+                    <div class="tags-entreprise">
+                        {% for skill in offer.skills %}
+                            <div class="tag-entreprise">{{ skill.Nom_Competence }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="description-entreprise">
+                    {{ offer.Description_Offre }}
+                </div>
+
+                <div class="info-container-entreprise">
+                    <div class="info-column-entreprise">
+                        <div class="stage-info-row">
+                            <div class="info-label-entreprise">Niveau attendu :</div>
+                            <div class="info-value-entreprise">{{ offer.Niveau_Requis_Offre }}</div>
+                        </div>
+
+                        <div class="stage-info-row">
+                            <div class="info-label-entreprise">Rémunération :</div>
+                            <div class="info-value-entreprise">{{ offer.Remuneration_Offre }} €/mois</div>
+                        </div>
+
+                        <div class="stage-info-row">
+                            <div class="info-label-entreprise">Localisation :</div>
+                            <div class="info-value-entreprise">{{ offer.Ville_Localisation }}</div>
+                        </div>
+                    </div>
+
+                    <div class="info-column-entreprise">
+                        <div class="stage-info-row">
+                            <div class="info-label-entreprise">Date minimal du début du stage :</div>
+                            <div class="info-value-entreprise">{{ offer.Date_Debut_Offre|date('d/m/Y') }}</div>
+                        </div>
+
+                        <div class="stage-info-row">
+                            <div class="info-label-entreprise">Durée minimal du stage :</div>
+                            <div class="info-value-entreprise">{{ offer.Duree_Min_Offre }} semaines</div>
+                        </div>
+
+                        <div class="stage-info-row">
+                            <div class="info-label-entreprise">Durée maximal du stage :</div>
+                            <div class="info-value-entreprise">{{ offer.Duree_Max_Offre }} semaines</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer">
+                    <span class="publish-date">Publiée le {{ offer.Date_Debut_Offre|date('d/m/Y') }}</span>
+                    <div class="actions">
+                        <div class="heart-container" title="Ajouter à la wishlist">
+                            <input type="checkbox" class="checkbox" id="like-{{ offer.Id_Offre }}" {% if offer.is_wishlisted %}checked{% endif %}>
+                            <div class="svg-container">
+                                <svg viewBox="0 0 24 24" class="svg-outline" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z">
+                                    </path>
+                                </svg>
+                                <svg viewBox="0 0 24 24" class="svg-filled" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Z">
+                                    </path>
+                                </svg>
+                                <svg class="svg-celebrate" width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+                                    <polygon points="10,10 20,20"></polygon>
+                                    <polygon points="10,50 20,50"></polygon>
+                                    <polygon points="20,80 30,70"></polygon>
+                                    <polygon points="90,10 80,20"></polygon>
+                                    <polygon points="90,50 80,50"></polygon>
+                                    <polygon points="80,80 70,70"></polygon>
+                                </svg>
+                            </div>
+                        </div>
+                        <a href="{{ url('offres/details/' ~ offer.Id_Offre ~ '/postuler') }}" class="view-btn">Postuler</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% include 'partials/footer.html.twig' %}
+<script src="{{ asset('js/navigation.js') }}"></script>
+</body>
+</html>

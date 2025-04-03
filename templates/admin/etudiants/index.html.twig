@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StageConnect - Gestion des Étudiants</title>
+    <link rel="stylesheet" href="{{ asset('css/pilote/main.css') }}">
+</head>
+<body>
+{% set responsiveFilter = true %}
+{% set adminPage = true %}
+{% include 'partials/navbar-pilote.html.twig' %}
+
+<div class="slide-filter" id="slide-filter">
+    <div class="slide-filter-content">
+        <h3>Filtres</h3>
+        <div class="slide-filter-section">
+            <h4>Campus :</h4>
+            <div class="dropdown">
+                <button class="dropdown-toggle">Choisir ↓</button>
+                <div class="dropdown-menu">
+                    <a href="#" class="dropdown-item" data-value="Nancy">Nancy</a>
+                    <a href="#" class="dropdown-item" data-value="Metz">Metz</a>
+                    <a href="#" class="dropdown-item" data-value="Listembourg">Listembourg</a>
+                </div>
+            </div>
+        </div>
+        <div class="slide-filter-section">
+            <h4>Classe :</h4>
+            <div class="dropdown">
+                <button class="dropdown-toggle">Choisir ↓</button>
+                <div class="dropdown-menu">
+                    <a href="#" class="dropdown-item" data-value="A1">A1</a>
+                    <a href="#" class="dropdown-item" data-value="A2 Info">A2 Info</a>
+                    <a href="#" class="dropdown-item" data-value="A2 Géné">A2 Géné</a>
+                </div>
+            </div>
+        </div>
+        <div class="slide-filter-section">
+            <h4>Nombres d'offres postulées :</h4>
+            <h5> Min: <input type="text" placeholder="0" class="input-min"> </h5>
+            <h5> Max : <input type="text" placeholder="10" class="input-max"> </h5>
+        </div>
+        <div class="slide-filter-section">
+            <h4>Nombres d'offres en wishlist :</h4>
+            <div class="duration-inputs">
+                <h5> Min : <input type="text" placeholder="0" class="input-min"> </h5>
+                <h5> Max : <input type="text" placeholder="15" class="input-max"> </h5>
+            </div>
+        </div>
+        <button class="slide-apply-btn">Appliquer</button>
+        <button class="close-filter" id="close-filter">✖</button>
+    </div>
+</div>
+
+<main>
+    <div class="filters">
+        <h3>Filtres</h3>
+        <div class="filter-sections-container">
+            <div class="filter-section">
+                <h4>Campus :</h4>
+                <div class="dropdown">
+                    <button class="dropdown-toggle">Choisir ↓</button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-item" data-value="Nancy">Nancy</div>
+                        <div class="dropdown-item" data-value="Metz">Metz</div>
+                        <div class="dropdown-item" data-value="Listembourg">Listembourg</div>
+                    </div>
+                </div>
+            </div>
+            <div class="filter-section">
+                <h4>Classe :</h4>
+                <div class="dropdown">
+                    <button class="dropdown-toggle">Choisir ↓</button>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-item" data-value="A1">A1</div>
+                        <div class="dropdown-item" data-value="A2 Info">A2 Info</div>
+                        <div class="dropdown-item" data-value="A2 Géné">A2 Géné</div>
+                    </div>
+                </div>
+            </div>
+            <div class="filter-section">
+                <h4>Nombres d'offres postulées :</h4>
+                <h5> Min: <input type="text" placeholder="0" class="input-min"> </h5>
+                <h5> Max : <input type="text" placeholder="10" class="input-max"> </h5>
+            </div>
+            <div class="filter-section">
+                <h4>Nombres d'offres en wishlist :</h4>
+                <div class="duration-inputs">
+                    <h5> Min : <input type="text" placeholder="0" class="input-min"> </h5>
+                    <h5> Max : <input type="text" placeholder="15" class="input-max"> </h5>
+                </div>
+            </div>
+            <button class="apply-btn">Appliquer</button>
+        </div>
+    </div>
+
+    <div class="main-content-gestion">
+        <div class="add-header">
+            <input placeholder="Search..." class="search-input" name="search" type="search"/>
+            <a href="{{ url('admin/etudiants/ajouter') }}" class="add-something">Ajouter un nouvel élève
+                <div class="plus-icon">+</div>
+            </a>
+        </div>
+
+        {% if students|length > 0 %}
+            {% for student in students %}
+                <div class="card-student">
+                    <div class="card-student-header">
+                        <div class="name-student">
+                            <h3>{{ student.Nom_Utilisateur }} {{ student.Prenom_Utilisateur }}</h3>
+                        </div>
+                        <div class="location-info">
+                            <div class="promotion-student">{{ student.Nom_Promotion }} - {{ student.Nom_Campus|default('Non assigné') }}</div>
+                        </div>
+                    </div>
+                    <div class="card-student-footer">
+                        <div class="stats-student">
+                            <div class="stat-item-student">
+                                <span>nombre offre postulé : {{ student.application_count|default('0') }}</span>
+                            </div>
+                            <div class="stat-item-student">
+                                <span>nombre offre en wishlist : {{ student.wishlist_count|default('0') }}</span>
+                            </div>
+                        </div>
+                        <div class="actions-student">
+                            <a href="{{ url('/admin/etudiants/' ~ student.Id_Etudiant) }}" class="view-btn-student">Regarder</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="no-students">
+                <p>Aucun étudiant trouvé.</p>
+            </div>
+        {% endif %}
+    </div>
+</main>
+
+{% include 'partials/footer.html.twig' %}
+<script src="{{ asset('js/navigation.js') }}"></script>
+<script src="{{ asset('js/flash-messages.js') }}"></script>
+</body>
+</html>

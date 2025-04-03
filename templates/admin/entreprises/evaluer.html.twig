@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StageConnect - Évaluation {{ enterprise.Nom_Entreprise }}</title>
+    <link rel="stylesheet" href="{{ asset('css/pilote/main.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/etudiant/main.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/utils/modal.css') }}">
+</head>
+
+{% set adminPage = true %}
+{% include 'partials/flash_messages.html.twig' %}
+
+<body>
+<nav>
+    <div class="logo">Stage Connect</div>
+    <div class="nav-right">
+        <a href="{{ url('logout') }}" class="nav-item">Se déconnecter</a>
+    </div>
+</nav>
+<main>
+    <div class="rate-modal">
+        <div class="rate-container">
+            <h2>Évaluer l'entreprise</h2>
+            <div class="company-info">
+                <div class="company-name">{{ enterprise.Nom_Entreprise }}</div>
+                <div class="company-sector">{{ enterprise.tags[0].Nom_Secteur|default('Non spécifié') }}</div>
+            </div>
+
+            <form action="{{ url('admin/entreprises/' ~ enterprise.Id_Entreprise ~ '/evaluer') }}" method="post">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+                <div class="rating-section">
+                    <p>Sélectionnez une note pour cette entreprise :</p>
+                    <div class="stars-container">
+                        <div class="stars-outer">
+                            <div class="stars-inner"></div>
+                        </div>
+                        <div class="rating-value">0/5</div>
+                    </div>
+
+                    <div class="star-rating">
+                        <input type="radio" id="star5" name="rating" value="5">
+                        <label for="star5" title="5 étoiles"></label>
+
+                        <input type="radio" id="star4" name="rating" value="4">
+                        <label for="star4" title="4 étoiles"></label>
+
+                        <input type="radio" id="star3" name="rating" value="3">
+                        <label for="star3" title="3 étoiles"></label>
+
+                        <input type="radio" id="star2" name="rating" value="2">
+                        <label for="star2" title="2 étoiles"></label>
+
+                        <input type="radio" id="star1" name="rating" value="1">
+                        <label for="star1" title="1 étoile"></label>
+                    </div>
+                </div>
+
+                <div class="buttons-container">
+                    <button type="button" class="back-btn" onclick="history.back()">Retour</button>
+                    <button type="submit" class="validate-btn" disabled>Valider</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+{% include 'partials/footer.html.twig' %}
+
+<script src="{{ asset('js/navigation.js') }}"></script>
+<script src="{{ asset('js/rating.js') }}"></script>
+</body>
+</html>
+

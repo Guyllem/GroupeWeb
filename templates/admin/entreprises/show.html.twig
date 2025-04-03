@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StageConnect - Détails Entreprise</title>
+    <link rel="stylesheet" href="{{ asset('css/pilote/main.css') }}">
+</head>
+<body>
+{% set adminPage = true %}
+{% include 'partials/navbar-pilote.html.twig' %}
+
+{% include 'partials/flash_messages.html.twig' %}
+
+<main class="content-principal">
+    <div class="card-entreprise">
+        <div class="header-entreprise">
+            <div class="logo-container-entreprise">
+                <div class="company-name-entreprise">{{ enterprise.Nom_Entreprise }}</div>
+            </div>
+            <div class="tags-entreprise">
+                {% for tag in enterprise.tags %}
+                    <div class="tag-entreprise">{{ tag.Nom_Secteur }}</div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="description-entreprise">
+            {{ enterprise.Description_Entreprise }}
+        </div>
+
+        <div class="section-title-entreprise">Secteur principal : {{ enterprise.tags[0].Nom_Secteur|default('Non spécifié') }}</div>
+
+        <div class="info-container-entreprise">
+            <div class="info-column-entreprise">
+                <div class="info-label-entreprise">Téléphone :</div>
+                <div class="info-value-entreprise">{{ enterprise.Telephone_Entreprise }}</div>
+
+                <div class="info-label-entreprise">Localisation :</div>
+                <div class="info-value-entreprise">{{ enterprise.Adresse_Localisation }}, {{ enterprise.Code_Postal_Localisation }}, {{ enterprise.Ville_Localisation }}</div>
+            </div>
+
+            <div class="info-column-entreprise">
+                <div class="info-label-entreprise">Adresse mail :</div>
+                <div class="info-value-entreprise email-value-entreprise">{{ enterprise.Email_Entreprise }}</div>
+            </div>
+        </div>
+
+        <div class="button-container-entreprise">
+            <button class="button-entreprise button-delete-entreprise" onclick="window.location.href='{{ url('admin/entreprises/' ~ enterprise.Id_Entreprise ~ '/supprimer') }}'">Supprimer</button>
+            <a href="{{ url('admin/entreprises/' ~ enterprise.Id_Entreprise ~ '/modifier') }}" class="button-entreprise button-edit-entreprise">Modifier</a>
+            <button class="button-entreprise button-evaluate-entreprise" onclick="window.location.href='{{ url('admin/entreprises/' ~ enterprise.Id_Entreprise ~ '/evaluer') }}'">Évaluer</button>
+        </div>
+
+        <div class="publication-info">
+            Evaluation actuelle : {{ enterprise.rating|default(0)|number_format(1) }} étoiles
+        </div>
+    </div>
+</main>
+
+{% include 'partials/footer.html.twig' %}
+<script src="{{ asset('js/navigation.js') }}"></script>
+</body>
+</html>

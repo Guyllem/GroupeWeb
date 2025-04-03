@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StageConnect - Gestion des Pilotes</title>
-    <link rel="stylesheet" href="{{ asset('css/styles_page_admin.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/pilote/main.css') }}">
+
 </head>
 <body>
 {% set responsiveFilter = true %}
@@ -77,30 +78,36 @@
             </a>
         </div>
 
-        <div class="pilots-list">
-            {% for pilot in pilots %}
-                <div class="pilot-card">
-                    <div class="pilot-info">
+        {% for pilot in pilots %}
+            <div class="card-student">
+                <div class="card-student-header">
+                    <div class="name-student">
                         <h3>{{ pilot.Nom_Utilisateur }} {{ pilot.Prenom_Utilisateur }}</h3>
-                        <p>{{ pilot.Nom_Campus|default('Non assigné') }}</p>
                     </div>
-                    <div class="pilot-stats">
-                        <span class="stat">Promotions: {{ pilot.promotion_count }}</span>
-                    </div>
-                    <div class="pilot-actions">
-                        <a href="{{ url('admin/pilotes/' ~ pilot.Id_Pilote) }}" class="view-btn">Détails</a>
+                    <div class="location-info">
+                        <div class="promotion-student">{{ pilot.Nom_Campus|default('Non assigné')}}</div>
                     </div>
                 </div>
-            {% else %}
-                <div class="no-pilots">
-                    <p>Aucun pilote trouvé.</p>
+                <div class="card-student-footer">
+                    <div class="stats-student">
+                        <div class="stat-item-student">
+                            <span>Promotions: {{ pilot.promotion_count }}</span>
+                        </div>
+                    </div>
+                    <div class="actions-student">
+                        <a href="{{ url('admin/pilotes/' ~ pilot.Id_Pilote) }}" class="view-btn-student">Regarder</a>
+                    </div>
                 </div>
-            {% endfor %}
-        </div>
+            </div>
+        {% else %}
+            <div class="no-students">
+                <p>Aucun pilote trouvé.</p>
+            </div>
+        {% endfor %}
     </div>
 </main>
 
 {% include 'partials/footer.html.twig' %}
-<script src="{{ asset('js/frontend_script.js') }}"></script>
+<script src="{{ asset('js/navigation.js') }}"></script>
 </body>
 </html>

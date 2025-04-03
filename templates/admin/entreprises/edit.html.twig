@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StageConnect - Modifier une entreprise</title>
+    <link rel="stylesheet" href="{{ asset('css/pilote/main.css') }}">
+</head>
+<body>
+{% set adminPage = true %}
+{% include 'partials/navbar-pilote.html.twig' %}
+
+<main>
+    <div class="form-container">
+        <a href="{{ url('admin/entreprises/' ~ enterprise.Id_Entreprise) }}" class="btn-return">
+            <span class="arrow">←</span> Retour
+        </a>
+        <h2 class="form-title">Modifier l'entreprise</h2>
+
+        <form id="edit-enterprise-form" method="post" action="{{ url('admin/entreprises/' ~ enterprise.Id_Entreprise ~ '/modifier') }}" novalidate>
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+            <div class="form-group">
+                <label for="nom" class="form-label">Nom de l'entreprise *</label>
+                <input type="text" id="nom" name="nom" class="form-input" required value="{{ enterprise.Nom_Entreprise }}">
+                <div id="nom-error" class="form-error"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="email" class="form-label">Adresse email *</label>
+                <input type="email" id="email" name="email" class="form-input" required value="{{ enterprise.Email_Entreprise }}">
+                <div id="email-error" class="form-error"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="telephone" class="form-label">Numéro de téléphone</label>
+                <input type="tel" id="telephone" name="telephone" class="form-input" value="{{ enterprise.Telephone_Entreprise }}">
+                <div id="telephone-error" class="form-error"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="effectif" class="form-label">Effectif</label>
+                <input type="number" id="effectif" name="effectif" class="form-input" min="1" value="{{ enterprise.Effectif_Entreprise }}">
+                <div id="effectif-error" class="form-error"></div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-column">
+                    <div class="form-group">
+                        <label for="ville" class="form-label">Ville *</label>
+                        <input type="text" id="ville" name="ville" class="form-input" required value="{{ enterprise.Ville_Localisation }}">
+                        <div id="ville-error" class="form-error"></div>
+                    </div>
+                </div>
+                <div class="form-column">
+                    <div class="form-group">
+                        <label for="code_postal" class="form-label">Code postal *</label>
+                        <input type="text" id="code_postal" name="code_postal" class="form-input" required value="{{ enterprise.Code_Postal_Localisation }}">
+                        <div id="code_postal-error" class="form-error"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="adresse" class="form-label">Adresse</label>
+                <input type="text" id="adresse" name="adresse" class="form-input" value="{{ enterprise.Adresse_Localisation }}">
+                <div id="adresse-error" class="form-error"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="secteurs" class="form-label">Secteurs d'activité</label>
+                <input type="text" id="secteurs" name="secteurs" class="form-input"
+                       value="{% for tag in enterprise.tags %}{{ tag.Nom_Secteur }}{% if not loop.last %}, {% endif %}{% endfor %}">
+                <div id="secteurs-error" class="form-error"></div>
+                <p><i>Saisissez les secteurs d'activité séparés par des virgules.</i></p>
+            </div>
+
+            <div class="form-group">
+                <label for="description" class="form-label">Description de l'entreprise</label>
+                <div class="textarea-container">
+                    <textarea id="description" name="description" class="form-input" rows="5" maxlength="1000">{{ enterprise.Description_Entreprise }}</textarea>
+                    <div class="char-count"><span id="char-count">{{ enterprise.Description_Entreprise|length }}</span>/1000</div>
+                </div>
+                <div id="description-error" class="form-error"></div>
+            </div>
+
+            <div class="form-actions">
+                <a href="{{ url('admin/entreprises/' ~ enterprise.Id_Entreprise) }}" class="btn btn-back">Annuler</a>
+                <button type="submit" class="btn btn-submit" id="submit-btn">Enregistrer les modifications</button>
+            </div>
+        </form>
+    </div>
+</main>
+
+{% include 'partials/footer.html.twig' %}
+<script src="{{ asset('js/navigation.js') }}"></script>
+<script src="{{ asset('js/forms/form_entreprise.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StageConnect - Modifier l'offre</title>
+    <link rel="stylesheet" href="{{ asset('css/pilote/main.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/utils/competences_forms.css') }}">
+</head>
+<body>
+{% set adminPage = true %}
+{% include 'partials/navbar-pilote.html.twig' %}
+
+<main>
+    <div class="form-container">
+        <a href="{{ url('admin/offres/' ~ offer.Id_Offre) }}" class="btn-return">
+            <span class="arrow">←</span> Retour
+        </a>
+        <h2 class="form-title">Modifier l'offre de stage</h2>
+
+        <form id="edit-offre-form" method="post" action="{{ url('admin/offres/' ~ offer.Id_Offre ~ '/modifier') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+            <div class="form-group">
+                <label for="titre">Titre de l'offre *</label>
+                <input type="text" id="titre" name="titre" class="form-control"
+                       placeholder="Ex: Développeur Full-Stack"
+                       value="{{ formData.titre ?? offer.Titre_Offre }}" required>
+                <div id="titre-error" class="error-message">{{ errors.titre|default('') }}</div>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Description de l'offre *</label>
+                <div class="textarea-container">
+                    <textarea id="description" name="description" class="form-control"
+                              placeholder="Décrivez les missions, responsabilités et objectifs du stage"
+                              maxlength="1000" required>{{ formData.description ?? offer.Description_Offre }}</textarea>
+                    <div class="char-count">
+                        <span id="char-count">{{ (formData.description ?? offer.Description_Offre)|length }}</span>/1000
+                    </div>
+                </div>
+                <div id="description-error" class="error-message">{{ errors.description|default('') }}</div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="remuneration">Rémunération mensuelle (€) *</label>
+                    <input type="number" id="remuneration" name="remuneration" class="form-control"
+                           placeholder="Ex: 600" min="0" step="0.01"
+                           value="{{ formData.remuneration ?? offer.Remuneration_Offre }}" required>
+                    <div id="remuneration-error" class="error-message">{{ errors.remuneration|default('') }}</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="niveau_requis">Niveau d'étude requis *</label>
+                    <select id="niveau_requis" name="niveau_requis" class="form-control" required>
+                        <option value="">Sélectionner un niveau</option>
+                        {% set niveaux = ['Bac+1', 'Bac+2', 'Bac+3', 'Bac+4', 'Bac+5'] %}
+                        {% for niveau in niveaux %}
+                            <option value="{{ niveau }}"
+                                    {% if formData.niveau_requis is defined %}
+                                {% if formData.niveau_requis == niveau %}selected{% endif %}
+                            {% elseif offer.Niveau_Requis_Offre == niveau %}
+                                selected
+                                    {% endif %}>
+                                {{ niveau }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                    <div id="niveau_requis-error" class="error-message">{{ errors.niveau_requis|default('') }}</div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="date_debut">Date de début *</label>
+                    <input type="date" id="date_debut" name="date_debut" class="form-control"
+                           value="{{ formData.date_debut ?? offer.Date_Debut_Offre|date('Y-m-d') }}" required>
+                    <div id="date_debut-error" class="error-message">{{ errors.date_debut|default('') }}</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="duree_min">Durée minimale (semaines) *</label>
+                    <input type="number" id="duree_min" name="duree_min" class="form-control"
+                           placeholder="Ex: 8" min="1"
+                           value="{{ formData.duree_min ?? offer.Duree_Min_Offre }}" required>
+                    <div id="duree_min-error" class="error-message">{{ errors.duree_min|default('') }}</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="duree_max">Durée maximale (semaines)</label>
+                    <input type="number" id="duree_max" name="duree_max" class="form-control"
+                           placeholder="Ex: 16" min="1"
+                           value="{{ formData.duree_max ?? offer.Duree_Max_Offre }}">
+                    <div id="duree_max-error" class="error-message">{{ errors.duree_max|default('') }}</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="competences">Compétences requises *</label>
+                <select id="competences" name="competences[]" class="form-control" multiple required>
+                    {% for competence in competences %}
+                        <option value="{{ competence.Id_Competence }}"
+                                {% if formData.competences is defined and competence.Id_Competence in formData.competences %}
+                        selected
+                        {% elseif competence.Id_Competence in selected_competences %}
+                            selected
+                                {% endif %}>
+                            {{ competence.Nom_Competence }}
+                        </option>
+                    {% endfor %}
+                </select>
+                <div id="selected-skills" class="selected-skills">
+                    {% for competence in competences %}
+                        {% if competence.Id_Competence in selected_competences %}
+                            <div class="skill-tag">
+                                {{ competence.Nom_Competence }}
+                                <button type="button" class="remove-skill" data-id="{{ competence.Id_Competence }}">×</button>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div id="competences-error" class="error-message">{{ errors.competences|default('') }}</div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="id_entreprise">Entreprise associée *</label>
+                    <select id="id_entreprise" name="id_entreprise" class="form-control" required>
+                        <option value="">Sélectionner une entreprise</option>
+                        {% for entreprise in enterprises %}
+                            <option value="{{ entreprise.Id_Entreprise }}"
+                                    {% if formData.id_entreprise is defined %}
+                                {% if formData.id_entreprise == entreprise.Id_Entreprise %}selected{% endif %}
+                            {% elseif entreprise.Id_Entreprise == offer.Id_Entreprise %}
+                                selected
+                                    {% endif %}>
+                                {{ entreprise.Nom_Entreprise }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                    <div id="id_entreprise-error" class="error-message">{{ errors.id_entreprise|default('') }}</div>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <a href="{{ url('admin/offres/' ~ offer.Id_Offre) }}" class="btn btn-back">Annuler</a>
+                <button type="submit" id="submit-btn" class="btn btn-submit">Enregistrer les modifications</button>
+            </div>
+        </form>
+    </div>
+</main>
+
+{% include 'partials/footer.html.twig' %}
+<script src="{{ asset('js/navigation.js') }}"></script>
+<script src="{{ asset('js/forms/form_offre.js') }}"></script>
+
+</body>
+</html>
