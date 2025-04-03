@@ -2,6 +2,7 @@
 namespace App;
 
 use App\Database;
+use App\Utils\SecurityUtil;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
@@ -111,8 +112,8 @@ class App {
             ->post('/admin/pilotes/:id/modifier', 'Admin', 'mettreAJourPilote')
             ->get('/admin/pilotes/:id/supprimer', 'Admin', 'afficherSupprimerPilote')
             ->post('/admin/pilotes/:id/supprimer', 'Admin', 'supprimerPilote')
-            ->get('/admin/pilotes/:id/reset', 'Admin', 'afficherReset')
-            ->post('/admin/pilotes/:id/reset', 'Admin', 'resetPassword')
+            ->get('/admin/pilotes/:id/reset', 'Admin', 'pilotePassword')
+            ->post('/admin/pilotes/:id/reset', 'Admin', 'piloteSavePassword')
 
 
 
@@ -123,6 +124,8 @@ class App {
             ->get('/admin/etudiants/:id/modifier', 'Admin', 'modifierEtudiant')
             ->post('/admin/etudiants/:id/modifier', 'Admin', 'mettreAJourEtudiant')
             ->get('/admin/etudiants/:id/supprimer', 'Admin', 'supprimerEtudiant')
+            ->get('/admin/etudiants/:id/reset', 'Admin', 'etudiantPassword') // Ajout: page modif mot de passe
+            ->post('/admin/etudiants/:id/reset', 'Admin', 'etudiantSavePassword')
 
             ->get('/admin/entreprises', 'Admin', 'entreprises')
             ->get('/admin/entreprises/:id', 'Admin', 'entrepriseDetails')
