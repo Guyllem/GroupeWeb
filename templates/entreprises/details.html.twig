@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StageConnect - {{ enterprise.Nom_Entreprise }}</title>
-    <link rel="stylesheet" href="{{ asset('css/styles_page_pilote.css') }}">
+
+    <link rel="stylesheet" href="{{ asset('css/pilote/style/composants/cards.css') }}">
     <link rel="stylesheet" href="{{ asset('css/etudiant/main.css') }}">
 </head>
 <body>
@@ -20,7 +21,7 @@
             </div>
             <div class="tags-entreprise">
                 {% for tag in enterprise.tags %}
-                    <div class="tag-entreprise">{{ tag.Nom_Secteur }}</div>
+                    <div class="tag-entreprise">{{ tag }}</div>
                 {% endfor %}
             </div>
         </div>
