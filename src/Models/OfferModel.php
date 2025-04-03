@@ -468,4 +468,53 @@ class OfferModel extends Model {
             return false;
         }
     }
+
+    /**
+     * Récupère toutes les candidatures pour une offre spécifique
+     *
+     * @param int $offerId ID de l'offre
+     * @return array Liste des candidatures avec détails étudiant
+     */
+    public function getOfferApplications($offerId) {
+        $query = '
+        SELECT 
+            c.Id_Candidature,
+            c.Date_Candidature,
+            e.Id_Etudiant,
+            u.Nom_Utilisateur,
+            u.Prenom_Utilisateur,
+            u.Email_Utilisateur,
+            p.Nom_Promotion
+        FROM Candidature c
+        JOIN Etudiant e ON c.Id_Etudiant = e.Id_Etudiant
+        JOIN Utilisateur u ON e.Id_Utilisateur = u.Id_Utilisateur
+        LEFT JOIN Appartenir a ON e.Id_Etudiant = a.Id_Etudiant
+        LEFT JOIN Promotion p ON a.Id_Promotion = p.Id_Promotion
+        WHERE c.Id_Offre = :offerId
+        GROUP BY c.Id_Candidature, c.Date_Candidature 
+        ORDER BY c.Date_Candidature DESC
+    ';
+
+        $conn = $this->db->connect();
+        $stmt = $conn->prepare($query);
+        $stmt->bindParam(':offerId', $offerId);
+        $stmt->execute();
+
+        $applications = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Pour chaque candidature, récupérer les fichiers associés
+        foreach ($applications as &$application) {
+            $stmt = $conn->prepare('
+            SELECT f.Id_Fichier, f.Type_Fichier, f.Nom_Affichage_Fichier, f.Chemin_Fichier
+            FROM Fichier f
+            JOIN Contenir c ON f.Id_Fichier = c.Id_Fichier
+            WHERE c.Id_Candidature = :candidatureId
+        ');
+            $stmt->bindParam(':candidatureId', $application['Id_Candidature']);
+            $stmt->execute();
+            $application['fichiers'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        return $applications;
+    }
 }
