@@ -286,6 +286,98 @@ class AdminController extends BaseController {
         header('Location: /admin/pilotes');
     }
 
+    /**
+     * Affiche le formulaire de modification du mot de passe d'un pilote
+     *
+     * @param array $params Paramètres de la route
+     */
+    public function pilotePassword($params) {
+        // Exiger les privilèges administrateur
+        $this->requireAdmin();
+
+        $piloteId = $params['id'] ?? null;
+
+        if (!$piloteId) {
+            $this->addFlashMessage('error', 'Pilote non trouvé');
+            header('Location: /admin/pilotes');
+            return;
+        }
+
+        // Récupérer les détails du pilote
+        $pilot = $this->pilotModel->getPilotDetails($piloteId);
+
+        if (!$pilot) {
+            $this->addFlashMessage('error', 'Pilote non trouvé');
+            header('Location: /admin/pilotes');
+            return;
+        }
+
+        // Générer le token CSRF pour la sécurité du formulaire
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+
+        $this->render('admin/pilotes/reset.html.twig', [
+            'adminPage' => true, // Utiliser adminPage au lieu de pilotePage
+            'pilot' => $pilot,
+            'csrf_token' => $_SESSION['csrf_token']
+        ]);
+    }
+
+    /**
+     * Traite le formulaire de modification du mot de passe d'un pilote
+     *
+     * @param array $params Paramètres de la route
+     */
+    public function piloteSavePassword($params) {
+        $this->requireAdmin();
+
+        $piloteId = $params['id'] ?? null;
+
+        if (!$piloteId) {
+            $this->addFlashMessage('error', 'Pilote non trouvé');
+            header('Location: /admin/pilotes');
+            return;
+        }
+
+        // Vérification du token CSRF
+        if (!isset($_POST['csrf_token']) || !isset($_SESSION['csrf_token']) ||
+            $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+            $this->addFlashMessage('error', 'Erreur de sécurité. Veuillez réessayer.');
+            header('Location: /admin/pilotes/' . $piloteId . '/password');
+            return;
+        }
+
+        // Récupérer les données du formulaire
+        $password = $_POST['password'] ?? '';
+        $confirmPassword = $_POST['confirm_password'] ?? '';
+
+        // Valider le mot de passe
+        if (empty($password) || $password !== $confirmPassword) {
+            $this->addFlashMessage('error', 'Les mots de passe ne correspondent pas ou sont vides');
+            header('Location: /admin/pilotes/' . $piloteId . '/password');
+            return;
+        }
+
+        // Récupérer l'ID utilisateur du pilote
+        $pilot = $this->pilotModel->getPilotDetails($piloteId);
+
+        if (!$pilot) {
+            $this->addFlashMessage('error', 'Pilote non trouvé');
+            header('Location: /admin/pilotes');
+            return;
+        }
+
+        // Mettre à jour le mot de passe via le modèle utilisateur pour plus de cohérence
+        $updatePassword = $this->userModel->updatePasswordHash($pilot['Id_Utilisateur'], $password);
+
+        if ($updatePassword) {
+            $this->addFlashMessage('success', 'Mot de passe mis à jour avec succès');
+            header('Location: /admin/pilotes/' . $piloteId);
+        } else {
+            $this->addFlashMessage('error', 'Erreur lors de la mise à jour du mot de passe');
+            header('Location: /admin/pilotes/' . $piloteId . '/password');
+        }
+    }
+
     // Gestion des étudiants
     public function etudiants() {
         $this->requireAdmin();
