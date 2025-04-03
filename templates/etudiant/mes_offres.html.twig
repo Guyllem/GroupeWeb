@@ -45,9 +45,14 @@
                         </div>
                     {% endfor %}
                 {% else %}
-                    <div class="no-applications">
-                        <p>Vous n'avez pas encore postulé à des offres.</p>
-                        <a href="{{ url('etudiant') }}" class="view-btn">Découvrir les offres</a>
+                    <p class="main-title-wishlist">Vous n'avez postulé à aucune offre.</p>
+                    <p class="sub-title-wishlist">C'est bien dommage ...</p>
+
+                    <div class="back-design">
+                        <img class="bulle2-1" src="{{ asset('assets/images/bulle2.png') }}" alt="bulle2-1" />
+                        <img class="bulle2-2" src="{{ asset('assets/images/bulle2.png') }}" alt="bulle2-2" />
+                        <img class="bulle3-1" src="{{ asset('assets/images/bulle3.png') }}" alt="bulle3-1" />
+                        <img class="bulle3-2" src="{{ asset('assets/images/bulle3.png') }}" alt="bulle3-2" />
                     </div>
                 {% endif %}
             </div>
