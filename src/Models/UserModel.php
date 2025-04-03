@@ -338,4 +338,142 @@ class UserModel extends Model {
             return false;
         }
     }
+
+    /**
+     * Stocke un token de persistance pour la fonctionnalité "Rester connecté"
+     *
+     * @param int $userId ID de l'utilisateur
+     * @param string $tokenHash Hash du token de persistance
+     * @param int $expiry Timestamp d'expiration
+     * @return bool Succès de l'opération
+     */
+    public function storePersistentToken($userId, $tokenHash, $expiry) {
+        // Créez d'abord une table pour stocker ces tokens
+        // CREATE TABLE IF NOT EXISTS user_persistent_tokens (
+        //    id INT AUTO_INCREMENT PRIMARY KEY,
+        //    user_id INT NOT NULL,
+        //    token_hash VARCHAR(64) NOT NULL,
+        //    expires_at DATETIME NOT NULL,
+        //    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        //    FOREIGN KEY (user_id) REFERENCES Utilisateur(Id_Utilisateur) ON DELETE CASCADE
+        // );
+
+        try {
+            $conn = $this->db->connect();
+
+            // Supprimer les anciens tokens de cet utilisateur
+            $stmt = $conn->prepare('DELETE FROM user_persistent_tokens WHERE user_id = :userId');
+            $stmt->bindParam(':userId', $userId);
+            $stmt->execute();
+
+            // Insérer le nouveau token
+            $expiryDate = date('Y-m-d H:i:s', $expiry);
+            $stmt = $conn->prepare('
+            INSERT INTO user_persistent_tokens 
+            (user_id, token_hash, expires_at) 
+            VALUES (:userId, :tokenHash, :expiryDate)
+        ');
+
+            $stmt->bindParam(':userId', $userId);
+            $stmt->bindParam(':tokenHash', $tokenHash);
+            $stmt->bindParam(':expiryDate', $expiryDate);
+
+            return $stmt->execute();
+        } catch (\Exception $e) {
+            error_log('Erreur lors du stockage du token de persistance: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Récupère un utilisateur par son token de persistance
+     *
+     * @param string $tokenHash Hash du token à vérifier
+     * @return array|null Données de l'utilisateur ou null si non trouvé/expiré
+     */
+    public function getUserByPersistentToken($tokenHash) {
+        try {
+            $conn = $this->db->connect();
+            $currentDate = date('Y-m-d H:i:s');
+
+            $stmt = $conn->prepare('
+            SELECT u.* FROM Utilisateur u
+            JOIN user_persistent_tokens t ON u.Id_Utilisateur = t.user_id
+            WHERE t.token_hash = :tokenHash 
+            AND t.expires_at > :currentDate
+        ');
+
+            $stmt->bindParam(':tokenHash', $tokenHash);
+            $stmt->bindParam(':currentDate', $currentDate);
+            $stmt->execute();
+
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (\Exception $e) {
+            error_log('Erreur lors de la récupération du token: ' . $e->getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * Supprime tous les tokens de persistance d'un utilisateur spécifique
+     *
+     * @param int $userId ID de l'utilisateur
+     * @return bool Succès de l'opération
+     */
+    public function removePersistentTokens($userId) {
+        try {
+            $conn = $this->db->connect();
+
+            // Préparation de la requête de suppression
+            $stmt = $conn->prepare('
+            DELETE FROM user_persistent_tokens 
+            WHERE user_id = :userId
+        ');
+
+            // Liaison du paramètre de l'ID utilisateur
+            $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
+
+            // Exécution de la requête
+            return $stmt->execute();
+
+        } catch (\Exception $e) {
+            // Journalisation de l'erreur pour faciliter le débogage
+            error_log('Erreur lors de la suppression des tokens persistants: ' . $e->getMessage());
+
+            // Retourner false en cas d'erreur
+            return false;
+        }
+    }
+
+    /**
+     * Régénère le token de persistance pour un utilisateur
+     *
+     * @param int $userId ID de l'utilisateur
+     */
+    public function refreshPersistentToken($userId) {
+        // Définir la durée de vie du cookie de session à 30 jours (en secondes)
+        $duration = 30 * 24 * 60 * 60; // 30 jours
+
+        // Créer un nouveau token de persistance sécurisé
+        $persistentToken = bin2hex(random_bytes(32));
+        $tokenHash = hash('sha256', $persistentToken);
+        $expiry = time() + $duration;
+
+        // Mettre à jour le token en base de données
+        $this->userModel->storePersistentToken($userId, $tokenHash, $expiry);
+
+        // Mettre à jour le cookie avec le nouveau token
+        setcookie(
+            'remember_token',
+            $persistentToken,
+            [
+                'expires' => $expiry,
+                'path' => '/',
+                'domain' => '',
+                'secure' => isset($_SERVER['HTTPS']),
+                'httponly' => true,
+                'samesite' => 'Lax'
+            ]
+        );
+    }
 }
