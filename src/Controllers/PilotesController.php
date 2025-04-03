@@ -1,7 +1,9 @@
 <?php
 namespace App\Controllers;
 
+use App\Models\CampusModel;
 use App\Models\PilotModel;
+use App\Models\PromotionModel;
 use App\Models\StudentModel;
 use App\Models\EnterpriseModel;
 use App\Models\OfferModel;
@@ -141,13 +143,146 @@ class PilotesController extends BaseController {
         ]);
     }
 
+    /**
+     * Traite les données du formulaire d'ajout d'étudiant et crée les entrées nécessaires
+     * dans la base de données via une transaction atomique unifiée.
+     *
+     * @return void
+     */
     public function enregistrerEtudiant() {
         $this->requirePilote();
-        // Traiter le formulaire d'ajout d'étudiant
-        // Code pour ajouter un étudiant...
 
-        $this->addFlashMessage('success', 'Étudiant ajouté avec succès');
-        header('Location: /pilotes/etudiants');
+        // Récupération de l'ID du pilote
+        $userId = $_SESSION['user_id'];
+        $pilotId = $this->pilotModel->getPilotIdFromUserId($userId);
+
+        if (!$pilotId) {
+            $this->addFlashMessage('error', 'Identification du pilote impossible');
+            header('Location: /pilotes/etudiants/');
+            exit;
+        }
+
+        // Vérification du token CSRF
+        if (!isset($_POST['csrf_token']) || !isset($_SESSION['csrf_token']) ||
+            $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+            $this->addFlashMessage('error', 'Erreur de sécurité. Veuillez réessayer.');
+            header('Location: /pilotes/etudiants/');
+            exit;
+        }
+
+        // Récupération et assainissement des données du formulaire
+        $nom = trim($_POST['nom'] ?? '');
+        $prenom = trim($_POST['prenom'] ?? '');
+        $email = filter_var($_POST['email'] ?? '', FILTER_SANITIZE_EMAIL);
+        $password = $_POST['password'] ?? '';
+        $promotionId = (int)($_POST['promotion'] ?? 0);
+        $campusId = (int)($_POST['campus'] ?? 0);
+        $telephone = trim($_POST['telephone'] ?? '');
+
+        // Validation des données
+        if (empty($nom) || empty($prenom) || empty($email) || empty($password) ||
+            empty($promotionId) || empty($campusId)) {
+            $this->addFlashMessage('error', 'Veuillez remplir tous les champs obligatoires');
+            header('Location: /pilotes/etudiants/ajouter');
+            exit;
+        }
+
+        try {
+            $conn = $this->db->connect();
+
+            // NOUVELLE VÉRIFICATION: S'assurer que le pilote supervise bien cette promotion
+            $stmt = $conn->prepare('
+            SELECT COUNT(*) FROM Superviser 
+            WHERE Id_Pilote = :pilotId AND Id_Promotion = :promotionId
+        ');
+            $stmt->bindParam(':pilotId', $pilotId);
+            $stmt->bindParam(':promotionId', $promotionId);
+            $stmt->execute();
+
+            if ($stmt->fetchColumn() == 0) {
+                $this->addFlashMessage('error', 'Vous n\'êtes pas autorisé à ajouter un étudiant à cette promotion');
+                header('Location: /pilotes/etudiants/ajouter');
+                exit;
+            }
+
+            // Vérification préalable de l'unicité de l'email
+            $stmt = $conn->prepare('SELECT COUNT(*) FROM Utilisateur WHERE Email_Utilisateur = :email');
+            $stmt->bindParam(':email', $email);
+            $stmt->execute();
+
+            if ($stmt->fetchColumn() > 0) {
+                $this->addFlashMessage('error', 'Cet email est déjà utilisé');
+                header('Location: /pilotes/etudiants/ajouter');
+                exit;
+            }
+
+            // Création de l'étudiant via la méthode transactionnelle unifiée
+            $result = $this->userModel->createStudentWithUser($email, $password, $nom, $prenom);
+
+            if (!$result || !isset($result['userId']) || !isset($result['studentId'])) {
+                throw new \Exception("Erreur lors de la création de l'utilisateur et de l'étudiant");
+            }
+
+            $userId = $result['userId'];
+            $studentId = $result['studentId'];
+
+            $this->userModel->updateUserPhone($userId, $telephone);
+
+            // Journal de débogage
+            error_log("Utilisateur/Étudiant créé avec succès - ID Utilisateur: $userId, ID Étudiant: $studentId");
+
+            // Débuter une nouvelle transaction pour les opérations complémentaires
+            $conn->beginTransaction();
+
+            try {
+                // Association de l'étudiant à la promotion
+                $dateDebut = date('Y-m-d');
+                $dateFin = date('Y-m-d', strtotime('+2 years'));
+
+                $stmt = $conn->prepare('
+                INSERT INTO Appartenir (
+                    Id_Etudiant, 
+                    Id_Promotion, 
+                    Date_Debut_Appartenir, 
+                    Date_Fin_Appartenir
+                ) VALUES (
+                    :studentId, 
+                    :promotionId, 
+                    :dateDebut, 
+                    :dateFin
+                )
+            ');
+                $stmt->bindParam(':studentId', $studentId);
+                $stmt->bindParam(':promotionId', $promotionId);
+                $stmt->bindParam(':dateDebut', $dateDebut);
+                $stmt->bindParam(':dateFin', $dateFin);
+                $stmt->execute();
+
+                // Validation des opérations complémentaires
+                $conn->commit();
+
+                // Ajout du message de succès et redirection
+                $this->addFlashMessage('success', 'Étudiant ajouté avec succès');
+
+                // Garantir que la session est écrite avant redirection
+                session_write_close();
+
+                header('Location: /pilotes/etudiants');
+                exit;
+
+            } catch (\Exception $e) {
+                // Annulation des opérations complémentaires en cas d'erreur
+                $conn->rollBack();
+                throw $e; // Propager l'exception pour la gestion globale
+            }
+
+        } catch (\Exception $e) {
+            error_log("Erreur lors de l'enregistrement de l'étudiant: " . $e->getMessage());
+
+            $this->addFlashMessage('error', 'Erreur lors de l\'ajout de l\'étudiant: ' . $e->getMessage());
+            header('Location: /pilotes/etudiants/ajouter');
+            exit;
+        }
     }
 
     public function modifierEtudiant($params) {
@@ -221,10 +356,18 @@ class PilotesController extends BaseController {
         $nom = $_POST['nom'] ?? '';
         $prenom = $_POST['prenom'] ?? '';
         $email = $_POST['email'] ?? '';
-        $promotionId = $_POST['promotion'] ?? '';
+        $promotionId = $_POST['promotion'] ?? null;
         $telephone = $_POST['telephone'] ?? '';
+        $skills = isset($_POST['skills']) ? explode(',', $_POST['skills']) : [];
 
-        // Récupérer l'ID utilisateur de l'étudiant
+        // Validation des données
+        if (empty($nom) || empty($prenom) || empty($email)) {
+            $this->addFlashMessage('error', 'Veuillez remplir tous les champs obligatoires');
+            header('Location: /pilotes/etudiants/' . $etudiantId . '/modifier');
+            return;
+        }
+
+        // Récupérer l'étudiant actuel
         $student = $this->studentModel->getStudentInfo($etudiantId);
 
         if (!$student) {
@@ -233,7 +376,10 @@ class PilotesController extends BaseController {
             return;
         }
 
-        // Mettre à jour les informations dans la table utilisateur
+        // Création d'un tableau pour suivre les opérations
+        $operations = [];
+
+        // 1. Mettre à jour les informations de base via le modèle utilisateur
         $updateUser = $this->userModel->updateUser(
             $student['Id_Utilisateur'],
             $email,
@@ -241,18 +387,35 @@ class PilotesController extends BaseController {
             $nom,
             $prenom
         );
+        $operations[] = $updateUser ? 'Informations de base mises à jour' : 'Échec de la mise à jour des informations de base';
 
-        // Mettre à jour la promotion de l'étudiant si nécessaire
-        // Code pour mettre à jour la promotion...
+        // 2. Mettre à jour le téléphone via le modèle utilisateur
+        $updatePhone = $this->userModel->updateUserPhone($student['Id_Utilisateur'], $telephone);
+        $operations[] = $updatePhone ? 'Téléphone mis à jour' : 'Échec de la mise à jour du téléphone';
 
-        if ($updateUser) {
-            $this->addFlashMessage('success', 'Étudiant mis à jour avec succès');
-        } else {
-            $this->addFlashMessage('error', 'Erreur lors de la mise à jour de l\'étudiant');
+        // 3. Mettre à jour la promotion via le modèle étudiant
+        if (!empty($promotionId)) {
+            $updatePromotion = $this->studentModel->updateStudentPromotion($etudiantId, $promotionId);
+            $operations[] = $updatePromotion ? 'Promotion mise à jour' : 'Échec de la mise à jour de la promotion';
         }
 
-        header('Location: /pilotes/etudiants/' . $etudiantId);
+        // 4. Mettre à jour les compétences via le modèle étudiant
+        $updateSkills = $this->studentModel->updateStudentSkills($etudiantId, $skills);
+        $operations[] = $updateSkills ? 'Compétences mises à jour' : 'Échec de la mise à jour des compétences';
+
+        // Déterminer si toutes les opérations ont réussi
+        $success = !in_array(false, [$updateUser, $updatePhone, $updatePromotion ?? true, $updateSkills]);
+
+        if ($success) {
+            $this->addFlashMessage('success', 'Étudiant mis à jour avec succès');
+        } else {
+            // Log des opérations pour le débogage
+            error_log('Mises à jour étudiant, résultats: ' . implode(', ', $operations));
+            $this->addFlashMessage('error', 'Erreur lors de la mise à jour de l\'étudiant');
     }
+
+    header('Location: /pilotes/etudiants/' . $etudiantId);
+}
 
     /**
      * Affiche le formulaire de modification du mot de passe d'un étudiant
