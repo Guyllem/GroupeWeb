@@ -25,7 +25,7 @@ class PilotesController extends BaseController {
 
     public function index() {
         $this->requirePilote();
-        echo $this->twig->render('pilotes/index.html.twig');
+        $this->render('pilotes/index.html.twig');
     }
 
     // Gestion des étudiants
@@ -39,7 +39,7 @@ class PilotesController extends BaseController {
         // Récupérer les étudiants supervisés par ce pilote
         $students = $this->pilotModel->getSupervisedStudents($pilotId);
 
-        echo $this->twig->render('pilotes/etudiants/index.html.twig', [
+        $this->render('pilotes/etudiants/index.html.twig', [
             'pilotePage' => true,
             'students' => $students
         ]);
@@ -64,7 +64,7 @@ class PilotesController extends BaseController {
         // Effectuer la recherche
         $students = $this->pilotModel->searchStudents($searchTerm, $pilotId);
 
-        echo $this->twig->render('pilotes/etudiants/index.html.twig', [
+        $this->render('pilotes/etudiants/index.html.twig', [
             'pilotePage' => true,
             'students' => $students,
             'searchTerm' => $searchTerm
@@ -99,7 +99,7 @@ class PilotesController extends BaseController {
             $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
         }
 
-        echo $this->twig->render('pilotes/etudiants/show.html.twig', [
+        $this->render('pilotes/etudiants/show.html.twig', [
             'pilotePage' => true,
             'student' => $student,
             'csrf_token' => $_SESSION['csrf_token']
@@ -115,7 +115,7 @@ class PilotesController extends BaseController {
             $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
         }
 
-        echo $this->twig->render('pilotes/etudiants/add.html.twig', [
+        $this->render('pilotes/etudiants/add.html.twig', [
             'pilotePage' => true,
             'csrf_token' => $_SESSION['csrf_token']
         ]);
@@ -158,7 +158,7 @@ class PilotesController extends BaseController {
         // Récupérer les compétences de l'étudiant
         $student['skills'] = $this->studentModel->getStudentSkills($etudiantId);
 
-        echo $this->twig->render('pilotes/etudiants/edit.html.twig', [
+        $this->render('pilotes/etudiants/edit.html.twig', [
             'pilotePage' => true,
             'student' => $student,
             'csrf_token' => $_SESSION['csrf_token']
@@ -236,7 +236,7 @@ class PilotesController extends BaseController {
             return;
         }
 
-        echo $this->twig->render('pilotes/etudiants/password.html.twig', [
+        $this->render('pilotes/etudiants/password.html.twig', [
             'pilotePage' => true,
             'student' => $student
         ]);
@@ -313,7 +313,7 @@ class PilotesController extends BaseController {
             $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
         }
 
-        echo $this->twig->render('pilotes/etudiants/delete.html.twig', [
+        $this->render('pilotes/etudiants/delete.html.twig', [
             'pilotePage' => true,
             'student' => $student,
             'csrf_token' => $_SESSION['csrf_token']
@@ -377,7 +377,7 @@ class PilotesController extends BaseController {
         // Récupérer la wishlist de l'étudiant
         $wishlist = $this->studentModel->getStudentWishlist($etudiantId);
 
-        echo $this->twig->render('pilotes/etudiants/wishlist.html.twig', [
+        $this->render('pilotes/etudiants/wishlist.html.twig', [
             'pilotePage' => true,
             'student' => $student,
             'offers' => $wishlist
@@ -407,7 +407,7 @@ class PilotesController extends BaseController {
         // Récupérer les candidatures de l'étudiant
         $applications = $this->studentModel->getStudentApplications($etudiantId);
 
-        echo $this->twig->render('pilotes/etudiants/offres.html.twig', [
+        $this->render('pilotes/etudiants/offres.html.twig', [
             'pilotePage' => true,
             'student' => $student,
             'offers' => $applications
@@ -421,7 +421,7 @@ class PilotesController extends BaseController {
         // Récupérer les entreprises
         $enterprises = $this->enterpriseModel->getEnterprisesByName();
 
-        echo $this->twig->render('pilotes/entreprises/index.html.twig', [
+        $this->render('pilotes/entreprises/index.html.twig', [
             'pilotePage' => true,
             'enterprises' => $enterprises
         ]);
@@ -444,7 +444,7 @@ class PilotesController extends BaseController {
         // Effectuer la recherche
         $enterprises = $this->pilotModel->searchEnterprises($searchTerm);
 
-        echo $this->twig->render('pilotes/entreprises/index.html.twig', [
+        $this->render('pilotes/entreprises/index.html.twig', [
             'pilotePage' => true,
             'enterprises' => $enterprises,
             'searchTerm' => $searchTerm
@@ -471,7 +471,7 @@ class PilotesController extends BaseController {
             return;
         }
 
-        echo $this->twig->render('pilotes/entreprises/show.html.twig', [
+        $this->render('pilotes/entreprises/show.html.twig', [
             'pilotePage' => true,
             'enterprise' => $enterprise
         ]);
@@ -503,7 +503,7 @@ class PilotesController extends BaseController {
         // Récupérer les offres de l'entreprise
         $offers = $this->pilotModel->getEnterpriseOffers($enterpriseId);
 
-        echo $this->twig->render('pilotes/entreprises/offres.html.twig', [
+        $this->render('pilotes/entreprises/offres.html.twig', [
             'pilotePage' => true,
             'enterprise' => $enterprise,
             'offers' => $offers
@@ -540,7 +540,7 @@ class PilotesController extends BaseController {
             $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
         }
 
-        echo $this->twig->render('pilotes/entreprises/evaluer.html.twig', [
+        $this->render('pilotes/entreprises/evaluer.html.twig', [
             'pilotePage' => true,
             'enterprise' => $enterprise,
             'csrf_token' => $_SESSION['csrf_token']
@@ -595,7 +595,7 @@ class PilotesController extends BaseController {
         }
 
         $this->requirePilote();
-        echo $this->twig->render('pilotes/entreprises/add.html.twig', [
+        $this->render('pilotes/entreprises/add.html.twig', [
             'pilotePage' => true,
             'csrf_token' => $_SESSION['csrf_token'],
         ]);
@@ -671,7 +671,7 @@ class PilotesController extends BaseController {
         }
 
 
-        echo $this->twig->render('pilotes/entreprises/edit.html.twig', [
+        $this->render('pilotes/entreprises/edit.html.twig', [
             'pilotePage' => true,
             'enterprise' => $enterprise,
             'csrf_token' => $_SESSION['csrf_token'],
@@ -761,7 +761,7 @@ class PilotesController extends BaseController {
         }
 
         // Rendre la vue de confirmation
-        echo $this->twig->render('pilotes/entreprises/delete.html.twig', [
+        $this->render('pilotes/entreprises/delete.html.twig', [
             'pilotePage' => true,
             'enterprise' => $enterprise,
             'csrf_token' => $_SESSION['csrf_token']
@@ -807,7 +807,7 @@ class PilotesController extends BaseController {
         // Récupérer les offres
         $offers = $this->offerModel->getRecentOffers();
 
-        echo $this->twig->render('pilotes/offres/index.html.twig', [
+        $this->render('pilotes/offres/index.html.twig', [
             'pilotePage' => true,
             'offers' => $offers
         ]);
@@ -830,7 +830,7 @@ class PilotesController extends BaseController {
         // Effectuer la recherche
         $offers = $this->pilotModel->searchOffers($searchTerm);
 
-        echo $this->twig->render('pilotes/offres/index.html.twig', [
+        $this->render('pilotes/offres/index.html.twig', [
             'pilotePage' => true,
             'offers' => $offers,
             'searchTerm' => $searchTerm
@@ -857,7 +857,7 @@ class PilotesController extends BaseController {
             return;
         }
 
-        echo $this->twig->render('pilotes/offres/show.html.twig', [
+        $this->render('pilotes/offres/show.html.twig', [
             'pilotePage' => true,
             'offer' => $offer
         ]);
@@ -876,7 +876,7 @@ class PilotesController extends BaseController {
             $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
         }
 
-        echo $this->twig->render('pilotes/offres/add.html.twig', [
+        $this->render('pilotes/offres/add.html.twig', [
             'pilotePage' => true,
             'enterprises' => $enterprises,
             'competences' => $competences,
@@ -953,7 +953,7 @@ class PilotesController extends BaseController {
             $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
         }
 
-        echo $this->twig->render('pilotes/offres/edit.html.twig', [
+        $this->render('pilotes/offres/edit.html.twig', [
             'pilotePage' => true,
             'offer' => $offer,
             'enterprises' => $enterprises,
@@ -1045,7 +1045,7 @@ class PilotesController extends BaseController {
             $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
         }
 
-        echo $this->twig->render('pilotes/offres/delete.html.twig', [
+        $this->render('pilotes/offres/delete.html.twig', [
             'pilotePage' => true,
             'offer' => $offer,
             'csrf_token' => $_SESSION['csrf_token']
