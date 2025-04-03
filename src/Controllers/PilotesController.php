@@ -172,13 +172,13 @@ class PilotesController extends BaseController {
         }
 
         // Récupération et assainissement des données du formulaire
-        $nom = trim($_POST['nom'] ?? '');
-        $prenom = trim($_POST['prenom'] ?? '');
+        $nom = SecurityUtil::sanitizeInput($_POST['nom'] ?? '');
+        $prenom = SecurityUtil::sanitizeInput($_POST['prenom'] ?? '');
         $email = filter_var($_POST['email'] ?? '', FILTER_SANITIZE_EMAIL);
         $password = $_POST['password'] ?? '';
         $promotionId = (int)($_POST['promotion'] ?? 0);
         $campusId = (int)($_POST['campus'] ?? 0);
-        $telephone = trim($_POST['telephone'] ?? '');
+        $telephone = SecurityUtil::sanitizeInput($_POST['telephone'] ?? '');
 
         // Validation des données
         if (empty($nom) || empty($prenom) || empty($email) || empty($password) ||
@@ -964,17 +964,17 @@ class PilotesController extends BaseController {
         $errors = [];
 
         // Validation du nom
-        if (empty(trim($nom))) {
+        if (empty(SecurityUtil::sanitizeInput($nom))) {
             $errors['nom'] = 'Le nom de l\'entreprise est obligatoire';
         }
 
         // Validation de l'email
-        if (empty(trim($email)) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        if (empty(SecurityUtil::sanitizeInput($email)) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $errors['email'] = 'L\'adresse email est invalide ou manquante';
         }
 
         // Validation de la ville
-        if (empty(trim($ville))) {
+        if (empty(SecurityUtil::sanitizeInput($ville))) {
             $errors['ville'] = 'La ville est obligatoire';
         }
 

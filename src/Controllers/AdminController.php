@@ -6,6 +6,7 @@ use App\Models\StudentModel;
 use App\Models\EnterpriseModel;
 use App\Models\OfferModel;
 use App\Models\UserModel;
+use App\Utils\SecurityUtil;
 
 class AdminController extends BaseController {
     private $pilotModel;
@@ -607,14 +608,14 @@ class AdminController extends BaseController {
         }
 
         // Récupération et validation des données essentielles
-        $nom = trim($_POST['nom'] ?? '');
-        $email = trim($_POST['email'] ?? '');
-        $description = trim($_POST['description'] ?? '');
-        $ville = trim($_POST['ville'] ?? '');
-        $codePostal = trim($_POST['code_postal'] ?? '');
-        $adresse = trim($_POST['adresse'] ?? '');
+        $nom = SecurityUtil::sanitizeInput($_POST['nom'] ?? '');
+        $email = SecurityUtil::sanitizeInput($_POST['email'] ?? '');
+        $description = SecurityUtil::sanitizeInput($_POST['description'] ?? '');
+        $ville = SecurityUtil::sanitizeInput($_POST['ville'] ?? '');
+        $codePostal = SecurityUtil::sanitizeInput($_POST['code_postal'] ?? '');
+        $adresse = SecurityUtil::sanitizeInput($_POST['adresse'] ?? '');
         $secteurs = $_POST['secteurs'] ?? '';
-        $telephone = trim($_POST['telephone'] ?? '');
+        $telephone = SecurityUtil::sanitizeInput($_POST['telephone'] ?? '');
         $effectif = (int)($_POST['effectif'] ?? 0);
 
         if (empty($nom) || empty($email) || empty($ville) || empty($codePostal)) {
@@ -638,7 +639,7 @@ class AdminController extends BaseController {
         // Traitement des secteurs comme tableau si envoyé sous forme de chaîne
         $secteursArray = [];
         if (is_string($secteurs) && !empty($secteurs)) {
-            $secteursArray = array_map('trim', explode(',', $secteurs));
+            $secteursArray = array_map('SecurityUtil::sanitizeInput', explode(',', $secteurs));
         } elseif (is_array($secteurs)) {
             $secteursArray = $secteurs;
         }
@@ -715,14 +716,14 @@ class AdminController extends BaseController {
         }
 
         // Récupération et validation des données
-        $nom = trim($_POST['nom'] ?? '');
-        $email = trim($_POST['email'] ?? '');
-        $description = trim($_POST['description'] ?? '');
-        $ville = trim($_POST['ville'] ?? '');
-        $codePostal = trim($_POST['code_postal'] ?? '');
-        $adresse = trim($_POST['adresse'] ?? '');
+        $nom = SecurityUtil::sanitizeInput($_POST['nom'] ?? '');
+        $email = SecurityUtil::sanitizeInput($_POST['email'] ?? '');
+        $description = SecurityUtil::sanitizeInput($_POST['description'] ?? '');
+        $ville = SecurityUtil::sanitizeInput($_POST['ville'] ?? '');
+        $codePostal = SecurityUtil::sanitizeInput($_POST['code_postal'] ?? '');
+        $adresse = SecurityUtil::sanitizeInput($_POST['adresse'] ?? '');
         $secteurs = $_POST['secteurs'] ?? '';
-        $telephone = trim($_POST['telephone'] ?? '');
+        $telephone = SecurityUtil::sanitizeInput($_POST['telephone'] ?? '');
         $effectif = (int)($_POST['effectif'] ?? 0);
 
         if (empty($nom) || empty($email) || empty($ville) || empty($codePostal)) {
@@ -746,7 +747,7 @@ class AdminController extends BaseController {
         // Traitement des secteurs (similaire à enregistrerEntreprise)
         $secteursArray = [];
         if (is_string($secteurs) && !empty($secteurs)) {
-            $secteursArray = array_map('trim', explode(',', $secteurs));
+            $secteursArray = array_map('SecurityUtil::sanitizeInput', explode(',', $secteurs));
         } elseif (is_array($secteurs)) {
             $secteursArray = $secteurs;
         }
@@ -925,8 +926,8 @@ class AdminController extends BaseController {
         }
 
         // Récupération et validation des données
-        $titre = trim($_POST['titre'] ?? '');
-        $description = trim($_POST['description'] ?? '');
+        $titre = SecurityUtil::sanitizeInput($_POST['titre'] ?? '');
+        $description = SecurityUtil::sanitizeInput($_POST['description'] ?? '');
         $remuneration = (float)($_POST['remuneration'] ?? 0);
         $niveauRequis = $_POST['niveau_requis'] ?? '';
         $dateDebut = $_POST['date_debut'] ?? '';
@@ -1044,8 +1045,8 @@ class AdminController extends BaseController {
         }
 
         // Récupération et validation similaire à enregistrerOffre
-        $titre = trim($_POST['titre'] ?? '');
-        $description = trim($_POST['description'] ?? '');
+        $titre = SecurityUtil::sanitizeInput($_POST['titre'] ?? '');
+        $description = SecurityUtil::sanitizeInput($_POST['description'] ?? '');
         $remuneration = (float)($_POST['remuneration'] ?? 0);
         $niveauRequis = $_POST['niveau_requis'] ?? '';
         $dateDebut = $_POST['date_debut'] ?? '';
