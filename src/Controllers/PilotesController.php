@@ -1185,28 +1185,59 @@ class PilotesController extends BaseController {
         ]);
     }
 
+    /**
+     * Traite le formulaire d'ajout d'offre avec assainissement des entrées
+     */
     public function enregistrerOffre() {
         $this->requirePilote();
 
-        // Récupérer les données du formulaire
-        $titre = $_POST['titre'] ?? '';
-        $description = $_POST['description'] ?? '';
-        $remuneration = (int)($_POST['remuneration'] ?? 0);
-        $niveauRequis = $_POST['niveau_requis'] ?? '';
-        $dateDebut = $_POST['date_debut'] ?? '';
-        $dureeMin = (int)($_POST['duree_min'] ?? 0);
-        $dureeMax = (int)($_POST['duree_max'] ?? 0);
-        $idEntreprise = (int)($_POST['id_entreprise'] ?? 0);
-        $competences = $_POST['competences'] ?? [];
-
-        // Validation des données
-        if (empty($titre) || empty($dateDebut) || $idEntreprise <= 0) {
-            $this->addFlashMessage('error', 'Veuillez remplir tous les champs obligatoires');
+        // Vérification du token CSRF
+        if (!isset($_POST['csrf_token']) || !SecurityUtil::verifyCsrfToken($_POST['csrf_token'])) {
+            $this->addFlashMessage('error', 'Token de sécurité invalide');
             header('Location: /pilotes/offres/ajouter');
             return;
         }
 
-        // Créer l'offre
+        // Récupérer et assainir les données du formulaire
+        $titre = SecurityUtil::sanitizeInput($_POST['titre'] ?? '');
+        $description = SecurityUtil::sanitizeInput($_POST['description'] ?? '');
+        $remuneration = filter_var($_POST['remuneration'] ?? 0, FILTER_VALIDATE_FLOAT);
+        $niveauRequis = SecurityUtil::sanitizeInput($_POST['niveau_requis'] ?? '');
+        $dateDebut = SecurityUtil::sanitizeInput($_POST['date_debut'] ?? '');
+        $dureeMin = filter_var($_POST['duree_min'] ?? 0, FILTER_VALIDATE_INT);
+        $dureeMax = filter_var($_POST['duree_max'] ?? 0, FILTER_VALIDATE_INT);
+        $idEntreprise = filter_var($_POST['id_entreprise'] ?? 0, FILTER_VALIDATE_INT);
+
+        // Pour les tableaux, assainir chaque élément individuellement
+        $competences = [];
+        if (isset($_POST['competences']) && is_array($_POST['competences'])) {
+            foreach ($_POST['competences'] as $comp) {
+                $competences[] = filter_var($comp, FILTER_VALIDATE_INT);
+            }
+        }
+
+        // Validation des données
+        $errors = [];
+
+        if (empty($titre)) $errors['titre'] = 'Le titre est obligatoire';
+        if (empty($description)) $errors['description'] = 'La description est obligatoire';
+        if (empty($niveauRequis)) $errors['niveau_requis'] = 'Le niveau requis est obligatoire';
+        if (empty($dateDebut)) $errors['date_debut'] = 'La date de début est obligatoire';
+        if ($dureeMin <= 0) $errors['duree_min'] = 'La durée minimale doit être supérieure à 0';
+        if ($dureeMax > 0 && $dureeMax < $dureeMin) $errors['duree_max'] = 'La durée maximale doit être supérieure à la durée minimale';
+        if ($idEntreprise <= 0) $errors['id_entreprise'] = 'Veuillez sélectionner une entreprise';
+        if (empty($competences)) $errors['competences'] = 'Veuillez sélectionner au moins une compétence';
+
+        // Si des erreurs sont trouvées, rediriger vers le formulaire avec les erreurs
+        if (!empty($errors)) {
+            $_SESSION['form_errors'] = $errors;
+            $_SESSION['form_data'] = $_POST; // Stocker les données originales pour remplir le formulaire
+            $this->addFlashMessage('error', 'Veuillez corriger les erreurs dans le formulaire');
+            header('Location: /pilotes/offres/ajouter');
+            return;
+        }
+
+        // Préparation des données pour le modèle (déjà assainies)
         $offerData = [
             'titre' => $titre,
             'description' => $description,
@@ -1218,13 +1249,14 @@ class PilotesController extends BaseController {
             'idEntreprise' => $idEntreprise
         ];
 
+        // Création de l'offre via le modèle
         $offerId = $this->offerModel->createOffer($offerData, $competences);
 
         if ($offerId) {
             $this->addFlashMessage('success', 'Offre ajoutée avec succès');
             header('Location: /pilotes/offres/' . $offerId);
         } else {
-            $this->addFlashMessage('error', 'Erreur lors de l\'ajout de l\'offre');
+            $this->addFlashMessage('error', 'Erreur lors de l\'ajout de l\'offre. Veuillez réessayer.');
             header('Location: /pilotes/offres/ajouter');
         }
     }

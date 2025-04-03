@@ -327,4 +327,67 @@ class OfferModel extends Model {
 
         return $offers;
     }
+
+    /**
+     * Crée une nouvelle offre avec ses compétences associées
+     *
+     * @param array $offerData Données de l'offre (titre, description, remuneration, etc.)
+     * @param array $competences IDs des compétences requises
+     * @return int|null ID de la nouvelle offre ou null si erreur
+     */
+    public function createOffer($offerData, $competences = []) {
+        // Connexion à la base de données
+        $conn = $this->db->connect();
+
+        try {
+            // Démarrer une transaction pour garantir l'intégrité des données
+            $conn->beginTransaction();
+
+            // Préparer les données pour l'insertion dans la table Offre
+            $offerInsertData = [
+                'Titre_Offre' => $offerData['titre'],
+                'Description_Offre' => $offerData['description'],
+                'Remuneration_Offre' => $offerData['remuneration'],
+                'Niveau_Requis_Offre' => $offerData['niveauRequis'],
+                'Date_Debut_Offre' => $offerData['dateDebut'],
+                'Duree_Min_Offre' => $offerData['dureeMin'],
+                'Duree_Max_Offre' => $offerData['dureeMax'],
+                'Id_Entreprise' => $offerData['idEntreprise']
+            ];
+
+            // Insérer l'offre en utilisant la méthode create héritée
+            $offerId = $this->create($offerInsertData);
+
+            if (!$offerId) {
+                throw new \Exception("Erreur lors de la création de l'offre");
+            }
+
+            // Associer les compétences à l'offre dans la table de jointure Necessiter
+            if (!empty($competences)) {
+                foreach ($competences as $competenceId) {
+                    $stmt = $conn->prepare('INSERT INTO Necessiter (Id_Offre, Id_Competence) VALUES (:offerId, :competenceId)');
+                    $stmt->bindValue(':offerId', $offerId, \PDO::PARAM_INT);
+                    $stmt->bindValue(':competenceId', $competenceId, \PDO::PARAM_INT);
+                    $stmt->execute();
+                }
+            }
+
+            // Valider la transaction
+            $conn->commit();
+
+            return $offerId;
+
+        } catch (\Exception $e) {
+            // Annuler la transaction en cas d'erreur
+            if ($conn->inTransaction()) {
+                $conn->rollBack();
+            }
+
+            // Log de l'erreur pour le débogage
+            error_log('Erreur lors de la création de l\'offre: ' . $e->getMessage());
+
+            return null;
+        }
+    }
+
 }
