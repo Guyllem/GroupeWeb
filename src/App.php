@@ -154,7 +154,7 @@ class App {
             ->get('/conditions-utilisation', 'Home', 'conditionsUtilisation');
 
         // Set up Twig
-        $loader = new FilesystemLoader(__DIR__ . '\..\templates');
+        $loader = new FilesystemLoader(__DIR__ . '/../templates');
         $this->twig = new Environment($loader, [
             'cache' => false,
             'debug' => true,
