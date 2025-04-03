@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StageConnect - Ajouter un Étudiant</title>
+    <link rel="stylesheet" href="{{ asset('css/styles_page_pilote.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/modal.css') }}">
+</head>
+<body>
+{% set adminPage = true %}
+{% include 'partials/navbar-pilote.html.twig' %}
+
+<main>
+    <div class="form-container">
+        <a href="{{ url('pilotes/etudiants') }}" class="btn-return">
+            <span class="arrow">←</span> Retour
+        </a>
+        <h2 class="form-title">Ajouter un nouvel élève</h2>
+        <form id="add-student-form" action="{{ url('pilotes/etudiants/ajouter') }}" method="post" novalidate>
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+            <div class="form-row">
+                <div class="form-column">
+                    <div class="form-group">
+                        <label for="nom" class="form-label">Nom</label>
+                        <input type="text" id="nom" name="nom" class="form-input" required>
+                        <div id="nom-error" class="form-error"></div>
+                    </div>
+                </div>
+                <div class="form-column">
+                    <div class="form-group">
+                        <label for="prenom" class="form-label">Prénom</label>
+                        <input type="text" id="prenom" name="prenom" class="form-input" required>
+                        <div id="prenom-error" class="form-error"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="email" class="form-label">Adresse email</label>
+                <input type="email" id="email" name="email" class="form-input" required>
+                <div id="email-error" class="form-error"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="password" class="form-label">Mot de passe</label>
+                <input type="password" id="password" name="password" class="form-input" required>
+                <div id="password-error" class="form-error"></div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-column">
+                    <div class="form-group">
+                        <label for="promotion" class="form-label">Promotion</label>
+                        <select id="promotion" name="promotion" class="form-input" required>
+                            <option value="" selected disabled>Sélectionner une promotion</option>
+                            <option value="A1">A1</option>
+                            <option value="A2 Info">A2 Info</option>
+                            <option value="A2 Géné">A2 Géné</option>
+                            <option value="A3 Info">A3 Info</option>
+                            <option value="A3 Géné">A3 Géné</option>
+                            <option value="A4 Info">A4 Info</option>
+                            <option value="A4 Géné">A4 Géné</option>
+                            <option value="A5 Info">A5 Info</option>
+                            <option value="A5 Géné">A5 Géné</option>
+                        </select>
+                        <div id="promotion-error" class="form-error"></div>
+                    </div>
+                </div>
+                <div class="form-column">
+                    <div class="form-group">
+                        <label for="campus" class="form-label">Campus</label>
+                        <select id="campus" name="campus" class="form-input" required>
+                            <option value="" selected disabled>Sélectionner un campus</option>
+                            <option value="Nancy">Nancy</option>
+                            <option value="Metz">Metz</option>
+                            <option value="Listembourg">Listembourg</option>
+                        </select>
+                        <div id="campus-error" class="form-error"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="telephone" class="form-label">Numéro de téléphone</label>
+                <input type="tel" id="telephone" name="telephone" class="form-input" required placeholder="Ex: 06 12 34 56 78">
+                <div id="telephone-error" class="form-error"></div>
+            </div>
+
+            <div class="form-actions">
+                <a href="{{ url('pilotes/etudiants') }}" class="btn btn-back">Annuler</a>
+                <button type="submit" class="btn btn-submit" id="submit-btn" disabled>Ajouter</button>
+            </div>
+        </form>
+    </div>
+</main>
+
+{% include 'partials/footer.html.twig' %}
+<script src="{{ asset('js/form_eleve.js') }}"></script>
+<script src="{{ asset('js/frontend_script.js') }}"></script>
+</body>
+</html>
