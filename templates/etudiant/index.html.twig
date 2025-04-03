@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StageConnect - Offres de stage</title>
-    <link rel="stylesheet" href="{{ asset('css/styles_page_etudiant.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/flash-messages.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/etudiant/main.css') }}">
 </head>
 <body>
 <main>
@@ -14,7 +13,6 @@
         {% include 'partials/navbar-etudiant.html.twig' %}
 
         <div class="slide-filter" id="slide-filter">
-            <!-- Contenu du filtre déroulant (inchangé) -->
             <div class="slide-filter-content">
                 <h3>Filtres</h3>
                 <div class="slide-filter-section">
@@ -128,7 +126,7 @@
                             <h3>{{ offer.Titre_Offre }}</h3>
                             <div class="tags">
                                 {% for skill in offer.skills %}
-                                    <span class="tag">{{ skill }}</span>
+                                    <span class="tag">{{ skill.Nom_Competence }}</span>
                                 {% endfor %}
                             </div>
                         </div>
