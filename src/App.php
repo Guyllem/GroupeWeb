@@ -39,6 +39,9 @@ class App {
             ->get('/etudiant/wishlist', 'Etudiant', 'wishlist') // good
             ->post('/etudiant/wishlist/ajouter', 'Etudiant', 'ajouterWishlist') // A faire
             ->post('/etudiant/wishlist/retirer', 'Etudiant', 'retirerWishlist') // A faire
+            // Routes de gestion des compétences avec GET
+            ->get('/etudiant/skills/add/:id', 'Skills', 'addSkill')
+            ->get('/etudiant/skills/delete/:id', 'Skills', 'deleteSkill')
 
             // Routes d'offres
             ->get('/offres', 'Offres', 'index') // good
@@ -267,7 +270,9 @@ class App {
         // Par exemple, les webhooks externes ou les callbacks d'API
         $exemptRoutes = [
             // Ajoutez ici les routes exemptées si nécessaire
-            // '/api/webhook/external'
+            '/api/competences',
+            '/api/etudiant/competences/ajouter',
+            '/api/etudiant/competences/modifier'
         ];
 
         $currentPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
