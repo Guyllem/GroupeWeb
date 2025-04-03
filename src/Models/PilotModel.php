@@ -59,6 +59,7 @@ class PilotModel extends Model {
             u.Nom_Utilisateur, 
             u.Prenom_Utilisateur, 
             u.Email_Utilisateur,
+            u.Telephone_Utilisateur,
             MAX(c.Nom_Campus) as Nom_Campus,  /* Utilisation de MAX() pour agréger */
             MAX(c.Id_Campus) as Id_Campus     /* Utilisation de MAX() pour agréger */
         FROM Pilote p
@@ -120,7 +121,8 @@ class PilotModel extends Model {
             Id_Promotion,
             Nom_Promotion,
             Specialite_Promotion,
-            Id_Campus
+            Id_Campus,
+            Niveau_Promotion
         FROM Promotion
         ORDER BY Nom_Promotion ASC
     ';

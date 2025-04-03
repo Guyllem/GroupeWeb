@@ -207,9 +207,11 @@ class AdminController extends BaseController {
             $email,
             null, // pas de changement de mot de passe ici
             $nom,
-            $prenom,
-            $telephone
+            $prenom
         );
+
+        // Mettre à jour le no de téléphone
+        $this->userModel->updateUserPhone($pilot['Id_Utilisateur'], $telephone);
 
         // Mettre à jour la promotion du pilote si nécessaire
         if ($promotionId && isset($pilot['promotions'][0]) && $promotionId != $pilot['promotions'][0]['Id_Promotion']) {
@@ -566,9 +568,11 @@ class AdminController extends BaseController {
             $email,
             null, // pas de changement de mot de passe ici
             $nom,
-            $prenom,
-            $telephone
+            $prenom
         );
+
+        // Mettre à jour le no de téléphone
+        $this->userModel->updateUserPhone($student['Id_Utilisateur'], $telephone);
 
         // Mettre à jour la promotion de l'étudiant si nécessaire
         if ($promotionId && $promotionId != $student['Id_Promotion']) {
