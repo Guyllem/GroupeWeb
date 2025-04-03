@@ -24,15 +24,21 @@
 
             <div class="form-group">
                 <label for="titre">Titre de l'offre *</label>
-                <input type="text" id="titre" name="titre" class="form-control" placeholder="Ex: Développeur Full-Stack" value="{{ offer.Titre_Offre }}" required>
+                <input type="text" id="titre" name="titre" class="form-control"
+                       placeholder="Ex: Développeur Full-Stack"
+                       value="{{ formData.titre ?? offer.Titre_Offre }}" required>
                 <div id="titre-error" class="error-message">{{ errors.titre|default('') }}</div>
             </div>
 
             <div class="form-group">
                 <label for="description">Description de l'offre *</label>
                 <div class="textarea-container">
-                    <textarea id="description" name="description" class="form-control" placeholder="Décrivez les missions, responsabilités et objectifs du stage" maxlength="1000" required>{{ offer.Description_Offre }}</textarea>
-                    <div class="char-count"><span id="char-count">{{ offer.Description_Offre|length }}</span>/1000</div>
+                    <textarea id="description" name="description" class="form-control"
+                              placeholder="Décrivez les missions, responsabilités et objectifs du stage"
+                              maxlength="1000" required>{{ formData.description ?? offer.Description_Offre }}</textarea>
+                    <div class="char-count">
+                        <span id="char-count">{{ (formData.description ?? offer.Description_Offre)|length }}</span>/1000
+                    </div>
                 </div>
                 <div id="description-error" class="error-message">{{ errors.description|default('') }}</div>
             </div>
@@ -40,98 +46,117 @@
             <div class="form-row">
                 <div class="form-group">
                     <label for="remuneration">Rémunération mensuelle (€) *</label>
-                    <input type="number" id="remuneration" name="remuneration" class="form-control" placeholder="Ex: 600" min="0" step="0.01" value="{{ offer.Remuneration_Offre }}" required>
+                    <input type="number" id="remuneration" name="remuneration" class="form-control"
+                           placeholder="Ex: 600" min="0" step="0.01"
+                           value="{{ formData.remuneration ?? offer.Remuneration_Offre }}" required>
                     <div id="remuneration-error" class="error-message">{{ errors.remuneration|default('') }}</div>
                 </div>
 
                 <div class="form-group">
-                    <label for="niveau_etude">Niveau d'étude requis *</label>
-                    <select id="niveau_etude" name="niveau_etude" class="form-control" required>
+                    <label for="niveau_requis">Niveau d'étude requis *</label>
+                    <select id="niveau_requis" name="niveau_requis" class="form-control" required>
                         <option value="">Sélectionner un niveau</option>
-                        <option value="Bac+1" {% if offer.Niveau_Requis_Offre == 'Bac+1' %}selected{% endif %}>Bac+1</option>
-                        <option value="Bac+2" {% if offer.Niveau_Requis_Offre == 'Bac+2' %}selected{% endif %}>Bac+2</option>
-                        <option value="Bac+3" {% if offer.Niveau_Requis_Offre == 'Bac+3' %}selected{% endif %}>Bac+3</option>
-                        <option value="Bac+4" {% if offer.Niveau_Requis_Offre == 'Bac+4' %}selected{% endif %}>Bac+4</option>
-                        <option value="Bac+5" {% if offer.Niveau_Requis_Offre == 'Bac+5' %}selected{% endif %}>Bac+5</option>
+                        {% set niveaux = ['Bac+1', 'Bac+2', 'Bac+3', 'Bac+4', 'Bac+5'] %}
+                        {% for niveau in niveaux %}
+                            <option value="{{ niveau }}"
+                                    {% if formData.niveau_requis is defined %}
+                                {% if formData.niveau_requis == niveau %}selected{% endif %}
+                            {% elseif offer.Niveau_Requis_Offre == niveau %}
+                                selected
+                                    {% endif %}>
+                                {{ niveau }}
+                            </option>
+                        {% endfor %}
                     </select>
-                    <div id="niveau_etude-error" class="error-message">{{ errors.niveau_etude|default('') }}</div>
+                    <div id="niveau_requis-error" class="error-message">{{ errors.niveau_requis|default('') }}</div>
                 </div>
             </div>
 
             <div class="form-row">
                 <div class="form-group">
                     <label for="date_debut">Date de début *</label>
-                    <input type="date" id="date_debut" name="date_debut" class="form-control" value="{{ offer.Date_Debut_Offre|date('Y-m-d') }}" required>
+                    <input type="date" id="date_debut" name="date_debut" class="form-control"
+                           value="{{ formData.date_debut ?? offer.Date_Debut_Offre|date('Y-m-d') }}" required>
                     <div id="date_debut-error" class="error-message">{{ errors.date_debut|default('') }}</div>
                 </div>
 
                 <div class="form-group">
                     <label for="duree_min">Durée minimale (semaines) *</label>
-                    <input type="number" id="duree_min" name="duree_min" class="form-control" placeholder="Ex: 8" min="1" value="{{ offer.Duree_Min_Offre }}" required>
+                    <input type="number" id="duree_min" name="duree_min" class="form-control"
+                           placeholder="Ex: 8" min="1"
+                           value="{{ formData.duree_min ?? offer.Duree_Min_Offre }}" required>
                     <div id="duree_min-error" class="error-message">{{ errors.duree_min|default('') }}</div>
                 </div>
 
                 <div class="form-group">
                     <label for="duree_max">Durée maximale (semaines)</label>
-                    <input type="number" id="duree_max" name="duree_max" class="form-control" placeholder="Ex: 16" min="1" value="{{ offer.Duree_Max_Offre }}">
+                    <input type="number" id="duree_max" name="duree_max" class="form-control"
+                           placeholder="Ex: 16" min="1"
+                           value="{{ formData.duree_max ?? offer.Duree_Max_Offre }}">
                     <div id="duree_max-error" class="error-message">{{ errors.duree_max|default('') }}</div>
                 </div>
             </div>
 
-
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="entreprise">Competences requises *</label>
-                    <select id="entreprise" name="entreprise" class="form-control" required>
-                        <option value="">Sélectionner une compétences</option>
-                        {% for competence in competences %}
-                            <option value="{{ competence.Id_Competence }}"
-                                    {% if competence.Id_Competence in selected_competences %}selected{% endif %}>
+            <div class="form-group">
+                <label for="competences">Compétences requises *</label>
+                <select id="competences" name="competences[]" class="form-control" multiple required>
+                    {% for competence in competences %}
+                        <option value="{{ competence.Id_Competence }}"
+                                {% if formData.competences is defined and competence.Id_Competence in formData.competences %}
+                        selected
+                        {% elseif competence.Id_Competence in selected_competences %}
+                            selected
+                                {% endif %}>
+                            {{ competence.Nom_Competence }}
+                        </option>
+                    {% endfor %}
+                </select>
+                <div id="selected-skills" class="selected-skills">
+                    {% for competence in competences %}
+                        {% if competence.Id_Competence in selected_competences %}
+                            <div class="skill-tag">
                                 {{ competence.Nom_Competence }}
-                            </option>
-                        {% endfor %}
-                    </select>
-                    <div id="entreprise-error" class="error-message">{{ errors.entreprise|default('') }}</div>
+                                <button type="button" class="remove-skill" data-id="{{ competence.Id_Competence }}">×</button>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
                 </div>
+                <div id="competences-error" class="error-message">{{ errors.competences|default('') }}</div>
             </div>
 
             <div class="form-row">
                 <div class="form-group">
-                    <label for="entreprise">Entreprise associée *</label>
-                    <select id="entreprise" name="entreprise" class="form-control" required>
+                    <label for="id_entreprise">Entreprise associée *</label>
+                    <select id="id_entreprise" name="id_entreprise" class="form-control" required>
                         <option value="">Sélectionner une entreprise</option>
                         {% for entreprise in enterprises %}
                             <option value="{{ entreprise.Id_Entreprise }}"
-                                    {% if entreprise.Id_Entreprise == offer.Id_Entreprise %}selected{% endif %}>
+                                    {% if formData.id_entreprise is defined %}
+                                {% if formData.id_entreprise == entreprise.Id_Entreprise %}selected{% endif %}
+                            {% elseif entreprise.Id_Entreprise == offer.Id_Entreprise %}
+                                selected
+                                    {% endif %}>
                                 {{ entreprise.Nom_Entreprise }}
                             </option>
                         {% endfor %}
                     </select>
-                    <div id="entreprise-error" class="error-message">{{ errors.entreprise|default('') }}</div>
+                    <div id="id_entreprise-error" class="error-message">{{ errors.id_entreprise|default('') }}</div>
                 </div>
 
                 <div class="form-group">
-                    <label for="localisation">Localisation *</label>
+                    <label for="localisation">Localisation de l'entreprise</label>
                     <input type="text" id="localisation" name="localisation" class="form-control"
-                           placeholder="Ex: Paris, 75000"
-                           value="{{ offer.Ville_Localisation ~ ', ' ~ offer.Code_Postal_Localisation }}" required>
-                    <div id="localisation-error" class="error-message">{{ errors.localisation|default('') }}</div>
+                           value="{{ offer.Ville_Localisation ~ ', ' ~ offer.Code_Postal_Localisation }}"
+                           readonly>
+                    <div class="info-text">La localisation est associée à l'entreprise sélectionnée.</div>
                 </div>
             </div>
 
             <div class="form-actions">
                 <a href="{{ url('pilotes/offres/' ~ offer.Id_Offre) }}" class="btn btn-back">Annuler</a>
-                <button type="submit" id="submit-btn" class="btn btn-submit" disabled>Enregistrer les modifications</button>
+                <button type="submit" id="submit-btn" class="btn btn-submit">Enregistrer les modifications</button>
             </div>
         </form>
-    </div>
-
-    <div class="confirmation-popup" id="confirmationPopup" {% if success is defined and success %}style="display: flex;"{% endif %}>
-        <div class="popup-content">
-            <p>L'offre a bien été modifiée</p>
-            <button class="close-popup" onclick="window.location.href='{{ url('pilotes/offres/' ~ offer.Id_Offre) }}'">Fermer</button>
-        </div>
     </div>
 </main>
 
@@ -140,5 +165,46 @@
 <script src="{{ asset('js/form_offre.js') }}"></script>
 
 <script src="{{ asset('js/flash-messages.js') }}"></script>
+
+<script>
+    // Script pour mettre à jour le compteur de caractères de la description
+    document.addEventListener('DOMContentLoaded', function() {
+        const description = document.getElementById('description');
+        const charCount = document.getElementById('char-count');
+
+        if (description && charCount) {
+            // Initialiser le compteur
+            charCount.textContent = description.value.length;
+
+            // Mettre à jour le compteur lors de la saisie
+            description.addEventListener('input', function() {
+                charCount.textContent = this.value.length;
+            });
+        }
+
+        // Script pour gérer la mise à jour dynamique de la localisation
+        const entrepriseSelect = document.getElementById('id_entreprise');
+        const localisationInput = document.getElementById('localisation');
+
+        if (entrepriseSelect && localisationInput) {
+            // Préparer un objet avec les données de localisation des entreprises
+            const entrepriseLocalisations = {
+                {% for entreprise in enterprises %}
+                "{{ entreprise.Id_Entreprise }}": "{{ entreprise.Ville_Localisation|default('') ~ ', ' ~ entreprise.Code_Postal_Localisation|default('') }}",
+                {% endfor %}
+            };
+
+            // Mettre à jour la localisation lors du changement d'entreprise
+            entrepriseSelect.addEventListener('change', function() {
+                const selectedId = this.value;
+                if (selectedId && entrepriseLocalisations[selectedId]) {
+                    localisationInput.value = entrepriseLocalisations[selectedId];
+                } else {
+                    localisationInput.value = '';
+                }
+            });
+        }
+    });
+</script>
 </body>
 </html>

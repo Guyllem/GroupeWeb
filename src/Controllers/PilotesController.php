@@ -1229,39 +1229,63 @@ class PilotesController extends BaseController {
         }
     }
 
+    /**
+     * Affiche le formulaire de modification d'une offre avec préchargement des données
+     *
+     * @param array $params Paramètres de route contenant l'ID de l'offre
+     */
     public function modifierOffre($params) {
         $this->requirePilote();
 
-        $offerId = $params['id'] ?? null;
-
+        $offerId = filter_var($params['id'] ?? 0, FILTER_VALIDATE_INT);
         if (!$offerId) {
-            $this->addFlashMessage('error', 'Offre non trouvée');
+            $this->addFlashMessage('error', 'Identifiant d\'offre invalide');
             header('Location: /pilotes/offres');
             return;
         }
 
+        // Récupération complète des données de l'offre avec jointures
         $offer = $this->offerModel->getOfferDetails($offerId);
-        $enterprises = $this->enterpriseModel->getAll('Nom_Entreprise');
-        $competences = $this->offerModel->getAllCompetences(); // Utilisation de notre nouvelle méthode
+        if (!$offer) {
+            $this->addFlashMessage('error', 'L\'offre demandée n\'existe pas');
+            header('Location: /pilotes/offres');
+            return;
+        }
 
-        // Préparation des compétences sélectionnées pour faciliter l'affichage
+        // Récupération de toutes les entreprises pour le dropdown
+        $enterprises = $this->enterpriseModel->getAll('Nom_Entreprise');
+
+        // Récupération de toutes les compétences disponibles
+        $competences = $this->offerModel->getAllCompetences();
+
+        // Extraction des IDs de compétences actuellement associées à l'offre
         $selectedCompetences = array_map(function($skill) {
             return $skill['Id_Competence'];
         }, $offer['skills'] ?? []);
 
-        // Générer le token CSRF pour le formulaire
+        // Génération du token CSRF
         if (!isset($_SESSION['csrf_token'])) {
             $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
         }
 
-        $this->render('pilotes/offres/edit.html.twig', [
+        // Priorité aux données en session en cas d'erreur de validation
+        $formData = $_SESSION['form_data'] ?? null;
+        unset($_SESSION['form_data']); // Nettoyage après utilisation
+
+        // Si des données de formulaire sont présentes (après une erreur), les utiliser
+        // Sinon, utiliser les données de l'offre existante
+        $templateData = [
             'pilotePage' => true,
             'offer' => $offer,
             'enterprises' => $enterprises,
             'competences' => $competences,
             'selected_competences' => $selectedCompetences,
-            'csrf_token' => $_SESSION['csrf_token']
-        ]);
+            'csrf_token' => $_SESSION['csrf_token'],
+            'formData' => $formData // Pour repopuler le formulaire après erreur
+        ];
+
+        // Rendu du template avec toutes les données nécessaires
+        echo $this->twig->render('pilotes/offres/edit.html.twig', $templateData);
     }
 
     public function mettreAJourOffre($params) {
