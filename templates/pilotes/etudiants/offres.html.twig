@@ -44,10 +44,8 @@
                 </div>
             {% endfor %}
         {% else %}
-            <div class="no-applications">
-                <p>Cet étudiant n'a pas encore postulé à des offres.</p>
-                <a href="{{ url('pilotes/etudiants/' ~ student.Id_Etudiant) }}" class="view-btn">Retour au profil</a>
-            </div>
+            <p class="main-title-wishlist">Votre Wish-List est actuellement vide.</p>
+            <p class="sub-title-wishlist">C'est bien dommage ...</p>
         {% endif %}
     </div>
 </main>
