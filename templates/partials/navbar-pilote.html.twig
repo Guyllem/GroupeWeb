@@ -1,0 +1,42 @@
+<nav>
+    <div class="nav-left">
+        {% if adminPage is defined and adminPage %}
+            <a href="{{ url('admin') }}" class="nav-item">Accueil</a>
+        {% endif %}
+
+        {% if pilotePage is defined and pilotePage %}
+            <a href="{{ url('pilotes') }}" class="nav-item">Accueil</a>
+        {% endif %}
+    </div>
+    <div class="logo">Stage Connect</div>
+    <div class="nav-right">
+        <a href="{{ url('logout') }}" class="nav-item">Se déconnecter</a>
+    </div>
+
+    {% if responsiveFilter is defined and responsiveFilter %}
+        <button class="filter-menu" id="filter-menu">
+            <img src="{{ asset('assets/icons/entonnoir.png') }}" alt="Filter Icon">
+        </button>
+    {% endif %}
+
+    <button class="burger-menu" id="burger-menu">☰</button>
+</nav>
+<div class="slide-menu" id="slide-menu">
+    {% if adminPage is defined and adminPage %}
+        <h2><a href="{{ url('admin') }}" class="menu-item">Accueil</a></h2>
+        <h2><a href="{{ url('admin/pilotes') }}" class="menu-item">Gestion pilotes</a></h2>
+        <h2><a href="{{ url('admin/etudiants') }}" class="menu-item">Gestion élèves</a></h2>
+        <h2><a href="{{ url('admin/offres') }}" class="menu-item">Gestion offres</a></h2>
+        <h2><a href="{{ url('admin/entreprises') }}" class="menu-item">Gestion entreprises</a></h2>
+    {% endif %}
+
+    {% if pilotePage is defined and pilotePage %}
+        <h2><a href="{{ url('pilotes') }}" class="menu-item">Accueil</a></h2>
+        <h2><a href="{{ url('pilotes/etudiants') }}" class="menu-item">Gestion élèves</a></h2>
+        <h2><a href="{{ url('pilotes/offres') }}" class="menu-item">Gestion offres</a></h2>
+        <h2><a href="{{ url('pilotes/entreprises') }}" class="menu-item">Gestion entreprises</a></h2>
+    {% endif %}
+
+    <h2><a href="{{ url('logout') }}" class="menu-item-logout">Se déconnecter</a></h2>
+    <button class="close-menu" id="close-menu">✖</button>
+</div>

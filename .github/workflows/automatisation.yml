@@ -1,0 +1,37 @@
+name: Deploy to Server
+
+on:
+  push:
+    branches:
+      - main  # Déclenchement automatique sur push
+  workflow_dispatch:  # Permet de lancer manuellement depuis GitHub Actions
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ton-serveur.com >> ~/.ssh/known_hosts
+
+      - name: Deploy to Server
+        run: |
+          ssh user@ton-serveur.com << 'EOF'
+            if [ ! -d "/var/www/kuybi-test/GroupeWeb/.git" ]; then
+              git clone --branch main https://github.com/Guyllem/GroupeWeb.git /var/www/kuybi-test/GroupeWeb/
+            else
+              cd /var/www/kuybi-test/GroupeWeb/
+              git pull origin main
+            fi
+            cd /var/www/kuybi-test/GroupeWeb/
+            chmod +x start.sh
+            ./start.sh
+          EOF
+

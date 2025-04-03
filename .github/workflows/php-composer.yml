@@ -1,0 +1,52 @@
+name: PHP Composer CI
+
+on:
+  push:
+    branches: [ '**' ]  # Trigger on all branches
+  pull_request:         # Trigger on all pull requests
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        php-versions: ['8.3']
+        
+    name: PHP ${{ matrix.php-versions }}
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php-versions }}
+        extensions: mbstring, intl, zip
+        coverage: xdebug
+        tools: composer:v2
+    
+    - name: Validate composer.json and composer.lock
+      run: composer validate --strict
+    
+    - name: Cache Composer packages
+      id: composer-cache
+      uses: actions/cache@v3
+      with:
+        path: vendor
+        key: ${{ runner.os }}-php-${{ matrix.php-versions }}-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-php-${{ matrix.php-versions }}-
+    
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress
+    
+    - name: Run test suite
+      run: |
+        # Check if using local phpunit.phar
+        if [ -f tests/phpunit.phar ]; then
+          php tests/phpunit.phar tests/
+        # Otherwise use vendor phpunit
+        else
+          vendor/bin/phpunit tests/
+        fi
