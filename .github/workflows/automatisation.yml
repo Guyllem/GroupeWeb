@@ -37,24 +37,25 @@ jobs:
             echo ".env file removed"
           fi
           
-          # Copy the example template
-          if [ -f .env.example ]; then
-            cp .env.example .env
-            echo "Using .env.example as template"
-            
-            # Replace the values with our secrets
-            sed -i "s/DB_HOST=.*/DB_HOST=\"${{ secrets.DB_HOST }}\"/g" .env
-            sed -i "s/DB_NAME=.*/DB_NAME=\"${{ secrets.DB_NAME }}\"/g" .env
-            sed -i "s/DB_USER=.*/DB_USER=\"${{ secrets.DB_USER }}\"/g" .env
-            sed -i "s/DB_PASS=.*/DB_PASS=\"${{ secrets.DB_PASS }}\"/g" .env
-            sed -i "s/UPLOAD_PATH=.*/UPLOAD_PATH=\"uploads\"/g" .env
-            
-            # Display .env content (for debugging)
-            echo "Content of .env file:"
-          else
-            echo "Error: .env.example not found!"
-            exit 1
-          fi
+          # Create a PHP script to generate the .env file
+          echo '<?php
+          $env_content = <<<EOT
+          DB_HOST="{$_SERVER[\'DB_HOST\']}"
+          DB_NAME="{$_SERVER[\'DB_NAME\']}"
+          DB_USER="{$_SERVER[\'DB_USER\']}"
+          DB_PASS="{$_SERVER[\'DB_PASS\']}"
+          UPLOAD_PATH="uploads"
+          EOT;
+          
+          file_put_contents(".env", $env_content);
+          echo "PHP script created .env file successfully.\n";
+          ?>' > create_env.php
+          
+          # Set environment variables and run the PHP script
+          DB_HOST='${{ secrets.DB_HOST }}' DB_NAME='${{ secrets.DB_NAME }}' DB_USER='${{ secrets.DB_USER }}' DB_PASS='${{ secrets.DB_PASS }}' php create_env.php
+          
+          # Remove the temporary PHP script
+          rm create_env.php
           
           # Install dependencies
           composer install --no-interaction --no-dev --optimize-autoloader
