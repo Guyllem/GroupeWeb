@@ -37,32 +37,11 @@ jobs:
             echo ".env file removed"
           fi
           
-          # Create a PHP script to generate the .env file with correct syntax
-          echo '<?php
-          $db_host = isset($_SERVER["DB_HOST"]) ? $_SERVER["DB_HOST"] : "";
-          $db_name = isset($_SERVER["DB_NAME"]) ? $_SERVER["DB_NAME"] : "";
-          $db_user = isset($_SERVER["DB_USER"]) ? $_SERVER["DB_USER"] : "";
-          $db_pass = isset($_SERVER["DB_PASS"]) ? $_SERVER["DB_PASS"] : "";
-          
-          $env_content = "DB_HOST=\"" . $db_host . "\"\n";
-          $env_content .= "DB_NAME=\"" . $db_name . "\"\n";
-          $env_content .= "DB_USER=\"" . $db_user . "\"\n";
-          $env_content .= "DB_PASS=\"" . $db_pass . "\"\n";
-          $env_content .= "UPLOAD_PATH=\"uploads\"\n";
-          
-          file_put_contents(".env", $env_content);
-          echo "PHP script created .env file successfully.\n";
-          ?>' > create_env.php
-          
-          # Set environment variables and run the PHP script
-          export DB_HOST='${{ secrets.DB_HOST }}'
-          export DB_NAME='${{ secrets.DB_NAME }}'
-          export DB_USER='${{ secrets.DB_USER }}'
-          export DB_PASS='${{ secrets.DB_PASS }}'
-          php create_env.php
-          
-          # Remove the temporary PHP script
-          rm create_env.php
+          echo 'DB_HOST="${{ secrets.DB_HOST }}"' > .env
+          echo 'DB_NAME="${{ secrets.DB_NAME }}"' >> .env
+          echo 'DB_USER="${{ secrets.DB_USER }}"' >> .env
+          echo 'DB_PASS="${{ secrets.DB_PASS }}"' >> .env
+          echo 'UPLOAD_PATH="uploads"' >> .env
           
           # Install dependencies
           composer install --no-interaction --no-dev --optimize-autoloader
