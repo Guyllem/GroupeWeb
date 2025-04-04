@@ -31,14 +31,16 @@ jobs:
           git fetch --all
           git reset --hard origin/main
           
-          # Update .env file
-          cat > .env << 'EOF'
-          DB_HOST=${{ secrets.DB_HOST }}
-          DB_NAME=${{ secrets.DB_NAME }}
-          DB_USER=${{ secrets.DB_USER }}
-          DB_PASS=${{ secrets.DB_PASS }}
-          UPLOAD_PATH=uploads
-          EOF
+          # Update .env file - first check if it exists, then remove it
+          if [ -f .env ]; then
+            rm .env
+            echo ".env file removed"
+          fi
+          echo "DB_HOST=${{ secrets.DB_HOST }}" > .env
+          echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
+          echo "DB_USER=${{ secrets.DB_USER }}" >> .env
+          echo "DB_PASS=${{ secrets.DB_PASS }}" >> .env
+          echo "UPLOAD_PATH=uploads" >> .env
           
           # Install dependencies
           composer install --no-interaction --no-dev --optimize-autoloader
