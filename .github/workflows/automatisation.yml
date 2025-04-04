@@ -15,49 +15,48 @@ jobs:
           echo "${{ secrets.SSH_AZURE }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H 104.40.186.8 >> ~/.ssh/known_hosts
-          # Optional: Add configuration to prevent strict host checking
           echo -e "Host *\n  StrictHostKeyChecking no\n  UserKnownHostsFile=/dev/null" >> ~/.ssh/config
-      
+
       - name: Deploy to server
         run: |
-          ssh Kuybi@104.40.186.8 '
-          # Configurer Git pour considérer le répertoire comme sûr
-          git config --global --add safe.directory /var/www/kuybi-test/GroupeWeb
-      
-          # Puis continuer avec le reste du script
-          if [ ! -d "/var/www/kuybi-test/GroupeWeb" ]; then
-            mkdir -p /var/www/kuybi-test/GroupeWeb
-            cd /var/www/kuybi-test/GroupeWeb
-            git clone ${{ secrets.REPO_URL }} .
-          else
-            cd /var/www/kuybi-test/GroupeWeb
-            git fetch --all
-            git reset --hard origin/main
-            git pull origin main
-          fi
+          ssh Kuybi@104.40.186.8 "
+            # Configurer Git pour considérer le répertoire comme sûr
+            git config --global --add safe.directory /var/www/kuybi-test/GroupeWeb
             
-          # Supprimer le fichier .env s'il existe
-          if [ -f ".env" ]; then
-            rm .env
-          fi
-          
-          # Créer un nouveau fichier .env avec les secrets
-          echo "DB_HOST=${{ secrets.DB_HOST }}" > /var/www/kuybi-test/GroupeWeb/.env
-          echo "DB_NAME=${{ secrets.DB_NAME }}" >> /var/www/kuybi-test/GroupeWeb/.env
-          echo "DB_USER=${{ secrets.DB_USER }}" >> /var/www/kuybi-test/GroupeWeb/.env
-          echo "DB_PASS=${{ secrets.DB_PASS }}" >> /var/www/kuybi-test/GroupeWeb/.env
-          echo "UPLOAD_PATH=uploads" >> /var/www/kuybi-test/GroupeWeb/.env
-          
-          # Installer les dépendances avec Composer
-          cd /var/www/kuybi-test/GroupeWeb
-          composer install --no-interaction --no-dev --optimize-autoloader
-          
-          # Redémarrer Apache (si configuré avec sudo sans mot de passe)
-          if command -v sudo >/dev/null 2>&1 && sudo -n true 2>/dev/null; then
-            sudo systemctl restart apache2
-          else
-            echo "ATTENTION: Impossible de redémarrer Apache - sudo requiert un mot de passe"
-          fi
-
-          echo "Sucès"
-        '
+            # Puis continuer avec le reste du script
+            if [ ! -d \"/var/www/kuybi-test/GroupeWeb\" ]; then
+              mkdir -p /var/www/kuybi-test/GroupeWeb
+              cd /var/www/kuybi-test/GroupeWeb
+              git clone ${{ secrets.REPO_URL }} .
+            else
+              cd /var/www/kuybi-test/GroupeWeb
+              git fetch --all
+              git reset --hard origin/main
+              git pull origin main
+            fi
+            
+            # Supprimer le fichier .env s'il existe
+            if [ -f \".env\" ]; then
+              rm .env
+            fi
+            
+            # Créer un nouveau fichier .env avec les secrets
+            echo \"DB_HOST=${{ secrets.DB_HOST }}\" > /var/www/kuybi-test/GroupeWeb/.env
+            echo \"DB_NAME=${{ secrets.DB_NAME }}\" >> /var/www/kuybi-test/GroupeWeb/.env
+            echo \"DB_USER=${{ secrets.DB_USER }}\" >> /var/www/kuybi-test/GroupeWeb/.env
+            echo \"DB_PASS=${{ secrets.DB_PASS }}\" >> /var/www/kuybi-test/GroupeWeb/.env
+            echo \"UPLOAD_PATH=uploads\" >> /var/www/kuybi-test/GroupeWeb/.env
+            
+            # Installer les dépendances avec Composer
+            cd /var/www/kuybi-test/GroupeWeb
+            composer install --no-interaction --no-dev --optimize-autoloader
+            
+            # Redémarrer Apache (si configuré avec sudo sans mot de passe)
+            if command -v sudo >/dev/null 2>&1 && sudo -n true 2>/dev/null; then
+              sudo systemctl restart apache2
+            else
+              echo \"ATTENTION: Impossible de redémarrer Apache - sudo requiert un mot de passe\"
+            fi
+            
+            echo \"Deployment successful\"
+          "
