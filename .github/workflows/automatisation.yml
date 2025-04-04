@@ -36,11 +36,11 @@ jobs:
             rm .env
             echo ".env file removed"
           fi
-          echo "DB_HOST=\"${{ secrets.DB_HOST }}\"" > .env
-          echo "DB_NAME=\"${{ secrets.DB_NAME }}\"" >> .env
-          echo "DB_USER=\"${{ secrets.DB_USER }}\"" >> .env
-          echo "DB_PASS=\"${{ secrets.DB_PASS }}\"" >> .env
-          echo "UPLOAD_PATH=\"uploads\"" >> .env
+          echo 'DB_HOST="${{ secrets.DB_HOST }}"' > .env
+          echo 'DB_NAME="${{ secrets.DB_NAME }}"' >> .env
+          echo 'DB_USER="${{ secrets.DB_USER }}"' >> .env
+          echo 'DB_PASS="${{ secrets.DB_PASS }}"' >> .env
+          echo 'UPLOAD_PATH="uploads"' >> .env
           
           # Install dependencies
           composer install --no-interaction --no-dev --optimize-autoloader
