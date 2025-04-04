@@ -1,38 +1,66 @@
-name: Deploy to Server
+name: Deploy to Production
 
 on:
   push:
-    branches:
-      - main  # Déclenchement automatique sur push
-  workflow_dispatch:  # Permet de lancer manuellement depuis GitHub Actions
+    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
+    
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup SSH
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_AZURE }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H 104.40.186.8 >> ~/.ssh/known_hosts
-          # Optional: Add configuration to prevent strict host checking
-          echo -e "Host *\n  StrictHostKeyChecking no\n  UserKnownHostsFile=/dev/null" >> ~/.ssh/config
-
-      - name: Deploy to Server
-        run: |
-          ssh -v Kuybi@104.40.186.8 << 'EOF'
-            if [ ! -d "/var/www/kuybi-test/GroupeWeb/.git" ]; then
-              git clone --branch main https://github.com/Guyllem/GroupeWeb.git /var/www/kuybi-test/GroupeWeb/
-            else
-              cd /var/www/kuybi-test/GroupeWeb/
-              git pull origin main
-            fi
-            cd /var/www/kuybi-test/GroupeWeb/
-            chmod +x start.sh
-            ./start.sh
-          EOF
+    - name: Checkout code
+      uses: actions/checkout@v3
+      
+    - name: Setup SSH
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_AZURE }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H 104.40.186.8 >> ~/.ssh/known_hosts
+        echo -e "Host *\n StrictHostKeyChecking no\n UserKnownHostsFile=/dev/null" >> ~/.ssh/config
+    
+    - name: Deploy to server
+      run: |
+        ssh Kuybi@104.40.186.8 "
+          cd /var/www/kuybi-test/GroupeWeb
+          
+          # Pull latest changes
+          git config --global --add safe.directory /var/www/kuybi-test/GroupeWeb
+          git fetch --all
+          git reset --hard origin/main
+          
+          # Update .env file - first check if it exists, then remove it
+          if [ -f .env ]; then
+            rm .env
+            echo ".env file removed"
+          fi
+          echo "DB_HOST=${{ secrets.DB_HOST }}" > .env
+          echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
+          echo "DB_USER=${{ secrets.DB_USER }}" >> .env
+          echo "DB_PASS=\"${{ secrets.DB_PASS }}\"" >> .env
+          echo "UPLOAD_PATH=uploads" >> .env
+          
+          # Install dependencies
+          composer install --no-interaction --no-dev --optimize-autoloader
+          
+          # Clear cache if necessary (for frameworks like Laravel)
+          if [ -f artisan ]; then
+            php artisan cache:clear
+            php artisan config:cache
+          fi
+          
+          # Set appropriate permissions
+          find . -type d -exec chmod 755 {} \;
+          find . -type f -exec chmod 644 {} \;
+          
+          # Make sure upload directory exists and is writable
+          mkdir -p uploads
+          chmod -R 775 uploads
+          
+          # Restart Apache
+          sudo systemctl restart apache2
+          
+          echo 'Deployment completed successfully'
+        "
