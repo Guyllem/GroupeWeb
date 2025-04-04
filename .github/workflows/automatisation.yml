@@ -8,39 +8,57 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    
     steps:
-      - name: Setup SSH
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_AZURE }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H 104.40.186.8 >> ~/.ssh/known_hosts
-          echo -e "Host *\n  StrictHostKeyChecking no\n  UserKnownHostsFile=/dev/null" >> ~/.ssh/config
-
-      - name: Deploy to server
-        run: |
-          ssh Kuybi@104.40.186.8 "
-            cd /var/www/kuybi-test/GroupeWeb
-            
-            # Pull latest changes
-            git config --global --add safe.directory /var/www/kuybi-test/GroupeWeb
-            git fetch --all
-            git reset --hard origin/main
-            
-            # Update .env file
-            cat > .env << 'EOL'
-            DB_HOST=${{ secrets.DB_HOST }}
-            DB_NAME=${{ secrets.DB_NAME }}
-            DB_USER=${{ secrets.DB_USER }}
-            DB_PASS=${{ secrets.DB_PASS }}
-            UPLOAD_PATH=uploads
-            EOL
-            
-            # Install dependencies
-            composer install --no-interaction --no-dev --optimize-autoloader
-            
-            # Restart Apache
-            sudo systemctl restart apache2
-            
-            echo 'Deployment completed successfully'
-          "
+    - name: Checkout code
+      uses: actions/checkout@v3
+      
+    - name: Setup SSH
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_AZURE }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H 104.40.186.8 >> ~/.ssh/known_hosts
+        echo -e "Host *\n StrictHostKeyChecking no\n UserKnownHostsFile=/dev/null" >> ~/.ssh/config
+    
+    - name: Deploy to server
+      run: |
+        ssh Kuybi@104.40.186.8 "
+          cd /var/www/kuybi-test/GroupeWeb
+          
+          # Pull latest changes
+          git config --global --add safe.directory /var/www/kuybi-test/GroupeWeb
+          git fetch --all
+          git reset --hard origin/main
+          
+          # Update .env file
+          cat > .env << 'EOL'
+          DB_HOST=${{ secrets.DB_HOST }}
+          DB_NAME=${{ secrets.DB_NAME }}
+          DB_USER=${{ secrets.DB_USER }}
+          DB_PASS=${{ secrets.DB_PASS }}
+          UPLOAD_PATH=uploads
+          EOL
+          
+          # Install dependencies
+          composer install --no-interaction --no-dev --optimize-autoloader
+          
+          # Clear cache if necessary (for frameworks like Laravel)
+          if [ -f artisan ]; then
+            php artisan cache:clear
+            php artisan config:cache
+          fi
+          
+          # Set appropriate permissions
+          find . -type d -exec chmod 755 {} \;
+          find . -type f -exec chmod 644 {} \;
+          
+          # Make sure upload directory exists and is writable
+          mkdir -p uploads
+          chmod -R 775 uploads
+          
+          # Restart Apache
+          sudo systemctl restart apache2
+          
+          echo 'Deployment completed successfully'
+        "
