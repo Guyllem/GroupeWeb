@@ -36,12 +36,13 @@ jobs:
             rm .env
             echo ".env file removed"
           fi
-          printf '%s\n' \
-            'DB_HOST="${{ secrets.DB_HOST }}"' \
-            'DB_NAME="${{ secrets.DB_NAME }}"' \
-            'DB_USER="${{ secrets.DB_USER }}"' \
-            'DB_PASS="${{ secrets.DB_PASS }}"' \
-            'UPLOAD_PATH="uploads"' > .env
+          cat > .env << 'ENVFILE'
+          DB_HOST="${{ secrets.DB_HOST }}"
+          DB_NAME="${{ secrets.DB_NAME }}"
+          DB_USER="${{ secrets.DB_USER }}"
+          DB_PASS="${{ secrets.DB_PASS }}"
+          UPLOAD_PATH="uploads"
+          ENVFILE
           
           # Install dependencies
           composer install --no-interaction --no-dev --optimize-autoloader
